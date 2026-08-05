@@ -1,0 +1,41 @@
+% ============================================================
+% DATA AVAILABILITY STATEMENT  --  SDGA Paper IV
+%
+% Paste this block at the END of Section8.tex, after the final
+% paragraph of the Conclusions and before \end{document} is reached.
+%
+% The reserved DOI is already filled in below (10.5281/zenodo.21793575).
+% No further editing is needed.
+% ============================================================
+
+\section*{Data availability}
+
+The analysis code, the verification scripts, the five figures, and a
+machine-readable file containing every numerical result quoted in this paper
+are openly available at
+\href{https://doi.org/10.5281/zenodo.21793575}{doi:10.5281/zenodo.21793575},
+released under CC BY 4.0. The deposit includes the two verification programs
+that implement Eqs.~\eqref{eq:ellipsoid} and~\eqref{eq:rotsphere}, so that both
+checks can be reproduced independently of the shape models. Development of the
+code is tracked at
+\url{https://github.com/praponkan/shape-based-surface-gravity}.
+
+Shape models are not redistributed. Those used here are available from the
+OSIRIS-REx mission archive (Bennu), the JAXA DARTS archive accompanying
+\citet{kanamaru2019} (Ryugu shape model and reference gravitational products),
+and the PDS Small Bodies Node (Eros, Itokawa, Gaspra, Ida, Kleopatra); the
+specific models, assumed densities, and rotation periods are listed in
+Table~\ref{tab:shapes}.
+
+
+% ============================================================
+% OPTIONAL -- if the journal requires a separate acknowledgement
+% of the software used, this can follow the statement above.
+% ============================================================
+
+% \section*{Software}
+%
+% Self-gravitation was computed with \texttt{polyhedral-gravity}
+% version~3.3.1 \citep{gravitylib}. Analysis used Python~3.13 with
+% \texttt{numpy} and \texttt{scipy}; figures were produced with
+% \texttt{matplotlib}.

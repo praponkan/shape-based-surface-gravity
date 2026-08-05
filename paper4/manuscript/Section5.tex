@@ -1,0 +1,226 @@
+\section{Resolution robustness of the geopotential dispersion}
+\label{sec:varrobust}
+
+The difficulty identified in Section~\ref{sec:slopesens} is not that the slope
+is noisy---it is smooth and monotonic in the mesh---but that it does not
+approach a limit. This section shows that the normalized geopotential dispersion
+$\potvarn$ of Eq.~\eqref{eq:potvarn}, computed from the same fields on the same
+meshes, behaves differently: it too rises with refinement, but it saturates.
+
+\subsection{The measurement}
+\label{sec:varmeas}
+
+The measurement is identical to that of Section~\ref{sec:slopemeas} and is
+performed on the same decimation sequences, from the same evaluations. No
+additional solver calls are involved: $\slopeavg$ and $\potvarn$ are two
+summaries of one computed field, so any difference between them is a difference
+between the diagnostics, not between the calculations that produced them.
+
+\subsection{Results}
+\label{sec:varres}
+
+Table~\ref{tab:varseries} gives the sequences, and Figure~\ref{fig:resolution}
+plots them directly beneath the corresponding slope curves, on identical axes.
+As with the slope, $\potvarn$ increases monotonically with facet count on every
+body. Unlike the slope, it
+flattens: on Itokawa and Gaspra the last two meshes return the same value to
+five significant figures, and on Ida they differ in the fifth.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Normalized geopotential dispersion $\potvarn$ as a function of facet
+count, on the same decimation sequences as Table~\ref{tab:slopeseries}.}
+\label{tab:varseries}
+\begin{tabular}{lrr}
+\toprule
+Body & $\Nf$ & $\potvarn$ \\
+\midrule
+Ryugu   & $3\,096$  & $0.03153$ \\
+        & $5\,780$  & $0.03233$ \\
+        & $11\,134$ & $0.03295$ \\
+        & $20\,014$ & $0.03327$ \\
+        & $42\,834$ & $0.03347$ \\
+\midrule
+Eros    & $2\,097$  & $0.03241$ \\
+        & $6\,306$  & $0.03345$ \\
+        & $12\,155$ & $0.03384$ \\
+        & $21\,850$ & $0.03403$ \\
+        & $36\,030$ & $0.03413$ \\
+\midrule
+Itokawa & $2\,183$  & $0.08527$ \\
+        & $6\,404$  & $0.08577$ \\
+        & $12\,272$ & $0.08598$ \\
+        & $21\,196$ & $0.08608$ \\
+        & $41\,369$ & $0.08608$ \\
+\midrule
+Gaspra  & $2\,821$  & $0.05929$ \\
+        & $5\,240$  & $0.05980$ \\
+        & $12\,500$ & $0.06009$ \\
+        & $20\,773$ & $0.06017$ \\
+        & $32\,040$ & $0.06017$ \\
+\midrule
+Ida     & $2\,141$  & $0.03490$ \\
+        & $5\,808$  & $0.03572$ \\
+        & $11\,804$ & $0.03626$ \\
+        & $20\,673$ & $0.03641$ \\
+        & $32\,040$ & $0.03643$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{fig3.pdf}
+\caption{Behaviour of the two diagnostics under mesh refinement, expressed as
+the fractional deviation from the value obtained on the finest mesh of each
+sequence. (a) Area-weighted mean slope. (b) Normalized geopotential dispersion,
+plotted on \emph{identical} axes. Both quantities are computed from the same
+field on the same meshes, so the contrast is a property of the diagnostics
+rather than of the calculation. The slope curves spread by up to a quarter of
+their own value and are still moving at the finest meshes; the dispersion curves
+are flat on this scale.}
+\label{fig:resolution}
+\end{figure}
+
+\subsection{The two diagnostics compared}
+\label{sec:varcompare}
+
+Table~\ref{tab:varsens} and Figure~\ref{fig:diagnostics} place the two
+diagnostics side by side. We report both
+measures of Section~\ref{sec:diagnostics}, because they support claims of
+different strength and it would be misleading to quote only the more favourable
+one.
+
+By the range sensitivity $S$, the geopotential dispersion is the more stable
+diagnostic on every body, but the margin varies considerably: it is a factor of
+$13.6$ on Itokawa, $4.3$ on Ryugu and $3.6$ on Eros, but only $1.3$ on Ida and
+$1.2$ on Gaspra. The last two figures should not be read as a weakness of the
+dispersion. Gaspra and Ida are precisely the bodies whose slope was already
+stable ($S[\slopeavg]=1.8\%$ and $5.6\%$), so there was little for a better
+diagnostic to improve upon; the ratio is uninformative where the denominator is
+already small. The honest summary of the range metric is that $\potvarn$ varies
+by $0.9\%$ to $5.9\%$ where $\slopeavg$ varies by $1.8\%$ to $25.6\%$, and that
+the advantage is largest exactly where it matters most.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Range sensitivity $S$ and convergence residual $C$ for the two
+diagnostics, on identical meshes. A dash indicates that the diagnostic did not
+change over the final refinement step at the precision retained.}
+\label{tab:varsens}
+\begin{tabular}{lrrrr}
+\toprule
+& \multicolumn{2}{c}{$S$} & \multicolumn{2}{c}{$C$} \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+Body & $\slopeavg$ & $\potvarn$ & $\slopeavg$ & $\potvarn$ \\
+\midrule
+Ryugu   & $25.6\%$ & $5.9\%$ & $8.24\%$ & $0.60\%$ \\
+Eros    & $18.3\%$ & $5.1\%$ & $4.39\%$ & $0.29\%$ \\
+Itokawa & $12.8\%$ & $0.9\%$ & $2.59\%$ & $-$      \\
+Ida     & $5.6\%$  & $4.3\%$ & $0.11\%$ & $0.05\%$ \\
+Gaspra  & $1.8\%$  & $1.5\%$ & $0.17\%$ & $-$      \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{fig4.pdf}
+\caption{Resolution diagnostics for the two quantities.
+(a) Range sensitivity $S$, the peak-to-peak variation over the full mesh range
+normalized by the mean. (b) Convergence residual $C$, the fractional change over
+the final refinement step. The geopotential dispersion is the more stable diagnostic
+on every body by both measures, but the two measures support claims of different
+strength: the range advantage is modest on bodies whose slope is already stable,
+whereas the convergence residual separates the two cleanly---the dispersion has
+reached a plateau on every body, and the slope has not on Ryugu, Eros or
+Itokawa.}
+\label{fig:diagnostics}
+\end{figure}
+
+The convergence residual $C$ draws a sharper and, we argue, more meaningful
+distinction. On the three bodies where the slope has not settled---Ryugu, Eros
+and Itokawa---the geopotential dispersion has: it changes by $0.60\%$, $0.29\%$ and
+nothing at all over the same final refinement step on which the slope still
+moves by $8.24\%$, $4.39\%$ and $2.59\%$. On the two bodies where the slope has
+settled, the dispersion has settled at least as firmly. There is no body in the
+set on which the dispersion is the less converged of the two.
+
+The difference between the two rows of Table~\ref{tab:varsens} is therefore not
+merely quantitative. Within the resolutions available, $\potvarn$ appears to
+possess a limit that the meshes are approaching, and $\slopeavg$ on the richest
+models does not.
+
+\subsection{Why the two diagnostics differ in resolution sensitivity}
+\label{sec:whyconverge}
+
+The two diagnostics are computed from the same field, but they depend on the
+mesh in fundamentally different ways.
+
+The geopotential of Eq.~\eqref{eq:geopot} is an integral over the body's
+volume. Refining the mesh changes the polyhedron's volume and its mass
+distribution only slightly, and those changes are what the potential responds
+to; a facet subdivided into four contributes very nearly what it contributed
+before, because the mass it bounds is nearly unchanged. The dispersion inherits
+this behaviour, and both $\potvar$ and $\Ubar$ converge as the polyhedron
+converges to the body it approximates.
+
+The slope of Eq.~\eqref{eq:slope} depends on the facet normal $\nhat_{i}$, a
+property of the surface at the scale of a single facet. Subdividing a facet
+does not leave the normals nearly unchanged: it replaces one direction by
+several that differ from it and from each other by whatever relief exists at the
+finer scale. There is no reason for that sequence of directions to settle,
+because a rough surface continues to present new orientations at every scale at
+which it is resolved. This is the familiar situation in which an enclosed volume
+converges under refinement while a surface property need not, and it is why the
+distinction of Section~\ref{sec:diagnostics} between $S$ and $C$ was worth
+drawing: the slope can be made to look stable by choosing a narrow enough range
+of meshes, but it does not thereby acquire a limit.
+
+The smoothing experiment of Table~\ref{tab:smooth} supports the same reading
+from the other direction. Suppressing the fine relief---removing the very
+structure that refinement keeps discovering---lowers the slope substantially,
+by $2.9^{\circ}$ on Itokawa and $3.4^{\circ}$ on Eros. It is that structure,
+not the body's overall figure, that the slope keeps responding to.
+
+\subsection{What the geopotential dispersion measures}
+\label{sec:varmeaning}
+
+Beyond its numerical stability, $\potvarn$ has a direct physical reading. It is
+the area-weighted spread of the geopotential over the surface, normalized by
+its mean, and therefore measures how far the surface departs from an
+equipotential. A body whose surface has fully relaxed into an equipotential
+figure would have $\potvarn = 0$; a body far from equilibrium has a large value.
+
+This is what makes it useful beyond bookkeeping. The values in
+Table~\ref{tab:varseries} separate the bodies more cleanly than the slope does:
+Itokawa at $0.086$ and Gaspra at $0.060$ sit well above Ryugu, Eros and Ida,
+which cluster between $0.033$ and $0.036$. Because the quantity is
+dimensionless and resolution-stable, such a comparison is meaningful in a way
+that a comparison of mean slopes across differently meshed models is not.
+
+The same property underlies its use as an estimator. \citet{kanamaru2019}
+minimized a closely related quantity over trial interior density distributions
+to infer the internal structure of Itokawa, on the reasoning that a surface
+shaped by long-term relaxation should lie close to an equipotential of the true
+density field. Any such inversion requires a diagnostic whose variation with
+the assumed density is not swamped by its variation with the mesh---which is
+exactly the property established here, and which the slope does not possess.
+We return to this in Section~\ref{sec:discussion}.
+
+\subsection{Recommendation}
+\label{sec:varrecommend}
+
+The results of this section and the last suggest a simple practice. Where a
+resolution-independent statement about a body's surface gravity field is
+required---for comparison between bodies, between studies, or between shape
+models---the normalized geopotential dispersion should be reported, since within
+the range tested it converges. The mean slope remains the more directly
+interpretable quantity, and nothing here argues against computing it; but it
+should be quoted together with the facet count at which it was obtained, and
+compared only at matched resolution.
+
+The next section tests both diagnostics under the harder condition that the
+shape models themselves differ.

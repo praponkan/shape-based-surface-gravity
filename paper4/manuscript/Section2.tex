@@ -1,0 +1,394 @@
+\section{Data and methods}
+\label{sec:methods}
+
+This section defines the three surface fields computed throughout the paper,
+fixes the sign conventions that make them reproducible, describes the
+polyhedral solver and the shape models, specifies the mesh operators used to
+probe resolution behaviour, and reports the verification of the implementation
+against exact analytic solutions.
+
+\subsection{Target quantities}
+\label{sec:targets}
+
+Let the body occupy a region $B$ bounded by a closed triangulated surface with
+$\Nf$ facets, and let the interior density $\dens$ be uniform. The
+gravitational potential at a field point $\mathbf{r}$ is
+
+\begin{equation}
+U_{g}(\mathbf{r}) \;=\; -\,G\dens \int_{B}
+\frac{\mathrm{d}^{3}r'}{\lvert \mathbf{r}-\mathbf{r}' \rvert},
+\label{eq:Ug}
+\end{equation}
+
+so that $U_{g}<0$ and the self-gravitational attraction is
+
+\begin{equation}
+\ngrav(\mathbf{r}) \;=\; -\nabla U_{g}(\mathbf{r}),
+\label{eq:g}
+\end{equation}
+
+which points into the body. For a body rotating uniformly at angular rate
+$\omegarot$ about the $z$ axis of the body-fixed frame, write
+$\mathbf{r}_{\perp}=(x,y,0)$ for the component perpendicular to the spin axis.
+The centrifugal acceleration is directed away from the spin axis,
+
+\begin{equation}
+\acf(\mathbf{r}) \;=\; \omegarot^{2}\,\mathbf{r}_{\perp},
+\label{eq:acf}
+\end{equation}
+
+and the effective acceleration experienced by a particle at rest in the
+rotating frame is
+
+\begin{equation}
+\geff(\mathbf{r}) \;=\; \ngrav(\mathbf{r}) + \acf(\mathbf{r}).
+\label{eq:geff}
+\end{equation}
+
+The \emph{effective gravitational slope} $\slope$---hereafter simply the
+gravitational slope, the qualifier being understood---of facet $i$ with outward
+unit normal $\nhat_{i}$ is the angle between the upward direction $-\geff$ and
+that normal,
+
+\begin{equation}
+\slope_{i} \;=\; \arccos\!\left(
+\frac{-\,\geff(\mathbf{c}_{i})\cdot\nhat_{i}}
+     {\lVert \geff(\mathbf{c}_{i}) \rVert} \right),
+\label{eq:slope}
+\end{equation}
+
+evaluated at the facet centroid $\mathbf{c}_{i}$. A surface perpendicular to
+the local effective gravity has $\slope=0$; a surface on which the effective
+gravity has an outward component has $\slope>90^{\circ}$, which is possible
+only where the centrifugal term dominates or where the local topography
+overhangs.
+
+The \emph{geopotential} adds the rotational term to the gravitational
+potential,
+
+\begin{equation}
+\Upot(\mathbf{r}) \;=\; U_{g}(\mathbf{r})
+\;-\;\tfrac{1}{2}\,\omegarot^{2}\,\lVert\mathbf{r}_{\perp}\rVert^{2},
+\label{eq:geopot}
+\end{equation}
+
+so that $\geff=-\nabla\Upot$ and the minima of $\Upot$ on the surface mark the
+sinks toward which loose material is driven.
+
+Two scalar summaries of these fields are used throughout. Weighting each facet
+by its area $A_{i}$, the area-weighted mean slope is
+
+\begin{equation}
+\slopeavg \;=\;
+\frac{\sum_{i} A_{i}\,\slope_{i}}{\sum_{i} A_{i}},
+\label{eq:slopeavg}
+\end{equation}
+
+and the area-weighted geopotential mean and variance are
+
+\begin{equation}
+\Ubar \;=\; \frac{\sum_{i} A_{i}\,\Upot_{i}}{\sum_{i} A_{i}},
+\qquad
+\potvar^{2} \;=\;
+\frac{\sum_{i} A_{i}\,\bigl(\Upot_{i}-\Ubar\bigr)^{2}}{\sum_{i} A_{i}}.
+\label{eq:potvar}
+\end{equation}
+
+The square root $\potvar$ of Eq.~\eqref{eq:potvar} is the corresponding
+area-weighted standard deviation. Because $\Upot$ carries units and its zero
+point is fixed by Eq.~\eqref{eq:Ug}, comparisons across bodies use the
+dimensionless \emph{normalized geopotential dispersion}
+
+\begin{equation}
+\potvarn \;=\; \frac{\potvar}{\lvert \Ubar \rvert}.
+\label{eq:potvarn}
+\end{equation}
+
+which is the coefficient of variation of the surface geopotential. We use the
+term \emph{dispersion} rather than \emph{variance} throughout, because
+$\potvarn$ is built from the standard deviation and not from
+$\potvar^{2}$.
+
+Both $\slopeavg$ and $\potvarn$ are area-weighted rather than facet-weighted,
+so that neither is biased by the uneven facet areas that decimation produces.
+
+\subsubsection{Sign conventions}
+\label{sec:signs}
+
+Equations~\eqref{eq:g}--\eqref{eq:geopot} fix every sign, but two conventions
+in common use differ from them and are worth stating explicitly, because a
+discrepancy in either is easy to introduce and hard to detect.
+
+First, some solvers---including the library used here---return the positive
+Newtonian integral $-U_{g}$ rather than $U_{g}$ itself, together with an
+acceleration vector that points into the body. The implementation negates the
+returned potential before forming Eq.~\eqref{eq:geopot}, so that the
+gravitational and rotational terms of the geopotential carry consistent signs.
+
+Second, the centrifugal term must \emph{oppose} self-gravity, as in
+Eq.~\eqref{eq:acf}: at the equator of a rotating body the effective
+acceleration is smaller in magnitude than the attraction alone. The opposite
+sign is easy to adopt by mistake when the underlying solver stores gravity as
+an outward-pointing vector, and---as Section~\ref{sec:numval} shows---it cannot
+be detected by testing a non-rotating body.
+
+\subsubsection{Surface-limit convention}
+\label{sec:surflimit}
+
+The Newtonian potential and its gradient possess well-defined surface limits
+for a homogeneous solid of finite density carrying no surface mass layer: the
+physical acceleration is finite and, away from edges and vertices, continuous
+across a face. In a polyhedral implementation, however, evaluating exactly on a
+face makes the solid-angle and edge terms of the analytic expression ambiguous
+at the level of a branch choice. Fields are therefore evaluated at
+
+\begin{equation}
+\mathbf{p}_{i} \;=\; \mathbf{c}_{i} \;-\; \epsilon\,\nhat_{i},
+\qquad
+\epsilon \;=\; 10^{-4}\,L,
+\label{eq:eps}
+\end{equation}
+
+where $L$ is the diagonal of the shape model's bounding box, so that the
+evaluation point lies just inside the surface and the interior limit of the
+numerical expression is selected consistently. The displacement is four orders
+of magnitude below the body scale and two to three orders below a typical facet
+dimension, and the results are insensitive to it: halving or doubling
+$\epsilon$ changes $\slopeavg$ and $\potvarn$ in the fifth significant figure.
+
+\subsection{Polyhedral field evaluation}
+\label{sec:solver}
+
+The self-gravitation of a homogeneous polyhedron is computed with the analytic
+line-and-face-integral method of \citet{werner1996}, in the formulation of
+\citet{tsoulis2012}, as implemented in the open-source \texttt{polyhedral-%
+gravity} package \citep{gravitylib}. The method is exact for a uniform
+polyhedron---no series truncation, no mascon approximation---and is valid for
+non-convex and multiply concave surfaces, which is essential for the bilobed and
+irregular bodies considered here. Facet normals are oriented outward before
+evaluation, and the solver is run in its outward-normal mode.
+
+Since Eqs.~\eqref{eq:Ug}--\eqref{eq:g} are linear in $\dens$, the field for any
+assumed density follows from a single unit-density evaluation by scaling. This
+is used to sweep the assumed bulk density at fixed shape
+(Section~\ref{sec:validation}) at the cost of one solver call, and it motivates the
+region-superposition strategy discussed as a future interior-density extension
+in Section~\ref{sec:interior}.
+
+All lengths in the shape files are in kilometres; internally they are converted
+to SI, and slopes are reported in degrees.
+
+\subsection{Shape models}
+\label{sec:shapes}
+
+Table~\ref{tab:shapes} lists the nine shape models used, covering seven
+asteroids and spanning oblate top shapes, elongated and bilobed configurations,
+angular and irregular fragments, and one extreme dog-bone. Two bodies are
+represented by two independent models each, which permits the cross-version
+comparison of Section~\ref{sec:crossversion}.
+
+Bulk densities are the measured values where a spacecraft or a satellite has
+constrained the mass, and representative taxonomic values otherwise; because
+the fields scale with $\dens$ in a known way, an assumed density affects the
+absolute slope but not the resolution behaviour that is the subject of
+Sections~\ref{sec:slopesens} and~\ref{sec:varrobust}. For Ryugu the density is
+set to $1200\ \mathrm{kg\,m^{-3}}$ exactly, matching the value used for the
+reference products against which we validate, rather than to the marginally
+different measured bulk value.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Shape models used in this work. $\Nf$ is the facet count of the
+delivered model. Densities are in \si{\gram\per\cubic\centi\metre} and
+rotation periods in hours.}
+\label{tab:shapes}
+\begin{tabular}{llrrrl}
+\toprule
+Body & Model & $\Nf$ & $\dens$ & $P$ & Role \\
+\midrule
+(101955) Bennu     & OLA v20            & 196\,608 & 1.194 & 4.2961  & validation \\
+(162173) Ryugu     & SFM 49k v20180804  &  49\,152 & 1.200 & 7.627   & validation \\
+(433) Eros         & Gaskell            &  49\,152 & 2.670 & 5.270   & resolution \\
+(25143) Itokawa    & Gaskell            &  49\,152 & 1.950 & 12.132  & resolution, cross-version \\
+(25143) Itokawa    & radar-based        &   3\,688 & 1.950 & 12.132  & cross-version \\
+(951) Gaspra       & Thomas             &  32\,040 & 2.700 & 7.042   & resolution \\
+(243) Ida          & Thomas             &  32\,040 & 2.600 & 4.634   & resolution \\
+(216) Kleopatra    & Ostro radar        &   4\,092 & 3.380 & 5.385   & cross-version \\
+(216) Kleopatra    & \texttt{kleo.v2.7} &   2\,292 & 3.380 & 5.385   & cross-version \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Every model is checked before use. The mesh is verified to be watertight and
+manifold, with no degenerate facets and no inward-pointing normals; the
+principal axes of inertia are computed and the spin axis confirmed to coincide
+with the axis of maximum inertia, so that the latitude used in the profiles of
+Section~\ref{sec:validation} is meaningful; and the bounding box is compared
+with the published dimensions of the body, which is the check that catches unit
+errors and mis-scaled models. This last test is not a formality: it is what
+identifies the two Kleopatra models as differing in scale as well as in detail
+(Section~\ref{sec:crossversion}).
+
+\subsection{Mesh operators}
+\label{sec:operators}
+
+Two operators are applied to the meshes, and they are deliberately different in
+character.
+
+\paragraph{Decimation.} To vary resolution while preserving the body, vertices
+are clustered on a uniform grid: the bounding box is divided into cells, all
+vertices falling in a cell are replaced by their centroid, faces that become
+degenerate are removed, and duplicate faces are collapsed. The grid is refined
+until the target vertex count is reached. This reduces $\Nf$ while leaving the
+overall figure of the body essentially unchanged.
+
+It is important that decimation does \emph{not} smooth the surface. A coarser
+facet spans the same topography that several finer facets spanned before, so
+its normal still reflects the local relief; what changes is how that relief is
+sampled, not whether it is present. This distinction is what separates the
+resolution effect of Section~\ref{sec:slopesens} from the roughness effect
+below.
+
+\paragraph{Smoothing.} To remove facet-scale relief while holding $\Nf$ fixed,
+Laplacian smoothing is applied: each vertex is displaced toward the centroid of
+its topological neighbours,
+
+\begin{equation}
+\mathbf{v}_{j} \;\leftarrow\; \mathbf{v}_{j}
++ \lambda\left( \frac{1}{\lvert N(j)\rvert}\sum_{m\in N(j)}\mathbf{v}_{m}
+- \mathbf{v}_{j}\right),
+\qquad \lambda = 0.5,
+\label{eq:laplace}
+\end{equation}
+
+iterated a prescribed number of times. Successive iterations progressively
+suppress short-wavelength relief while leaving the global figure of the body
+intact. Applying the two operators separately makes it possible to attribute a
+change in $\slopeavg$ either to how the surface is sampled (decimation) or to
+how rough it is (smoothing).
+
+\subsection{Resolution diagnostics}
+\label{sec:diagnostics}
+
+For a scalar diagnostic $X$ evaluated on a set of meshes with facet counts
+$\Nf^{(1)}<\dots<\Nf^{(K)}$ obtained by decimating a single model, two measures
+are reported.
+
+The \emph{range sensitivity} is the peak-to-peak variation normalized by the
+mean over the set,
+
+\begin{equation}
+S[X] \;=\; \frac{\max_{k} X^{(k)} - \min_{k} X^{(k)}}
+{\tfrac{1}{K}\sum_{k} X^{(k)}}.
+\label{eq:sens}
+\end{equation}
+
+The \emph{convergence residual} is the fractional change between the two finest
+meshes,
+
+\begin{equation}
+C[X] \;=\;
+\frac{\bigl\lvert X^{(K)} - X^{(K-1)} \bigr\rvert}{X^{(K-1)}}.
+\label{eq:conv}
+\end{equation}
+
+Both are quoted as percentages. By construction $C[X]\ge 0$: it records the
+\emph{magnitude} of the fractional change over the final refinement step. Where
+the direction of that change is also of interest, the corresponding signed
+quantity
+
+\begin{equation}
+C_{\mathrm{signed}}[X] \;=\;
+\frac{X^{(K)} - X^{(K-1)}}{X^{(K-1)}}
+\label{eq:convsigned}
+\end{equation}
+
+may be reported alongside it. Every sequence studied here increases
+monotonically over its final refinement step, so the two coincide in magnitude
+and $C_{\mathrm{signed}}$ is positive throughout.
+
+The two answer different questions. $S[X]$ measures how much a reported value
+would change had a coarser or finer mesh been used anywhere in the tested range,
+and is the quantity relevant when comparing published numbers. $C[X]$ measures
+whether the diagnostic is approaching a limit as the mesh is refined, and is
+the quantity relevant to asking whether a resolution-independent value exists
+at all. A diagnostic may have a modest $S$ merely because it varies slowly, yet
+a large $C$ because it has not settled; the two are reported together
+throughout.
+
+\subsection{Numerical verification}
+\label{sec:numval}
+
+The implementation is verified against two closed-form solutions, chosen so
+that between them they exercise every term in
+Eqs.~\eqref{eq:Ug}--\eqref{eq:geopot}.
+
+\paragraph{Potential: homogeneous ellipsoid.} For a uniform ellipsoid with
+semi-axes $a\ge b\ge c$ the exterior potential is given exactly by the
+classical elliptic integral
+
+\begin{equation}
+U_{g}(\mathbf{r}) \;=\; -\pi G\dens\,abc \int_{\lambda}^{\infty}
+\left(1 - \frac{x^{2}}{a^{2}+u} - \frac{y^{2}}{b^{2}+u}
+        - \frac{z^{2}}{c^{2}+u}\right)
+\frac{\mathrm{d}u}{\Delta(u)},
+\label{eq:ellipsoid}
+\end{equation}
+
+with $\Delta(u)=\sqrt{(a^{2}+u)(b^{2}+u)(c^{2}+u)}$ and $\lambda$ the largest
+root of the ellipsoidal coordinate equation, which vanishes on the surface. In
+the limit $a=b=c=R$ this reduces to $-GM/R$ on the surface, and the quadrature
+used reproduces that limit exactly. Evaluated on a triangulated ellipsoid with
+$a,b,c=1500,1000,800$~m and $\dens=2000\ \mathrm{kg\,m^{-3}}$, the polyhedral
+potential agrees with Eq.~\eqref{eq:ellipsoid} facet by facet to a Pearson
+correlation of $1.000000$, with a mean relative error of $0.18\%$ and a maximum
+of $0.21\%$; the residual is consistent with the polygonal approximation of the
+curved surface.
+
+\paragraph{Slope: uniformly rotating sphere.} For a homogeneous sphere of
+radius $R$ and surface gravity $g=GM/R^{2}$ rotating at rate $\omegarot$, write
+$k=\omegarot^{2}R/g$ for the ratio of centrifugal to gravitational acceleration
+at the equator. Combining Eqs.~\eqref{eq:acf}--\eqref{eq:slope} gives the slope
+at latitude $\phi$ in closed form,
+
+\begin{equation}
+\cos\slope(\phi) \;=\;
+\frac{1-k\cos^{2}\phi}
+     {\sqrt{(1-k)^{2}\cos^{2}\phi+\sin^{2}\phi}}.
+\label{eq:rotsphere}
+\end{equation}
+
+At $k=0.5$ this predicts $19.11^{\circ}$, $18.43^{\circ}$ and $13.90^{\circ}$
+at latitudes $30^{\circ}$, $45^{\circ}$ and $60^{\circ}$; the implementation
+returns $18.97^{\circ}$, $18.33^{\circ}$ and $13.91^{\circ}$, agreeing to
+better than $0.15^{\circ}$ at the mesh resolution used.
+
+This second test is not redundant, and the reason is worth stating. Reversing
+the sign of $\acf$ in Eq.~\eqref{eq:geff} is equivalent to replacing $k$ by
+$-k$ in Eq.~\eqref{eq:rotsphere}, which at $k=0.5$ changes the predicted slope
+at $45^{\circ}$ latitude from $18.43^{\circ}$ to $11.31^{\circ}$---a
+discrepancy of nearly two-fifths that the rotating test detects immediately.
+A \emph{non-rotating} sphere, by contrast, returns zero slope for either sign,
+and so cannot detect the error at all. Since a static sphere is the natural
+first test to write, we recommend that codes of this kind be checked against
+Eq.~\eqref{eq:rotsphere} as well; both tests are provided with the code.
+
+As a control, the non-rotating sphere is also run and returns a mean slope of
+$0.35^{\circ}$, consistent with the polygonal discretisation of a curved
+surface at the resolution used.
+
+\subsection{Reproducibility}
+\label{sec:repro}
+
+All computations use Python~3.13 with \texttt{numpy} and \texttt{scipy}, and
+version~3.3.1 of the \texttt{polyhedral-gravity} package \citep{gravitylib}
+for the self-gravitation. No random numbers enter the analysis: every quantity
+reported is deterministic given the shape model, the assumed density, and the
+rotation period.
+
+The analysis code, the verification scripts implementing
+Eqs.~\eqref{eq:ellipsoid} and~\eqref{eq:rotsphere}, the mesh diagnostics, and a
+machine-readable file containing every numerical result quoted in this paper are
+archived and openly available; sources for all shape models are listed there.
+Shape models themselves are not redistributed.

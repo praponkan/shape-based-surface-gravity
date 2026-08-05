@@ -1,0 +1,200 @@
+\section{Resolution behaviour of the slope}
+\label{sec:slopesens}
+
+Section~\ref{sec:validation} established that the framework reproduces
+independent results when the mesh is fixed. This section asks a different
+question: how much of a reported slope is a property of the body, and how much
+is a property of the mesh on which it was computed.
+
+\subsection{The measurement}
+\label{sec:slopemeas}
+
+For each body a single delivered shape model is decimated to a sequence of five
+target facet counts spanning roughly $2\,000$ facets to the full model, using
+the vertex-clustering operator of Section~\ref{sec:operators}. Density and
+rotation period are held fixed at the values of Table~\ref{tab:shapes}, so the
+body, its mass, and its spin are identical across the sequence; only the
+sampling of its surface changes. The area-weighted mean slope $\slopeavg$ of
+Eq.~\eqref{eq:slopeavg} is evaluated on each mesh.
+
+Five bodies are used: Ryugu, Eros, Itokawa, Gaspra, and Ida. Kleopatra is
+excluded, because both available models are already coarse ($4\,092$ and
+$2\,292$ facets) and saturate under decimation, leaving too few distinct levels
+to characterise a trend.
+
+\subsection{Results}
+\label{sec:slopesensres}
+
+Table~\ref{tab:slopeseries} gives the full sequences, and the upper panel of
+Figure~\ref{fig:resolution} plots them as fractional departures from the
+finest-mesh value. On every body without exception $\slopeavg$ increases
+monotonically with facet count. The increase is
+not marginal: over the tested range it amounts to $3.5^{\circ}$ on Ryugu,
+$2.2^{\circ}$ on Eros and $2.0^{\circ}$ on Itokawa, on bodies whose mean slopes
+are themselves only $11$--$17^{\circ}$.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Area-weighted mean slope $\slopeavg$ as a function of facet count for
+a single shape model of each body, decimated by vertex clustering. Density and
+rotation period are fixed at the values of Table~\ref{tab:shapes}.}
+\label{tab:slopeseries}
+\begin{tabular}{lrr}
+\toprule
+Body & $\Nf$ & $\slopeavg$ \\
+\midrule
+Ryugu   & $3\,096$  & $12.174^{\circ}$ \\
+        & $5\,780$  & $12.829^{\circ}$ \\
+        & $11\,134$ & $13.688^{\circ}$ \\
+        & $20\,014$ & $14.505^{\circ}$ \\
+        & $42\,834$ & $15.700^{\circ}$ \\
+\midrule
+Eros    & $2\,097$  & $11.034^{\circ}$ \\
+        & $6\,306$  & $11.691^{\circ}$ \\
+        & $12\,155$ & $12.122^{\circ}$ \\
+        & $21\,850$ & $12.705^{\circ}$ \\
+        & $36\,030$ & $13.263^{\circ}$ \\
+\midrule
+Itokawa & $2\,183$  & $14.710^{\circ}$ \\
+        & $6\,404$  & $15.167^{\circ}$ \\
+        & $12\,272$ & $15.762^{\circ}$ \\
+        & $21\,196$ & $16.304^{\circ}$ \\
+        & $41\,369$ & $16.727^{\circ}$ \\
+\midrule
+Gaspra  & $2\,821$  & $12.413^{\circ}$ \\
+        & $5\,240$  & $12.466^{\circ}$ \\
+        & $12\,500$ & $12.564^{\circ}$ \\
+        & $20\,773$ & $12.619^{\circ}$ \\
+        & $32\,040$ & $12.641^{\circ}$ \\
+\midrule
+Ida     & $2\,141$  & $13.171^{\circ}$ \\
+        & $5\,808$  & $13.560^{\circ}$ \\
+        & $11\,804$ & $13.807^{\circ}$ \\
+        & $20\,673$ & $13.918^{\circ}$ \\
+        & $32\,040$ & $13.933^{\circ}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The two diagnostics of Section~\ref{sec:diagnostics} summarise these sequences
+and, as anticipated there, they do not tell the same story
+(Table~\ref{tab:slopesens}; see also the left-hand bars of each panel of
+Figure~\ref{fig:diagnostics}).
+
+The range sensitivity $S[\slopeavg]$ spans an order of magnitude between
+bodies, from $1.8\%$ on Gaspra to $25.6\%$ on Ryugu. A quarter of the reported
+value on Ryugu, and nearly a fifth on Eros, is attributable to the choice of
+mesh alone.
+
+The convergence residual $C[\slopeavg]$ is the more troubling of the two. On
+Gaspra and Ida the slope has effectively settled by the finest mesh, changing
+by only $0.17\%$ and $0.11\%$ over the last refinement step. On Ryugu, Eros and
+Itokawa it has not: the last step still moves the value by $8.24\%$, $4.39\%$
+and $2.59\%$ respectively, with no sign of a plateau. For those bodies there is
+no evidence, within the resolution available, that $\slopeavg$ tends to a limit
+at all. A value quoted at the finest mesh is therefore not an estimate of a
+converged quantity; it is the value at that mesh.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Range sensitivity $S$ and convergence residual $C$ of the
+area-weighted mean slope, from the sequences of Table~\ref{tab:slopeseries}.
+$C$ is the fractional change over the final refinement step.}
+\label{tab:slopesens}
+\begin{tabular}{lrrr}
+\toprule
+Body & $\Nf$ range & $S[\slopeavg]$ & $C[\slopeavg]$ \\
+\midrule
+Ryugu   & $3\,096$--$42\,834$ & $25.6\%$ & $8.24\%$ \\
+Eros    & $2\,097$--$36\,030$ & $18.3\%$ & $4.39\%$ \\
+Itokawa & $2\,183$--$41\,369$ & $12.8\%$ & $2.59\%$ \\
+Ida     & $2\,141$--$32\,040$ & $5.6\%$  & $0.11\%$ \\
+Gaspra  & $2\,821$--$32\,040$ & $1.8\%$  & $0.17\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The origin of the trend}
+\label{sec:slopeorigin}
+
+That the slope rises with refinement, always in the same direction, points to a
+specific mechanism. Decimation does not remove relief from the surface
+(Section~\ref{sec:operators}); a coarse facet spans the same topography that
+several fine facets spanned before, and its normal is close to the
+area-weighted average of theirs. Averaging unit normals over a rough patch
+yields a direction more nearly aligned with the mean surface than any individual
+normal, so a coarse mesh systematically under-represents local departures from
+the mean figure. Refining the mesh restores them, and the mean slope rises
+accordingly.
+
+If that account is right, then removing the relief at fixed facet count should
+lower the slope by a comparable amount. The Laplacian smoothing operator of
+Eq.~\eqref{eq:laplace} tests this directly: it suppresses short-wavelength
+relief while leaving $\Nf$, the global figure, the mass and the spin unchanged.
+Table~\ref{tab:smooth} gives the outcome for Itokawa and Eros.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Effect of Laplacian smoothing at fixed facet count
+($\Nf = 34\,234$ for Itokawa, $36\,030$ for Eros). The last column is the
+fraction of facets steeper than $30^{\circ}$.}
+\label{tab:smooth}
+\begin{tabular}{lrrrr}
+\toprule
+Body & Iterations & $\slopeavg$ & Median & $>30^{\circ}$ \\
+\midrule
+Itokawa & $0$  & $15.81^{\circ}$ & $12.34^{\circ}$ & $6.5\%$ \\
+        & $1$  & $14.82^{\circ}$ & $11.53^{\circ}$ & $4.9\%$ \\
+        & $3$  & $14.00^{\circ}$ & $10.98^{\circ}$ & $4.3\%$ \\
+        & $5$  & $13.56^{\circ}$ & $10.77^{\circ}$ & $3.9\%$ \\
+        & $10$ & $12.90^{\circ}$ & $10.51^{\circ}$ & $3.4\%$ \\
+\midrule
+Eros    & $0$  & $13.65^{\circ}$ & $12.05^{\circ}$ & $3.5\%$ \\
+        & $1$  & $12.23^{\circ}$ & $10.87^{\circ}$ & $1.6\%$ \\
+        & $3$  & $11.35^{\circ}$ & $10.11^{\circ}$ & $0.8\%$ \\
+        & $5$  & $10.92^{\circ}$ & $9.74^{\circ}$  & $0.6\%$ \\
+        & $10$ & $10.30^{\circ}$ & $9.25^{\circ}$  & $0.2\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Smoothing lowers the mean slope by $2.9^{\circ}$ on Itokawa and $3.4^{\circ}$
+on Eros, comparable to the $2.0^{\circ}$ and $2.2^{\circ}$ that refinement adds
+over the tested range, and it acts most strongly on the steep tail: the fraction
+of facets above $30^{\circ}$ falls by roughly half on Itokawa and by more than
+an order of magnitude on Eros. The two operators move $\slopeavg$ in opposite
+directions for the same underlying reason, and the mechanism is confirmed. What
+the mesh resolution controls is how much of the surface relief the slope field
+is able to see.
+
+This also explains why the effect is a property of the shape model rather than
+of the asteroid. Gaspra and Ida, whose models derive from limited flyby imaging
+and carry little sub-facet relief to recover, show the smallest sensitivities
+and have converged by the finest mesh. Ryugu, whose model is a dense
+photogrammetric reconstruction rich in unresolved detail, shows the largest.
+$S[\slopeavg]$ is therefore better read as a measure of how much relief a shape
+model still contains below its nominal resolution than as a characteristic of
+the body itself.
+
+\subsection{Consequences for reporting}
+\label{sec:slopereport}
+
+Three consequences follow, and they are practical rather than conceptual.
+
+First, a mean slope quoted without its facet count is not reproducible. On three
+of the five bodies here the same shape model yields values differing by more
+than $2^{\circ}$ depending on a choice that is rarely stated.
+
+Second, mean slopes computed on different shape models of the same body are not
+comparable, and neither are values from different studies unless both
+resolutions are known and similar. Section~\ref{sec:crossversion} quantifies
+this for a case where two independent models of one asteroid are available.
+
+Third, and least comfortably, on the bodies with the richest shape models no
+value within the tested range can be quoted as converged. Reporting $\slopeavg$ at the finest available
+mesh is defensible only if the mesh is stated alongside it, and any comparison
+must then be made at matched resolution. The next section shows that a closely
+related quantity does not share this behaviour.

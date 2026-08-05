@@ -1,0 +1,171 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{What has been established}
+\label{sec:established}
+
+Three results stand on the evidence presented. First, the framework computes
+the surface gravity field correctly: given identical inputs it reproduces an
+independent Werner--Scheeres calculation facet by facet, with an RMS difference
+of half a degree and $99.96\%$ of facets agreeing to within five degrees
+(Section~\ref{sec:ryugu}), and given only a shape model and an assumed density
+it recovers the published global mean, latitudinal structure, geopotential
+pattern and density dependence for Bennu (Sections~\ref{sec:bennu}
+and~\ref{sec:densitysweep}).
+
+Second, the area-weighted mean slope retains a substantial mesh dependence over
+the tested refinement range. On the three bodies with the most detailed shape
+models it had not converged at the finest mesh available, still moving by
+$2.6$--$8.2\%$ over the last refinement step (Section~\ref{sec:slopesens}).
+This is a property of the diagnostic, and the smoothing experiment identifies
+its cause as relief that coarse meshes fail to resolve.
+
+Third, the normalized geopotential dispersion computed from the same field on
+the same meshes shows clear practical convergence, changing by at most $0.6\%$
+over the same final step
+and by nothing at all on two bodies (Section~\ref{sec:varrobust}). The
+distinction follows from what the two quantities depend on: a volume integral
+of the mass distribution in one case, the orientation of an individual facet in
+the other.
+
+None of this makes the slope a less useful quantity---it remains the direct
+measure of whether material will move---but it does mean that a slope value is
+a statement about a particular mesh, and must be reported as one.
+
+\subsection{The assumed density dominates the error budget}
+\label{sec:densitydominates}
+
+It would be a mistake to leave the impression that mesh resolution is the
+principal difficulty facing shape-based surface gravity. For any body whose
+mass has not been measured, the assumed bulk density is a far larger source of
+uncertainty.
+
+The Bennu sweep of Table~\ref{tab:sweep} makes the comparison concrete. Varying
+the assumed density across the range that would be plausible for a carbonaceous
+rubble pile in the absence of a mass determination, from $0.85$ to
+$1.194\ \mathrm{g\,cm^{-3}}$, moves the mean slope by $10.1^{\circ}$. Mesh
+resolution, on the bodies where we measured it, moves it by $2$--$3.5^{\circ}$.
+The density assumption is thus the dominant term by a factor of three or more,
+and it acts as a systematic shift rather than as scatter.
+
+This ordering has a practical consequence. For a body known only from the
+ground, refining the shape model buys less than constraining the mass would,
+and the two are not substitutes. It also reinforces the argument of
+Section~\ref{sec:xvimplications}: in the one controlled case available, a
+coarse ground-based model reproduced the mean slope to within one per cent and
+the geopotential dispersion to within eight per cent, while the density
+assumption contributes considerably more, so the shape model is rarely the
+limiting factor for global quantities.
+
+\subsection{The uniform-density assumption}
+\label{sec:uniformdensity}
+
+Every field in this paper assumes a homogeneous interior. That assumption is
+exact for none of the bodies considered, and it is worth being explicit about
+where it bites and where it does not.
+
+It does not affect the resolution results of Sections~\ref{sec:slopesens}
+and~\ref{sec:varrobust}. Those hold density fixed and vary only the mesh, so
+whatever error the homogeneity assumption introduces is common to every point
+of a sequence and cancels from $S$ and $C$.
+
+It does affect the absolute fields, and Itokawa is the clearest case. Its head
+and body are inferred to differ in density by roughly a quarter, with the head
+the denser of the two \citep{kanamaru2019}, a conclusion supported
+independently by the YORP spin-up analysis of \citet{lowry2014}. A homogeneous
+calculation must therefore misplace the local gravity direction near the neck,
+where the two lobes contribute comparably. The comparison with the Ryugu
+archive in Section~\ref{sec:ryugu} does not test this, since that reference is
+itself computed for a uniform interior; it validates the solver, not the
+physical assumption.
+
+For bodies whose interiors are close to homogeneous---which the near-coincidence
+of the centre of figure and centre of mass suggests for Eros---the assumption is
+mild. For contact binaries and bilobed objects it is not, and slopes computed
+near the junction should be treated with corresponding caution.
+
+\subsection{Toward interior structure}
+\label{sec:interior}
+
+The limitation just described is also an opportunity, and it motivates the
+companion work.
+
+If a surface has been shaped over long periods by downslope transport, it should
+tend toward an equipotential of the true gravity field, including whatever
+density inhomogeneity that field contains. A trial interior density
+distribution that is closer to the truth should therefore produce a smaller
+spread of geopotential over the surface. This is the reasoning by which
+\citet{kanamaru2019} inferred a denser head for Itokawa, and it converts the
+geopotential dispersion from a descriptive statistic into an estimator.
+
+Such an inversion places a specific demand on the diagnostic used: its variation
+with the assumed density distribution must not be swamped by its variation with
+the mesh. Section~\ref{sec:varrobust} establishes that $\potvarn$ satisfies
+this, and Section~\ref{sec:slopesens} that the mean slope does not. That is the
+main reason the distinction developed in this paper matters beyond questions of
+reporting practice.
+
+Two further ingredients are already in place. The linearity of the field in
+density (Section~\ref{sec:solver}) means that a body partitioned into regions
+of distinct density can be evaluated by superposing unit-density solutions, so
+that scanning a density model costs one solver call per region rather than one
+per trial. And Paper~I's bound $GM/\RA^{2}\le\gmean$ \citep{paper1} holds for
+any interior mass distribution, providing a constraint that survives the
+homogeneity assumption. Developing these into a working estimator, validating
+it against the independently constrained cases, and establishing what can and
+cannot be recovered from surface data alone is reserved for future work and is
+not attempted here.
+
+\subsection{On verification practice}
+\label{sec:verifpractice}
+
+One methodological point deserves emphasis beyond its role in this work.
+
+The natural first test of a surface gravity code is a homogeneous sphere, which
+must return zero slope everywhere. That test is necessary but weak: a
+non-rotating sphere returns zero slope for either sign of the centrifugal term,
+and so cannot detect an error in the rotating frame---which is precisely the
+part of the calculation that distinguishes a small-body code from a
+straightforward Newtonian one. The uniformly rotating sphere of
+Eq.~\eqref{eq:rotsphere} does discriminate, and sharply: at
+$\omegarot^{2}R/g = 0.5$ the two signs differ by more than seven degrees at
+mid-latitude.
+
+The cost of the stronger test is negligible---it is a closed-form expression and
+a few lines of code, both provided with this work---and we suggest it be adopted
+routinely. The same applies to checking the potential against the closed-form
+ellipsoid solution of Eq.~\eqref{eq:ellipsoid}, which exercises the
+gravitational term with the rotation switched off. Between them the two tests
+cover every term in Eqs.~\eqref{eq:Ug}--\eqref{eq:geopot}, and neither depends
+on any published data set.
+
+\subsection{Limitations}
+\label{sec:limitations}
+
+The scope of what has been demonstrated should be stated plainly.
+
+The per-facet validation rests on a single body. Ryugu is the only object for
+which per-facet gravitational products computed on a publicly available shape
+model at a stated density and spin are distributed, and it is therefore the only
+case in which the implementation could be checked below the level of aggregate
+statistics. That test is stringent, but it is one test.
+
+The cross-version comparison rests on a single body as well. Of the two
+asteroids in our set with independent shape models, only Itokawa passes the
+prerequisite that the models describe a body of the same size
+(Section~\ref{sec:kleopatraxv}). Whether the division between recoverable bulk
+descriptors and unrecoverable distribution tails holds generally is not
+established by one case.
+
+The resolution study covers five bodies and a range of roughly $2\,000$ to
+$42\,000$ facets. Whether the geopotential dispersion continues to hold its plateau
+at $10^{5}$ or $10^{6}$ facets is untested, and the highest-resolution models
+now available for Bennu and Ryugu would allow that range to be extended.
+
+Finally, the slope of Eq.~\eqref{eq:slope} is one of several definitions in use.
+It is the definition used by the Ryugu reference products, which is what makes
+the comparison of Section~\ref{sec:ryugu} meaningful. Studies that define slope
+relative to a geopotential-based reference surface rather than to the local
+facet normal will obtain different values, particularly in equatorial regions of
+rapidly rotating bodies, and the numbers here should not be compared with those
+without accounting for the difference.

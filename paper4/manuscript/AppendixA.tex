@@ -1,0 +1,140 @@
+\section{Gravitational slope on a uniformly rotating sphere}
+\label{app:rotsphere}
+
+This appendix derives the closed-form slope field used as a verification test in
+Section~\ref{sec:numval}, and shows explicitly how it discriminates between the
+two possible signs of the centrifugal term.
+
+Consider a homogeneous sphere of radius $R$ and mass $M$, rotating uniformly at
+rate $\omegarot$ about the $z$ axis, and write $g = GM/R^{2}$ for the magnitude
+of the surface attraction. Because the configuration is axisymmetric, take
+without loss of generality a surface point at longitude zero and latitude
+$\phi$,
+
+\begin{equation}
+\mathbf{r} \;=\; R\,(\cos\phi,\;0,\;\sin\phi),
+\qquad
+\nhat \;=\; (\cos\phi,\;0,\;\sin\phi),
+\label{eq:apppoint}
+\end{equation}
+
+the outward normal of a sphere being radial. The self-gravitational attraction
+of a homogeneous sphere at its surface is radial and inward,
+
+\begin{equation}
+\ngrav \;=\; -\,g\,(\cos\phi,\;0,\;\sin\phi),
+\label{eq:appattract}
+\end{equation}
+
+while the component of $\mathbf{r}$ perpendicular to the spin axis is
+$\mathbf{r}_{\perp} = R\cos\phi\,(1,0,0)$, so that from Eq.~\eqref{eq:acf}
+
+\begin{equation}
+\acf \;=\; \omegarot^{2} R\cos\phi\,(1,\;0,\;0).
+\label{eq:appcf}
+\end{equation}
+
+Introduce the dimensionless ratio of centrifugal to gravitational acceleration
+at the equator,
+
+\begin{equation}
+k \;\equiv\; \frac{\omegarot^{2}R}{g},
+\label{eq:appk}
+\end{equation}
+
+For every body considered in this paper $k$ is well below unity, and $k<1$ is
+assumed in what follows unless stated otherwise; the case $k>1$ is treated
+explicitly below. Adding Eqs.~\eqref{eq:appattract} and~\eqref{eq:appcf} gives
+the effective acceleration
+
+\begin{equation}
+\geff \;=\; g\bigl(\,(k-1)\cos\phi,\;\;0,\;\;-\sin\phi\,\bigr).
+\label{eq:appgeff}
+\end{equation}
+
+The slope of Eq.~\eqref{eq:slope} is the angle between $-\geff$ and $\nhat$.
+Forming the inner product,
+
+\begin{equation}
+-\geff\cdot\nhat
+\;=\; g\bigl[(1-k)\cos^{2}\phi + \sin^{2}\phi\bigr]
+\;=\; g\bigl(1 - k\cos^{2}\phi\bigr),
+\label{eq:appdot}
+\end{equation}
+
+and the magnitude,
+
+\begin{equation}
+\lVert\geff\rVert \;=\; g\sqrt{(1-k)^{2}\cos^{2}\phi + \sin^{2}\phi},
+\label{eq:appmag}
+\end{equation}
+
+so that
+
+\begin{equation}
+\cos\slope(\phi) \;=\;
+\frac{1-k\cos^{2}\phi}
+     {\sqrt{(1-k)^{2}\cos^{2}\phi + \sin^{2}\phi}},
+\label{eq:approtsphere}
+\end{equation}
+
+which is Eq.~\eqref{eq:rotsphere}. The factor $g$ cancels, so the slope field
+depends on the body only through $k$.
+
+Two limits check the result. At the pole, $\phi = 90^{\circ}$, both numerator
+and denominator reduce to unity and $\slope = 0$: the spin axis passes through
+the point, the centrifugal term vanishes there, and the effective gravity is
+radial. At the equator, $\phi = 0$, the expression becomes $(1-k)/\lvert
+1-k\rvert$, which is $+1$ for $k<1$ and again gives $\slope = 0$, the
+centrifugal term being antiparallel to the attraction and so changing its
+magnitude but not its direction. For $k>1$ the same expression gives $-1$ and
+hence $\slope = 180^{\circ}$: the effective acceleration points outward and
+loose material is no longer bound, which is the rotational disruption limit. The
+slope is therefore zero at both extremes of latitude and attains its maximum in
+between, which is what makes intermediate latitudes the informative ones for
+verification.
+
+The discriminating power of the test follows from the appearance of $k$ in
+Eq.~\eqref{eq:approtsphere}. Reversing the sign of $\acf$ in
+Eq.~\eqref{eq:geff}---adding the centrifugal acceleration to the attraction
+rather than opposing it---is equivalent to replacing $k$ by $-k$ throughout, so
+that the predicted slope becomes
+
+\begin{equation}
+\cos\slope_{\text{wrong}}(\phi) \;=\;
+\frac{1+k\cos^{2}\phi}
+     {\sqrt{(1+k)^{2}\cos^{2}\phi + \sin^{2}\phi}}.
+\label{eq:appwrong}
+\end{equation}
+
+At $k = 0.5$ the two expressions give the values in
+Table~\ref{tab:approtsphere}. They differ by $10.2^{\circ}$ at latitude
+$30^{\circ}$ and by $7.1^{\circ}$ at $45^{\circ}$---differences far larger than
+the discretisation error of a moderately refined mesh, so the test is decisive
+rather than marginal. Both expressions vanish at $\phi = 0$ and
+$\phi = 90^{\circ}$, which is precisely why a test confined to a non-rotating
+body, or one that examined only the equator and poles, would detect nothing.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Gravitational slope on a uniformly rotating sphere at
+$k = \omegarot^{2}R/g = 0.5$, for the correct sign of the centrifugal term
+(Eq.~\ref{eq:approtsphere}) and for the reversed sign
+(Eq.~\ref{eq:appwrong}), together with the values returned by the
+implementation on an icosphere mesh.}
+\label{tab:approtsphere}
+\begin{tabular}{rrrr}
+\toprule
+$\phi$ & Eq.~\eqref{eq:approtsphere} & Eq.~\eqref{eq:appwrong} & This work \\
+\midrule
+$30^{\circ}$ & $19.11^{\circ}$ & $8.95^{\circ}$  & $18.97^{\circ}$ \\
+$45^{\circ}$ & $18.43^{\circ}$ & $11.31^{\circ}$ & $18.33^{\circ}$ \\
+$60^{\circ}$ & $13.90^{\circ}$ & $10.89^{\circ}$ & $13.91^{\circ}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The residual between the computed and analytic values, at most $0.14^{\circ}$,
+is consistent with the polygonal approximation of the sphere at the mesh
+resolution used and decreases under refinement.

@@ -1,0 +1,177 @@
+\section{Comparison across shape-model versions}
+\label{sec:crossversion}
+
+Sections~\ref{sec:slopesens} and~\ref{sec:varrobust} varied the mesh while
+holding the shape model fixed. This section varies the shape model itself. The
+question is practical: most asteroids will never be visited, and their shapes
+are known only from ground-based radar or lightcurve inversion. Which surface
+gravity quantities, if any, survive that substitution?
+
+\subsection{The controlled case: Itokawa}
+\label{sec:itokawaxv}
+
+Itokawa is the rare object for which two independent shape models of comparable
+extent exist: the photogrammetric model built from Hayabusa imaging, with
+$49\,152$ facets, and a radar-derived model with $3\,688$. Their bounding boxes
+agree to $6.5\%$, $3.9\%$ and $13.3\%$ along the three principal axes, so the
+two models describe a body of the same size and gross figure; what differs is
+the detail they resolve. Both are evaluated at the same density and rotation
+period, so the comparison isolates the effect of shape-model provenance.
+
+Because Section~\ref{sec:slopesens} showed that resolution alone moves the
+slope, the two models must be compared at matched resolution or the test is
+meaningless. The radar model has $3\,688$ facets; the corresponding
+spacecraft-model values of the bulk descriptors are obtained by linear
+interpolation of the sequences of Tables~\ref{tab:slopeseries}
+and~\ref{tab:varseries} between the $2\,183$- and $6\,404$-facet meshes. The
+distribution statistics cannot be interpolated in the same way and are taken
+from the nearest available direct runs, at $4\,857$ facets for the spacecraft
+model against $3\,688$ for the radar model; the comparison of the tails is
+therefore at approximately rather than exactly matched resolution, a caveat we
+return to below. Table~\ref{tab:itokawaxv} gives the result, and
+Figure~\ref{fig:crossversion}(a) shows the two slope distributions.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Itokawa: spacecraft-derived and radar-derived shape models compared at
+$\Nf \simeq 3\,688$, at $\dens = 1.95\ \mathrm{g\,cm^{-3}}$ and
+$P = 12.132$~h. Spacecraft-model values for the bulk descriptors are
+interpolated to the radar model's facet count; distribution statistics are from
+direct runs at $4\,857$ and $3\,688$ facets respectively.}
+\label{tab:itokawaxv}
+\begin{tabular}{lrrr}
+\toprule
+Quantity & Spacecraft & Radar & Difference \\
+\midrule
+$\slopeavg$ (area-weighted)   & $14.87^{\circ}$ & $14.75^{\circ}$ & $-0.8\%$  \\
+$\potvarn$                    & $0.08545$       & $0.07874$       & $-7.9\%$  \\
+\midrule
+Mean slope (unweighted)       & $15.91^{\circ}$ & $13.40^{\circ}$ & $-15.8\%$ \\
+Maximum slope                 & $149.45^{\circ}$& $41.32^{\circ}$ & --- \\
+Facets above $30^{\circ}$     & $4.8\%$         & $1.7\%$         & --- \\
+Facets above $90^{\circ}$     & $2.29\%$        & $0.00\%$        & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{fig5.pdf}
+\caption{Shape-model detail and the slope distribution. (a) Slope distribution
+of Itokawa from the spacecraft-derived ($N_f = 4\,857$) and radar-derived
+($N_f = 3\,688$) shape models. The bulk descriptors, compared at a common facet
+count by interpolation, agree closely---their area-weighted mean slopes differ
+by $0.8\%$---but the radar model contains no steep tail.
+(b) Effect of Laplacian smoothing at fixed facet count. Ten iterations bring the
+spacecraft model of Itokawa to $12.90^{\circ}$, within $3.7\%$ of the value
+obtained independently from the radar model (dashed line), supporting the
+interpretation that the difference between the two models is dominated by
+facet-scale relief.}
+\label{fig:crossversion}
+\end{figure}
+
+The two halves of that table point in opposite directions, and the contrast is
+the result of this section.
+
+The bulk descriptors, compared at the same facet count, agree well: the
+area-weighted mean slope differs by less than one per cent and the normalized
+geopotential dispersion by under eight per cent. A ground-based shape model, carrying an order of magnitude fewer facets
+and no knowledge of the surface below the radar resolution, reproduces both
+global summaries of the gravity field to within the accuracy with which the
+assumed bulk density is usually known.
+
+The distribution tails do not agree at all. The radar model contains no facet
+steeper than $41^{\circ}$ and places $1.7\%$ of the surface above $30^{\circ}$;
+the spacecraft model reaches $149^{\circ}$, places $4.8\%$ above $30^{\circ}$,
+and assigns $2.29\%$ of its facets slopes exceeding $90^{\circ}$---overhanging
+surfaces that the radar model does not represent at all. Nothing in the radar
+model's global agreement gives any warning that its steep tail is absent.
+
+The unweighted mean slope sits between the two behaviours, differing by
+$15.8\%$ where the area-weighted mean differs by $0.8\%$. The reason is that
+the spacecraft model's steep facets are also its smallest: they occupy a minor
+fraction of the surface area but a substantial fraction of the facet count, so
+they dominate an unweighted average and are correctly suppressed in an
+area-weighted one. This is a further argument for the area weighting adopted in
+Eq.~\eqref{eq:slopeavg}, and a caution that the two averages should not be used
+interchangeably when models of different resolution are involved.
+
+\subsection{Consistency with the smoothing experiment}
+\label{sec:xvsmooth}
+
+Section~\ref{sec:slopeorigin} attributed the resolution dependence of the slope
+to relief that coarse meshes fail to resolve. If the difference between the two
+Itokawa models is the same effect---the radar model simply never having
+recorded that relief---then artificially removing the relief from the
+spacecraft model should bring it toward the radar model's value.
+
+It does. Ten Laplacian iterations applied to the spacecraft model
+(Table~\ref{tab:smooth}) reduce its mean slope to $12.90^{\circ}$, within
+$3.7\%$ of the $13.40^{\circ}$ obtained from the independent radar model, as
+Figure~\ref{fig:crossversion}(b) shows. The
+agreement is not exact and should not be over-read: smoothing and coarse
+observation are different operations, and the residual difference is comparable
+to what remains between the models generally. But that a purely internal
+operation on one model reproduces, to within a few per cent, the value obtained
+from an independently constructed model is a useful consistency check on the
+interpretation.
+
+\subsection{A cautionary counterexample: Kleopatra}
+\label{sec:kleopatraxv}
+
+Two shape models are also available for Kleopatra, and applying the same
+comparison to them illustrates a prerequisite that is easy to overlook.
+
+Compared at $\Nf \simeq 2\,292$, the two models disagree by $39.9\%$ in
+area-weighted mean slope ($19.90^{\circ}$ against $11.96^{\circ}$) and by
+$36.1\%$ in geopotential dispersion ($0.03683$ against $0.02354$). Taken at face
+value this would overturn the Itokawa result.
+
+It cannot be taken at face value. The two models do not describe the same body
+at different levels of detail: their bounding boxes differ in scale. The
+alternative model has a long axis of $276.3$~km against roughly $217$~km for
+the radar model, while the intermediate and short axes agree to a few per cent,
+so the two differ in aspect ratio ($3.6{:}1$ against $2.7{:}1$) as well as in
+overall size. At fixed assumed density a longer body contains more mass, its
+self-gravity is stronger relative to the fixed centrifugal term, and its slopes
+are correspondingly lower---which is the direction of the observed
+discrepancy. The $36$--$40\%$ differences therefore conflate scale, elongation
+and surface detail, and cannot be attributed to shape-model provenance.
+
+We report the comparison rather than discarding it, because the lesson is
+useful. Before two shape models of one body are compared, their bounding boxes
+should be checked against each other and against the published dimensions; this
+is among the diagnostics listed in Section~\ref{sec:shapes} for exactly this
+reason. Kleopatra fails that check and Itokawa passes it, which is why the
+conclusions of this section rest on Itokawa alone.
+
+\subsection{Implications for bodies known only from the ground}
+\label{sec:xvimplications}
+
+For the large majority of small bodies, a ground-based shape model is the only
+one that will ever exist. The Itokawa comparison suggests a division of labour
+for such objects.
+
+In the one controlled case available to us, global descriptors of the surface
+gravity field are largely preserved: the area-weighted mean slope is recovered
+to within one per cent and the normalized geopotential dispersion to within
+eight per cent, the latter comparable to the uncertainty contributed by the
+assumed bulk density. Where
+the goal is to characterise a population, to rank bodies by how far their
+surfaces sit from an equipotential, or to provide first-order context for
+mission planning, such models are adequate.
+
+Anything that depends on the tail of the slope distribution is not recoverable.
+Identifying the steepest terrain, estimating the fraction of surface above the
+angle of repose, or locating overhangs requires relief that a ground-based
+model does not contain, and the resulting figures will be systematically and
+silently optimistic. A coarse model does not merely give a noisier answer to
+these questions; it gives a confidently wrong one.
+
+Demonstrated as it is for a single object, this comparison is not a general
+calibration. It does, however, provide a first quantitative reference point for
+the size of the discrepancy to be expected---close agreement in the bulk
+descriptors, order-unity disagreement in the tails---and the same test can be
+repeated wherever a second, independent shape model of a body becomes
+available.

@@ -1,0 +1,185 @@
+{\noindent\large\bfseries Abstract}\\[0.4em]
+{\noindent\small
+Three companion papers established that the area-weighted mean surface gravity
+$\gmean$ of a small body can be estimated from a polyhedral shape model,
+without an independently determined density (Papers~I--III). A single scalar,
+however, cannot say \emph{where} on a body the gravity is high or low, how
+steeply the surface is inclined to the local effective gravity, or where loose
+regolith is driven to accumulate. Here we extend the shape-based framework from
+the scalar mean to the spatially resolved surface fields: the effective gravity
+vector $\geff$ (self-gravitation plus rotation), the gravitational slope
+$\slope$, and the surface geopotential $\Upot$, evaluated facet by facet for
+seven asteroids from a polyhedral shape model together with an assumed uniform
+density and a specified spin state.
+
+The framework is validated against an independent per-facet reference. For
+(162173)~Ryugu we compare with the gravitational products released by the
+Hayabusa2 team on the identical $49{,}152$-facet shape model at the same
+density and rotation period. Agreement is essentially exact: mean slope
+$15.06^{\circ}$ against $15.06^{\circ}$, RMS difference $0.48^{\circ}$,
+$99.96\%$ of facets within $5^{\circ}$ and $99.95\%$ within $2^{\circ}$,
+Pearson $r=0.9989$ in slope and $0.9898$ in geopotential. For (101955)~Bennu the global
+mean slope is $15.5^{\circ}$ and the latitudinal profile rises from
+$10.5^{\circ}$ near the equator to $19.9^{\circ}$ at mid-latitude before
+falling toward the pole, reproducing the pattern reported from OSIRIS-REx data.
+
+The principal methodological result concerns stability under mesh refinement.
+Because slope is a \emph{local} quantity, defined through individual facet
+normals, the area-weighted mean slope varies by $1.8\%$ to $25.6\%$ across
+meshes of the same body decimated from roughly $42{,}000$ to $2{,}000$ facets,
+whereas the normalized geopotential dispersion $\potvarn$ varies by only $0.9\%$
+to $5.9\%$, and is the more stable of the two on every body tested. The
+sharper distinction is stabilization: between the two finest meshes the
+geopotential dispersion is already near a plateau (changes of $0.00\%$ to
+$0.60\%$), whereas the mean slope shows no comparable plateau within the tested
+resolution range, still rising by up to $8.2\%$. A slope value is therefore not
+reproducible unless the mesh resolution is quoted with it, whereas the
+geopotential dispersion exhibits practical convergence over the tested range.
+
+Comparing two independent shape models of Itokawa---the spacecraft-derived
+Gaskell model and a ground-based radar model---separates what survives a coarser
+shape from what does not. Bulk descriptors are compared at a common facet count
+by interpolation, and distribution statistics at the nearest available direct
+meshes. Bulk descriptors agree
+closely (area-weighted mean slope within $0.8\%$, geopotential dispersion within
+$7.9\%$), but the distribution tails do not: the radar model reaches only
+$41^{\circ}$ with $1.7\%$ of facets above $30^{\circ}$, against $149^{\circ}$
+and $4.8\%$ for the Gaskell model. In this controlled case a ground-based shape
+therefore preserves the global gravity descriptors while failing to reproduce
+the distribution tails; one case does not establish the result generally, but it
+indicates where coarse models may and may not be relied upon. We verify the computed fields against two exact solutions: the
+closed-form potential of a homogeneous ellipsoid (Pearson $r=1.000000$, mean
+relative error $0.18\%$) and the analytic slope field of a rotating sphere.
+The latter test is essential---a non-rotating sphere check cannot detect an
+error in the centrifugal term---and we recommend it as a standard verification
+for surface-gravity codes. Both tests are released as runnable scripts together
+with the analysis code.
+}
+
+\medskip
+\noindent\textbf{Keywords:} Asteroids; Surface gravity; Gravitational slope;
+Geopotential; Shape models; Polyhedral gravity
+
+\section{Introduction}
+\label{sec:intro}
+
+The surface gravity of a small body governs nearly every process that shapes
+its regolith and constrains how a spacecraft can operate on or near it. Where
+material comes to rest, how loose regolith migrates, whether a boulder is
+stable on a slope, and where a lander or sampling head can safely touch down
+are all set by the local effective gravity---the vector sum of self-gravitation
+and the centrifugal acceleration of rotation
+\citep{scheeres2016,scheeres2019}. For the bodies visited by spacecraft these
+quantities are now mapped in detail from mission data. For the far larger
+population resolved only as a shape model---from ground-based radar, lightcurve
+inversion, or a single flyby---no such maps exist, even though the same physics
+applies.
+
+The companion papers of this series developed a purely shape-based route to the
+\emph{mean} surface gravity. Paper~I \citep{paper1} showed that the
+area-equivalent radius $\RA$ outperforms the volume-equivalent radius $\RV$ for
+elongated bodies and proved the bound $GM/\RA^{2}\leq\gmean$; Paper~II
+\citep{paper2} derived the optimal blended radius from a non-analytic
+$\Pthree/\Ptwo$ deformation law; and Paper~III \citep{paper3} tested that
+estimator against a homogeneous-polyhedron reference field for $22$ non-convex
+models, obtaining a mean absolute error of $1.72\%$, and delimited its domain of
+validity. That work establishes that one scalar---the area-weighted mean
+gravity---can be recovered from the shape model to within a few per cent. A
+scalar
+mean, however, is silent about the spatial structure of the field. Those
+questions require moving from a single number to a field defined over the
+entire surface.
+
+This paper makes that step. Using the same polyhedral shape models and an
+assumed uniform density, we compute three spatially resolved quantities at
+every facet: the effective gravity $\geff$, the gravitational slope $\slope$
+(the angle between $\geff$ and the outward facet normal $\nhat$), and the
+geopotential $\Upot$, whose minima mark the sinks toward which loose material
+migrates. The self-gravitation is evaluated with the analytic polyhedral method
+of \citet{werner1996}, as implemented in a modern open-source library
+\citep{tsoulis2012,gravitylib}, so that the framework remains light enough to
+run on a laptop yet remains accurate on the concave, bilobed, and highly
+irregular shapes that dominate the small-body population.
+
+Making these fields easy to compute from a shape model, an assumed density and
+a specified spin state is useful, but it also
+exposes a methodological hazard that, to our knowledge, has not been stated
+plainly in the shape-based context: the slope field is sensitive to the
+resolution of the shape model. Because slope is a local quantity, defined
+through the orientation of each individual facet, refining a mesh changes the
+distribution of facet normals and hence the mean slope, even when the underlying
+body is identical. Section~\ref{sec:slopesens} shows that over a
+$2{,}000$-to-$42{,}000$-facet range the area-weighted mean slope varies by up to
+a quarter of its own value, and---more tellingly---that it has still not
+converged at the finest meshes available. A slope value quoted without its mesh
+resolution is therefore not reproducible, a point with direct consequences for
+how such numbers are reported and compared between studies.
+
+The central positive result of this paper is that a closely related
+quantity---the area-weighted dispersion of the surface geopotential---behaves far
+better. Because the geopotential is an integral of the mass distribution rather
+than a local surface property, the facet-scale roughness that scatters the slope
+largely cancels in the potential. Across the bodies tested, $\potvarn$ is the
+more stable of the two diagnostics in every case, and it approaches a practical
+plateau over the tested refinement range whereas the slope shows no comparable
+stabilization (Section~\ref{sec:varrobust}). This is
+consistent with the behaviour noted by \citet{kanamaru2019} for Itokawa and
+makes $\potvarn$ the natural descriptor to quote when a resolution-independent
+statement about a body's surface-gravity field is required.
+
+A separate question is what survives when the shape model itself is coarse, as
+it must be for objects never visited by a spacecraft. Itokawa is the rare case
+with two independent shape models of comparable extent---the spacecraft-derived
+Gaskell model and a ground-based radar model---and comparing them at matched
+resolution (Section~\ref{sec:crossversion}) separates the descriptors that
+tolerate a ground-based shape from those that do not.
+
+We validate the framework against bodies for which detailed gravitational
+products already exist. For (162173)~Ryugu we compare directly against the
+per-facet gravitational products released with \citet{kanamaru2019}, computed on
+the identical shape model at the same density and rotation period; this is the
+strongest available test, since shape, method, density, and spin are all held
+fixed. For (101955)~Bennu the recovered mean slope and latitudinal profile are
+compared with the OSIRIS-REx results
+\citep{scheeres2019,barnouin2020,jawin2020}. We then use (433)~Eros,
+(25143)~Itokawa, (951)~Gaspra, (243)~Ida, and (216)~Kleopatra to characterise
+the resolution behaviour of the two diagnostics across the range of small-body
+morphologies \citep{zuber2000,thomas2002,fujiwara2006,abe2006}.
+
+\medskip
+Three methodological commitments govern the analysis.
+
+First, \emph{every slope figure is reported with its mesh resolution}. Because
+the sensitivity documented here is a property of the diagnostic rather than of
+the body, a slope value quoted without a facet count is not reproducible. All
+slope numbers in this paper are accompanied by the facet count at which they
+were obtained. Cross-model comparisons are made at matched resolution wherever
+the meshes permit it, and where they do not---as for the tails of the Itokawa
+distributions---the facet counts actually used are stated.
+
+Second, \emph{the fields are verified against exact solutions, including one
+that exercises the rotating frame}. The polyhedral potential is compared with
+the closed-form potential of a homogeneous ellipsoid, and the full slope field
+with the analytic slope of a uniformly rotating sphere. The second test is not
+redundant: a non-rotating sphere reproduces zero slope for either sign of the
+centrifugal term, so it cannot detect an error there, whereas the rotating case
+discriminates sharply. We report both, and recommend the rotating test as a
+standard check for codes of this kind.
+
+Third, \emph{the uniform-density assumption is stated rather than hidden}. All
+fields in this paper are computed for a homogeneous interior. This assumption
+holds exactly for none of the bodies considered, and the resulting
+limitations---in particular for Itokawa, whose head and body are known to
+differ in density---are examined in Section~\ref{sec:discussion} rather than
+deferred.
+
+The paper is organised as follows. Section~\ref{sec:methods} defines the
+effective gravity, slope, and geopotential, describes the polyhedral solver and
+the shape models used, and specifies the decimation and smoothing operators.
+Section~\ref{sec:validation} presents the validation against Ryugu and Bennu.
+Section~\ref{sec:slopesens} documents the resolution behaviour of the slope,
+and Section~\ref{sec:varrobust} that of the geopotential dispersion.
+Section~\ref{sec:crossversion} compares independent shape versions of the same
+body. Section~\ref{sec:discussion} discusses the consequences for cross-study
+comparison and for interior-structure inference, together with the limitations
+of the uniform-density assumption, and Section~\ref{sec:conclusions} concludes.

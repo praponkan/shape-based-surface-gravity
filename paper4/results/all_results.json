@@ -1,0 +1,1797 @@
+{
+  "READ_THIS_FIRST": {
+    "authoritative_key": "CORRECTED_after_centrifugal_signfix",
+    "warning": "Keys named paperIV_* and paperV_* WITHOUT the CORRECTED prefix are SUPERSEDED. They were produced before a sign error in the centrifugal acceleration was found and fixed (30 Jul 2026). They are retained only for transparency and must NOT be used.",
+    "what_was_wrong": "The centrifugal term reinforced rather than opposed self-gravity, and the rotational part of the geopotential carried a sign inconsistent with the gravitational part.",
+    "how_it_was_found": "Comparison with the analytic slope field of a uniformly rotating sphere (verification/rotsphere_check.py). A non-rotating sphere test cannot detect this error, because it returns zero slope for either sign.",
+    "effect": "Mean slopes changed by -0.6 to -8.3 degrees depending on the body; the Ryugu per-facet correlation against the Hayabusa2 products improved from r=0.87 to r=0.9989 and the geopotential correlation from 0.38 to 0.9898."
+  },
+  "session_date": "2026-07-29",
+  "note": "All numerical results run by Teera on real shape models. Preserve for Paper IV/V manuscripts.",
+  "shape_models_used": {
+    "Bennu": {
+      "file": "Bennu_v20_200k.obj",
+      "source": "asteroidmission.org (OLA v20 200k)",
+      "facets_full": 196608,
+      "extent_km": [
+        0.5629,
+        0.5355,
+        0.4978
+      ],
+      "GM_km3s2": 4.892e-09,
+      "density_gcc": 1.194,
+      "period_h": 4.296061
+    },
+    "Itokawa": {
+      "file": "Itokawa Hayabusa 50k poly.obj",
+      "source": "Gaskell 49152",
+      "facets_full": 49152,
+      "extent_km": [
+        0.5617,
+        0.3051,
+        0.2434
+      ],
+      "density_gcc": 1.95,
+      "period_h": 12.132,
+      "mass_kg": 35800000000.0
+    },
+    "Eros": {
+      "file": "Eros Gaskell 50k poly.obj",
+      "source": "Gaskell 49152",
+      "facets_full": 49152,
+      "extent_km": [
+        32.6584,
+        16.8834,
+        11.9589
+      ],
+      "density_gcc": 2.67,
+      "period_h": 5.27
+    }
+  },
+  "paperIV_bennu_validation": {
+    "method": "surface_slope.py (pure-numpy) then confirmed; density input",
+    "mean_slope_deg_30k": 16.04,
+    "median_slope_deg_30k": 15.25,
+    "published_Scheeres_deg": "~15-17",
+    "geopotential": {
+      "equator": 1.39e-08,
+      "polar": 1.95e-08,
+      "note": "equator low = sink, matches published"
+    },
+    "density_sweep_30k": [
+      {
+        "rho_gcc": 0.85,
+        "mean_slope_deg": 17.71,
+        "scheeres": "~24"
+      },
+      {
+        "rho_gcc": 1.0,
+        "mean_slope_deg": 16.86
+      },
+      {
+        "rho_gcc": 1.15,
+        "mean_slope_deg": 16.2,
+        "scheeres": "~15"
+      },
+      {
+        "rho_gcc": 1.194,
+        "mean_slope_deg": 16.04
+      }
+    ],
+    "note": "monotonic decrease matches Scheeres slope-vs-density mechanism"
+  },
+  "paperIV_slope_vs_resolution": {
+    "Eros": [
+      {
+        "facets": 2097,
+        "mean": 21.4,
+        "median": 20.92,
+        "over30pct": 17.9
+      },
+      {
+        "facets": 4668,
+        "mean": 21.47,
+        "median": 21.05,
+        "over30pct": 18.1
+      },
+      {
+        "facets": 8120,
+        "mean": 21.64,
+        "median": 21.3,
+        "over30pct": 19.1
+      },
+      {
+        "facets": 16697,
+        "mean": 21.75,
+        "median": 21.55,
+        "over30pct": 19.2
+      },
+      {
+        "facets": 36030,
+        "mean": 21.97,
+        "median": 21.7,
+        "over30pct": 20.5
+      }
+    ],
+    "Itokawa": [
+      {
+        "facets": 2183,
+        "mean": 17.52,
+        "median": 13.7,
+        "over30pct": 9.6
+      },
+      {
+        "facets": 4857,
+        "mean": 17.88,
+        "median": 13.94,
+        "over30pct": 10.2
+      },
+      {
+        "facets": 8232,
+        "mean": 18.04,
+        "median": 14.01,
+        "over30pct": 10.0
+      },
+      {
+        "facets": 16676,
+        "mean": 18.19,
+        "median": 14.28,
+        "over30pct": 10.2
+      },
+      {
+        "facets": 34234,
+        "mean": 17.57,
+        "median": 14.29,
+        "over30pct": 9.4
+      }
+    ],
+    "sensitivity_pct": {
+      "Eros_slope": 6.7,
+      "Itokawa_slope": 10.0
+    },
+    "note": "slope mean changes 6.7-10% across resolutions -> resolution-sensitive"
+  },
+  "paperIV_smoothing_test": {
+    "Itokawa": [
+      {
+        "smoothing": 0,
+        "mean": 17.57,
+        "median": 14.29,
+        "over30": 9.4
+      },
+      {
+        "smoothing": 1,
+        "mean": 16.72,
+        "median": 13.56,
+        "over30": 7.7
+      },
+      {
+        "smoothing": 3,
+        "mean": 16.02,
+        "median": 13.12,
+        "over30": 6.6
+      },
+      {
+        "smoothing": 5,
+        "mean": 15.64,
+        "median": 12.93,
+        "over30": 6.3
+      },
+      {
+        "smoothing": 10,
+        "mean": 15.08,
+        "median": 12.7,
+        "over30": 5.8
+      }
+    ],
+    "Eros": [
+      {
+        "smoothing": 0,
+        "mean": 21.97,
+        "median": 21.7,
+        "over30": 20.5
+      },
+      {
+        "smoothing": 1,
+        "mean": 21.15,
+        "median": 21.14,
+        "over30": 17.4
+      },
+      {
+        "smoothing": 3,
+        "mean": 20.64,
+        "median": 20.76,
+        "over30": 15.7
+      },
+      {
+        "smoothing": 5,
+        "mean": 20.39,
+        "median": 20.49,
+        "over30": 14.8
+      },
+      {
+        "smoothing": 10,
+        "mean": 20.01,
+        "median": 20.13,
+        "over30": 13.5
+      }
+    ],
+    "note": "smoothing lowers slope ~2 deg (roughness contributes); does not fully reach published because published used different/smoother shape (radar) or coarser grid"
+  },
+  "paperIV_KEY_variance_vs_resolution": {
+    "Eros": [
+      {
+        "facets": 2097,
+        "slope_avg": 20.456,
+        "pot_std_norm": 0.22096
+      },
+      {
+        "facets": 6306,
+        "slope_avg": 20.929,
+        "pot_std_norm": 0.22147
+      },
+      {
+        "facets": 12155,
+        "slope_avg": 21.204,
+        "pot_std_norm": 0.22163
+      },
+      {
+        "facets": 21850,
+        "slope_avg": 21.569,
+        "pot_std_norm": 0.22205
+      },
+      {
+        "facets": 36030,
+        "slope_avg": 21.874,
+        "pot_std_norm": 0.22206
+      }
+    ],
+    "Itokawa": [
+      {
+        "facets": 2183,
+        "slope_avg": 16.789,
+        "pot_std_norm": 0.12413
+      },
+      {
+        "facets": 6404,
+        "slope_avg": 17.216,
+        "pot_std_norm": 0.12452
+      },
+      {
+        "facets": 12272,
+        "slope_avg": 17.723,
+        "pot_std_norm": 0.12474
+      },
+      {
+        "facets": 21196,
+        "slope_avg": 18.189,
+        "pot_std_norm": 0.12483
+      },
+      {
+        "facets": 41369,
+        "slope_avg": 18.555,
+        "pot_std_norm": 0.12478
+      }
+    ],
+    "sensitivity_pct": {
+      "Eros": {
+        "slope_avg": 6.7,
+        "pot_std_norm": 0.5,
+        "robustness_factor": 13
+      },
+      "Itokawa": {
+        "slope_avg": 10.0,
+        "pot_std_norm": 0.6,
+        "robustness_factor": 17
+      }
+    },
+    "conclusion": "potential variance 13-17x more resolution-robust than slope. HEADLINE RESULT for Paper IV."
+  },
+  "paperIV_with_vs_nospin": {
+    "Eros": {
+      "with_spin_mean": 21.97,
+      "no_spin_mean": 17.48,
+      "spin_effect_deg": 4.5
+    },
+    "Itokawa": {
+      "with_spin_mean": 17.57,
+      "no_spin_mean": 16.67,
+      "spin_effect_deg": 0.9
+    },
+    "ellipsoid_Eros_like": {
+      "with_spin": 18.0,
+      "no_spin": 11.8,
+      "spin_effect_deg": 6.2
+    },
+    "note": "spin effect smaller on real (rough) bodies than smooth ellipsoid: roughness randomizes facet orientation, centrifugal contributions partly cancel. ellipsoid no-spin 11.8 ~ radar-Ostro published 9-11.5 (smooth shape)"
+  },
+  "paperV_density_estimation_pilot": {
+    "method": "Kanamaru-style: split x=150m, fix M=3.58e10, superposition, minimize potential variance",
+    "Itokawa_head_model_scan": [
+      {
+        "rho_Head": 1600,
+        "rho_Body": 2152,
+        "pot_var_norm": 0.132647
+      },
+      {
+        "rho_Head": 1800,
+        "rho_Body": 2086,
+        "pot_var_norm": 0.128401
+      },
+      {
+        "rho_Head": 2000,
+        "rho_Body": 2020,
+        "pot_var_norm": 0.124415
+      },
+      {
+        "rho_Head": 2200,
+        "rho_Body": 1955,
+        "pot_var_norm": 0.120726
+      },
+      {
+        "rho_Head": 2400,
+        "rho_Body": 1889,
+        "pot_var_norm": 0.117373
+      },
+      {
+        "rho_Head": 2600,
+        "rho_Body": 1823,
+        "pot_var_norm": 0.114399
+      },
+      {
+        "rho_Head": 2800,
+        "rho_Body": 1757,
+        "pot_var_norm": 0.111847
+      },
+      {
+        "rho_Head": 3000,
+        "rho_Body": 1691,
+        "pot_var_norm": 0.109761
+      },
+      {
+        "rho_Head": 3200,
+        "rho_Body": 1625,
+        "pot_var_norm": 0.108183
+      },
+      {
+        "rho_Head": 3400,
+        "rho_Body": 1559,
+        "pot_var_norm": 0.107149
+      }
+    ],
+    "split_volumes_km3": {
+      "V_total": 0.017764,
+      "V_head": 0.0043996,
+      "V_body": 0.013365
+    },
+    "kanamaru_reference": {
+      "rho_Head": 2750,
+      "rho_Body": "~1930",
+      "COM_offset_m": "~16 (spin-up 21+-12)"
+    },
+    "verdict": "direction confirmed (Head denser); Head model monotonic (no interior min, same as Kanamaru); Neck model needed for clear minimum; head-cap has 3% volume bias to fix with volume mesh",
+    "head_cap_volume_bias_pct": 3.1
+  },
+  "paperIV_new_bodies": {
+    "Ryugu": {
+      "role": "validation",
+      "file": "Ryugu_SHAPE_SFM_49k_v20180804.obj",
+      "density_gcc": 1.2,
+      "period_h": 7.627,
+      "note": "density 1.2 to match JAXA ground truth (1200 kg/m3)",
+      "facets_full": 49152,
+      "surface_slope": {
+        "mean": 16.73,
+        "median": 15.33,
+        "max": 94.21,
+        "slope_gt90_pct": 0.01,
+        "bins": {
+          "0-5": 7.9,
+          "5-10": 18.8,
+          "10-15": 21.9,
+          "15-20": 20.9,
+          "20-30": 22.5,
+          "30-90": 8.1
+        }
+      },
+      "latitudinal": [
+        {
+          "lat": "0-10",
+          "mean": 19.81,
+          "median": 19.85,
+          "n": 7046
+        },
+        {
+          "lat": "10-20",
+          "mean": 18.03,
+          "median": 17.55,
+          "n": 6218
+        },
+        {
+          "lat": "20-30",
+          "mean": 14.86,
+          "median": 12.79,
+          "n": 5252
+        },
+        {
+          "lat": "30-45",
+          "mean": 13.89,
+          "median": 12.1,
+          "n": 6619
+        },
+        {
+          "lat": "45-60",
+          "mean": 13.68,
+          "median": 10.97,
+          "n": 5020
+        },
+        {
+          "lat": "60-90",
+          "mean": 19.79,
+          "median": 16.91,
+          "n": 4580
+        }
+      ],
+      "variance_vs_resolution": [
+        {
+          "facets": 3096,
+          "slope_avg": 14.179,
+          "pot_std_norm": 0.06473
+        },
+        {
+          "facets": 5780,
+          "slope_avg": 14.835,
+          "pot_std_norm": 0.06562
+        },
+        {
+          "facets": 11134,
+          "slope_avg": 15.613,
+          "pot_std_norm": 0.0662
+        },
+        {
+          "facets": 20014,
+          "slope_avg": 16.361,
+          "pot_std_norm": 0.06644
+        },
+        {
+          "facets": 42834,
+          "slope_avg": 17.449,
+          "pot_std_norm": 0.06662
+        }
+      ],
+      "sensitivity_pct": {
+        "slope_avg": 20.8,
+        "pot_std_norm": 2.9,
+        "robustness_factor": 7
+      },
+      "validation_note": "compare mean slope 16.73 to JAXA Gravity_SHAPE_SFM per-facet ground truth (TODO: download JAXA file)"
+    },
+    "Gaspra": {
+      "role": "sensitivity",
+      "file": "Gaspra Thomas.obj",
+      "density_gcc": 2.7,
+      "period_h": 7.042,
+      "facets_full": 32040,
+      "surface_slope": {
+        "mean": 13.72,
+        "median": 12.81,
+        "max": 56.22,
+        "slope_gt90_pct": 0.0,
+        "bins": {
+          "0-5": 7.9,
+          "5-10": 24.5,
+          "10-15": 30.2,
+          "15-20": 18.6,
+          "20-30": 17.2,
+          "30-90": 1.6
+        }
+      },
+      "variance_vs_resolution": [
+        {
+          "facets": 2821,
+          "slope_avg": 15.535,
+          "pot_std_norm": 0.115
+        },
+        {
+          "facets": 5240,
+          "slope_avg": 15.597,
+          "pot_std_norm": 0.11558
+        },
+        {
+          "facets": 12500,
+          "slope_avg": 15.704,
+          "pot_std_norm": 0.11581
+        },
+        {
+          "facets": 20773,
+          "slope_avg": 15.751,
+          "pot_std_norm": 0.11583
+        },
+        {
+          "facets": 32040,
+          "slope_avg": 15.773,
+          "pot_std_norm": 0.11582
+        }
+      ],
+      "sensitivity_pct": {
+        "slope_avg": 1.5,
+        "pot_std_norm": 0.7,
+        "robustness_factor": 2
+      },
+      "note": "Gaspra slope unusually resolution-stable (angular convex); variance still more robust"
+    },
+    "Ida": {
+      "role": "sensitivity",
+      "file": "Ida Thomas.obj",
+      "density_gcc": 2.6,
+      "period_h": 4.634,
+      "facets_full": 32040,
+      "surface_slope": {
+        "mean": 21.99,
+        "median": 21.43,
+        "max": 85.53,
+        "slope_gt90_pct": 0.0,
+        "bins": {
+          "0-5": 4.3,
+          "5-10": 10.5,
+          "10-15": 14.4,
+          "15-20": 15.7,
+          "20-30": 31.3,
+          "30-90": 23.9
+        }
+      },
+      "variance_vs_resolution": [
+        {
+          "facets": 2141,
+          "slope_avg": 23.948,
+          "pot_std_norm": 0.23418
+        },
+        {
+          "facets": 5808,
+          "slope_avg": 24.174,
+          "pot_std_norm": 0.23473
+        },
+        {
+          "facets": 11804,
+          "slope_avg": 24.351,
+          "pot_std_norm": 0.23498
+        },
+        {
+          "facets": 20673,
+          "slope_avg": 24.429,
+          "pot_std_norm": 0.23498
+        },
+        {
+          "facets": 32040,
+          "slope_avg": 24.446,
+          "pot_std_norm": 0.23494
+        }
+      ],
+      "sensitivity_pct": {
+        "slope_avg": 2.1,
+        "pot_std_norm": 0.3,
+        "robustness_factor": 7
+      }
+    },
+    "Kleopatra": {
+      "role": "sensitivity",
+      "file": "Kleopatra Ostro.obj",
+      "density_gcc": 3.38,
+      "period_h": 5.385,
+      "facets_full": 4092,
+      "note": "dog-bone extreme; only 4092 facets so decimation saturates (variance test limited resolutions)",
+      "published_mean_slope": "~12 (at 10km baseline, Ostro)",
+      "surface_slope": {
+        "mean": 24.75,
+        "median": 18.92,
+        "max": 156.23,
+        "slope_gt90_pct": 4.69,
+        "bins": {
+          "0-5": 5.4,
+          "5-10": 13.5,
+          "10-15": 16.0,
+          "15-20": 19.2,
+          "20-30": 27.6,
+          "30-90": 13.6
+        }
+      },
+      "variance_vs_resolution": [
+        {
+          "facets": 2091,
+          "slope_avg": 24.081,
+          "pot_std_norm": 0.18726
+        },
+        {
+          "facets": 4092,
+          "slope_avg": 24.627,
+          "pot_std_norm": 0.18747
+        }
+      ],
+      "sensitivity_pct": {
+        "slope_avg": 2.2,
+        "pot_std_norm": 0.1,
+        "robustness_factor": 22
+      }
+    }
+  },
+  "potential_sanity_check": {
+    "purpose": "verify library potential in absolute terms (analytic ellipsoid) for Paper V foundation",
+    "test": "uniform ellipsoid a,b,c=1500,1000,800 m, rho=2000, vs MacMillan/Kellogg analytic",
+    "result": {
+      "pearson_r": 1.0,
+      "mean_rel_err_pct": 0.177,
+      "max_rel_err_pct": 0.208,
+      "sign_note": "library U positive, analytic negative -> flip sign; |r|=1.000000"
+    },
+    "conclusion": "potential CORRECT in absolute terms. Low r vs JAXA is convention difference, NOT error. Paper V variance rests on verified potential.",
+    "sphere_limit_check": "analytic formula verified: sphere surface U = -GM/R exactly (ratio 1.000000)"
+  },
+  "CORRECTED_after_centrifugal_signfix": {
+    "note": "Centrifugal sign bug found and fixed 30 Jul 2026 (verified against analytic rotating sphere). Previously a_cf added to gravity instead of opposing it; geopotential mixed sign conventions. All numbers below are the CORRECTED surface_slope_lib runs. Supersedes earlier slope values.",
+    "verification": "rotating sphere k=w^2R/g=0.5: code 18.97/18.33/13.91 vs analytic 19.11/18.43/13.90 at lat 30/45/60",
+    "surface_slope_lib": {
+      "Bennu": {
+        "facets": 30561,
+        "density": 1.194,
+        "period_h": 4.296061,
+        "mean": 15.47,
+        "median": 14.96,
+        "max": 93.95,
+        "gt90_pct": 0.01,
+        "bins": {
+          "0-5": 7.9,
+          "5-10": 17.8,
+          "10-15": 24.5,
+          "15-20": 24.2,
+          "20-30": 21.7,
+          "30-90": 3.9
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 10.45,
+            "median": 9.7,
+            "n": 6202
+          },
+          {
+            "lat": "10-20",
+            "mean": 12.02,
+            "median": 11.36,
+            "n": 5804
+          },
+          {
+            "lat": "20-30",
+            "mean": 16.06,
+            "median": 15.48,
+            "n": 4949
+          },
+          {
+            "lat": "30-45",
+            "mean": 19.1,
+            "median": 18.43,
+            "n": 5856
+          },
+          {
+            "lat": "45-60",
+            "mean": 19.89,
+            "median": 19.32,
+            "n": 4230
+          },
+          {
+            "lat": "60-90",
+            "mean": 17.83,
+            "median": 17.36,
+            "n": 3520
+          }
+        ],
+        "prev_wrongsign_mean": 16.04
+      },
+      "Ryugu": {
+        "facets": 34735,
+        "density": 1.2,
+        "period_h": 7.627,
+        "mean": 15.02,
+        "median": 13.2,
+        "max": 97.51,
+        "gt90_pct": 0.02,
+        "bins": {
+          "0-5": 11.1,
+          "5-10": 22.8,
+          "10-15": 24.7,
+          "15-20": 19.3,
+          "20-30": 15.2,
+          "30-90": 6.9
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 16.93,
+            "median": 16.47,
+            "n": 7046
+          },
+          {
+            "lat": "10-20",
+            "mean": 13.07,
+            "median": 11.99,
+            "n": 6218
+          },
+          {
+            "lat": "20-30",
+            "mean": 11.42,
+            "median": 8.93,
+            "n": 5252
+          },
+          {
+            "lat": "30-45",
+            "mean": 12.88,
+            "median": 10.42,
+            "n": 6619
+          },
+          {
+            "lat": "45-60",
+            "mean": 15.66,
+            "median": 13.18,
+            "n": 5020
+          },
+          {
+            "lat": "60-90",
+            "mean": 21.25,
+            "median": 18.21,
+            "n": 4580
+          }
+        ],
+        "prev_wrongsign_mean": 16.73,
+        "JAXA_ground_truth_mean": 15.06
+      },
+      "Eros": {
+        "facets": 36030,
+        "density": 2.67,
+        "period_h": 5.27,
+        "mean": 13.65,
+        "median": 12.05,
+        "max": 156.77,
+        "gt90_pct": 0.06,
+        "bins": {
+          "0-5": 11.2,
+          "5-10": 26.9,
+          "10-15": 26.0,
+          "15-20": 15.9,
+          "20-30": 16.6,
+          "30-90": 3.4
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 13.72,
+            "median": 12.16,
+            "n": 10425
+          },
+          {
+            "lat": "10-20",
+            "mean": 14.2,
+            "median": 12.55,
+            "n": 9420
+          },
+          {
+            "lat": "20-30",
+            "mean": 14.31,
+            "median": 12.86,
+            "n": 6448
+          },
+          {
+            "lat": "30-45",
+            "mean": 13.44,
+            "median": 11.81,
+            "n": 5385
+          },
+          {
+            "lat": "45-60",
+            "mean": 12.04,
+            "median": 10.28,
+            "n": 2676
+          },
+          {
+            "lat": "60-90",
+            "mean": 10.89,
+            "median": 9.25,
+            "n": 1676
+          }
+        ],
+        "prev_wrongsign_mean": 21.97,
+        "published_mean": "~11.5 (Thomas 2002)"
+      },
+      "Itokawa": {
+        "facets": 34234,
+        "density": 1.95,
+        "period_h": 12.132,
+        "mean": 15.81,
+        "median": 12.34,
+        "max": 150.06,
+        "gt90_pct": 1.95,
+        "bins": {
+          "0-5": 17.3,
+          "5-10": 21.8,
+          "10-15": 22.3,
+          "15-20": 16.9,
+          "20-30": 15.3,
+          "30-90": 4.5
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 17.19,
+            "median": 14.39,
+            "n": 8921
+          },
+          {
+            "lat": "10-20",
+            "mean": 17.47,
+            "median": 14.46,
+            "n": 8101
+          },
+          {
+            "lat": "20-30",
+            "mean": 21.69,
+            "median": 13.53,
+            "n": 6675
+          },
+          {
+            "lat": "30-45",
+            "mean": 11.59,
+            "median": 10.81,
+            "n": 5677
+          },
+          {
+            "lat": "45-60",
+            "mean": 9.2,
+            "median": 7.37,
+            "n": 3028
+          },
+          {
+            "lat": "60-90",
+            "mean": 4.38,
+            "median": 4.14,
+            "n": 1832
+          }
+        ],
+        "prev_wrongsign_mean": 17.57,
+        "published_note": "radar-Ostro ~9 deg (smooth model, different shape version)"
+      },
+      "Gaspra": {
+        "facets": 28984,
+        "density": 2.7,
+        "period_h": 7.042,
+        "mean": 11.66,
+        "median": 11.01,
+        "max": 56.16,
+        "gt90_pct": 0.0,
+        "bins": {
+          "0-5": 12.1,
+          "5-10": 31.2,
+          "10-15": 29.6,
+          "15-20": 18.0,
+          "20-30": 8.9,
+          "30-90": 0.3
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 13.79,
+            "median": 13.47,
+            "n": 3600
+          },
+          {
+            "lat": "10-20",
+            "mean": 12.28,
+            "median": 11.57,
+            "n": 3600
+          },
+          {
+            "lat": "20-30",
+            "mean": 11.12,
+            "median": 10.48,
+            "n": 3600
+          },
+          {
+            "lat": "30-45",
+            "mean": 10.67,
+            "median": 10.03,
+            "n": 5400
+          },
+          {
+            "lat": "45-60",
+            "mean": 10.71,
+            "median": 10.0,
+            "n": 5400
+          },
+          {
+            "lat": "60-90",
+            "mean": 12.01,
+            "median": 11.2,
+            "n": 7384
+          }
+        ],
+        "prev_wrongsign_mean": 13.72
+      },
+      "Ida": {
+        "facets": 28423,
+        "density": 2.6,
+        "period_h": 4.634,
+        "mean": 16.48,
+        "median": 14.03,
+        "max": 88.43,
+        "gt90_pct": 0.0,
+        "bins": {
+          "0-5": 10.6,
+          "5-10": 23.1,
+          "10-15": 19.8,
+          "15-20": 14.6,
+          "20-30": 18.3,
+          "30-90": 13.6
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 15.78,
+            "median": 13.4,
+            "n": 3600
+          },
+          {
+            "lat": "10-20",
+            "mean": 14.49,
+            "median": 12.17,
+            "n": 3589
+          },
+          {
+            "lat": "20-30",
+            "mean": 13.77,
+            "median": 11.2,
+            "n": 3579
+          },
+          {
+            "lat": "30-45",
+            "mean": 15.37,
+            "median": 12.69,
+            "n": 5358
+          },
+          {
+            "lat": "45-60",
+            "mean": 16.97,
+            "median": 14.8,
+            "n": 5303
+          },
+          {
+            "lat": "60-90",
+            "mean": 19.73,
+            "median": 18.88,
+            "n": 6994
+          }
+        ],
+        "prev_wrongsign_mean": 21.99
+      },
+      "Kleopatra": {
+        "facets": 4092,
+        "density": 3.38,
+        "period_h": 5.385,
+        "mean": 20.55,
+        "median": 13.94,
+        "max": 171.8,
+        "gt90_pct": 4.69,
+        "bins": {
+          "0-5": 7.9,
+          "5-10": 20.5,
+          "10-15": 27.7,
+          "15-20": 24.5,
+          "20-30": 14.2,
+          "30-90": 0.5
+        },
+        "lat_profile": [
+          {
+            "lat": "0-10",
+            "mean": 20.98,
+            "median": 13.83,
+            "n": 1110
+          },
+          {
+            "lat": "10-20",
+            "mean": 25.68,
+            "median": 15.4,
+            "n": 1074
+          },
+          {
+            "lat": "20-30",
+            "mean": 20.66,
+            "median": 14.36,
+            "n": 1056
+          },
+          {
+            "lat": "30-45",
+            "mean": 13.82,
+            "median": 11.65,
+            "n": 546
+          },
+          {
+            "lat": "45-60",
+            "mean": 13.12,
+            "median": 12.67,
+            "n": 181
+          },
+          {
+            "lat": "60-90",
+            "mean": 11.8,
+            "median": 11.68,
+            "n": 125
+          }
+        ],
+        "prev_wrongsign_mean": 24.75,
+        "published_mean": "~12 (Ostro 2000, 10km baseline)"
+      }
+    },
+    "selftest": "PASS (sphere no-spin 0.348 deg)",
+    "ryugu_facet_validation": {
+      "shape": "Ryugu_SHAPE_SFM_49k_v20180804.obj (full 49152, no decimation)",
+      "reference": "JAXA Gravity_SHAPE_SFM_49k_v20180804_7.63_1200a.txt (Watanabe 2019 archive)",
+      "settings": "density 1200 kg/m3, period 7.63 h, Werner-Scheeres, uniform density",
+      "facet_match": "index-order centroid match: median 0.04 m, max 0.1 m",
+      "slope": {
+        "our_mean": 15.06,
+        "jaxa_mean": 15.06,
+        "mean_diff": -0.0,
+        "rms_diff": 0.48,
+        "median_abs_diff": 0.34,
+        "pearson_r": 0.9989,
+        "within_2deg_pct": 99.9,
+        "within_5deg_pct": 100.0,
+        "rms_after_bias_removal": 0.48,
+        "facets_diff_gt10": 7,
+        "facets_diff_gt10_pct": 0.0,
+        "r_flat_facets_jaxa_lt15": 0.9936,
+        "exact_tail_counts": {
+          "N": 49152,
+          "within_1deg": {
+            "n": 49126,
+            "outside": 26,
+            "pct": 99.9471
+          },
+          "within_2deg": {
+            "n": 49127,
+            "outside": 25,
+            "pct": 99.9491
+          },
+          "within_5deg": {
+            "n": 49133,
+            "outside": 19,
+            "pct": 99.9613
+          },
+          "within_10deg": {
+            "n": 49145,
+            "outside": 7,
+            "pct": 99.9858
+          },
+          "max_abs_diff_deg": 24.45,
+          "p99_deg": 0.86,
+          "p999_deg": 0.95,
+          "rms_after_bias_removal_deg": 0.478
+        },
+        "CORRECTION_NOTE": "Earlier reporting said \"within 5 deg: 100.0%\" because the script printed one decimal place; the true value is 99.9613% (19 facets outside 5 deg). The manuscript claim \"every facet falls within 5 deg\" was wrong and has been corrected to exact counts."
+      },
+      "potential": {
+        "pearson_abs_r": 0.9898,
+        "note": "JAXA uses opposite sign convention; magnitude compared"
+      },
+      "before_signfix": {
+        "our_mean": 16.6,
+        "mean_diff": 1.54,
+        "rms_diff": 5.45,
+        "pearson_r": 0.8663,
+        "within_2deg_pct": 19.2,
+        "within_5deg_pct": 50.9,
+        "r_flat": 0.4251,
+        "potential_r": 0.3815
+      },
+      "conclusion": "Per-facet validation essentially exact. Confirms the framework computes slope and geopotential correctly facet by facet, not merely in aggregate. The earlier r=0.87 was entirely due to the centrifugal sign error."
+    },
+    "variance_vs_resolution": {
+      "note": "CORRECTED runs. Supersedes pre-fix variance numbers (which were inflated by the centrifugal sign error).",
+      "tables": {
+        "Ryugu": [
+          [
+            3096,
+            12.174,
+            0.03153
+          ],
+          [
+            5780,
+            12.829,
+            0.03233
+          ],
+          [
+            11134,
+            13.688,
+            0.03295
+          ],
+          [
+            20014,
+            14.505,
+            0.03327
+          ],
+          [
+            42834,
+            15.7,
+            0.03347
+          ]
+        ],
+        "Eros": [
+          [
+            2097,
+            11.034,
+            0.03241
+          ],
+          [
+            6306,
+            11.691,
+            0.03345
+          ],
+          [
+            12155,
+            12.122,
+            0.03384
+          ],
+          [
+            21850,
+            12.705,
+            0.03403
+          ],
+          [
+            36030,
+            13.263,
+            0.03413
+          ]
+        ],
+        "Itokawa": [
+          [
+            2183,
+            14.71,
+            0.08527
+          ],
+          [
+            6404,
+            15.167,
+            0.08577
+          ],
+          [
+            12272,
+            15.762,
+            0.08598
+          ],
+          [
+            21196,
+            16.304,
+            0.08608
+          ],
+          [
+            41369,
+            16.727,
+            0.08608
+          ]
+        ],
+        "Gaspra": [
+          [
+            2821,
+            12.413,
+            0.05929
+          ],
+          [
+            5240,
+            12.466,
+            0.0598
+          ],
+          [
+            12500,
+            12.564,
+            0.06009
+          ],
+          [
+            20773,
+            12.619,
+            0.06017
+          ],
+          [
+            32040,
+            12.641,
+            0.06017
+          ]
+        ],
+        "Ida": [
+          [
+            2141,
+            13.171,
+            0.0349
+          ],
+          [
+            5808,
+            13.56,
+            0.03572
+          ],
+          [
+            11804,
+            13.807,
+            0.03626
+          ],
+          [
+            20673,
+            13.918,
+            0.03641
+          ],
+          [
+            32040,
+            13.933,
+            0.03643
+          ]
+        ],
+        "Kleopatra": [
+          [
+            2091,
+            19.805,
+            0.03669
+          ],
+          [
+            4092,
+            20.708,
+            0.0381
+          ]
+        ]
+      },
+      "columns": [
+        "facets",
+        "slope_avg_deg",
+        "pot_std_norm"
+      ],
+      "metricA_range_pct": {
+        "Ryugu": {
+          "slope": 25.6,
+          "pot": 5.9,
+          "ratio": 4.3
+        },
+        "Eros": {
+          "slope": 18.3,
+          "pot": 5.1,
+          "ratio": 3.6
+        },
+        "Itokawa": {
+          "slope": 12.8,
+          "pot": 0.9,
+          "ratio": 13.6
+        },
+        "Gaspra": {
+          "slope": 1.8,
+          "pot": 1.5,
+          "ratio": 1.2
+        },
+        "Ida": {
+          "slope": 5.6,
+          "pot": 4.3,
+          "ratio": 1.3
+        },
+        "Kleopatra": {
+          "slope": 4.5,
+          "pot": 3.8,
+          "ratio": 1.2,
+          "caveat": "only 2 distinct resolutions (mesh has 4092 facets; decimation saturates)"
+        }
+      },
+      "metricB_convergence_pct_between_two_finest": {
+        "Ryugu": {
+          "slope": 8.24,
+          "pot": 0.6
+        },
+        "Eros": {
+          "slope": 4.39,
+          "pot": 0.29
+        },
+        "Itokawa": {
+          "slope": 2.59,
+          "pot": 0.0
+        },
+        "Gaspra": {
+          "slope": 0.17,
+          "pot": 0.0
+        },
+        "Ida": {
+          "slope": 0.11,
+          "pot": 0.05
+        }
+      },
+      "honest_assessment": "Potential variance is more resolution-stable than slope on ALL six bodies, but the margin is smaller and more variable than the pre-fix numbers suggested (1.2x-13.6x by range metric, not 2x-22x). The convergence metric is cleaner and more defensible: the potential variance plateaus under refinement (0.00-0.60% change between the two finest meshes) whereas the mean slope has not converged on Ryugu, Eros, Itokawa (2.6-8.2% still rising). On bodies whose slope is already resolution-stable (Gaspra, Ida, Kleopatra) the ratio is uninformative because there is little to improve on."
+    },
+    "cross_shape_version_Itokawa": {
+      "question": "Can a ground-based (radar) shape substitute for a spacecraft-derived (Gaskell) shape?",
+      "radar_model": {
+        "file": "Itokawa Radar.obj",
+        "vertices": 1846,
+        "facets": 3688,
+        "extent_km": [
+          0.5984,
+          0.3169,
+          0.2757
+        ],
+        "slope": {
+          "mean": 13.4,
+          "median": 12.91,
+          "max": 41.32,
+          "gt90_pct": 0.0,
+          "bins": {
+            "0-5": 11.4,
+            "5-10": 23.6,
+            "10-15": 26.4,
+            "15-20": 21.0,
+            "20-30": 15.9,
+            "30-90": 1.7
+          },
+          "lat_profile": [
+            {
+              "lat": "0-10",
+              "mean": 15.92,
+              "median": 15.98,
+              "n": 606
+            },
+            {
+              "lat": "10-20",
+              "mean": 15.24,
+              "median": 14.25,
+              "n": 590
+            },
+            {
+              "lat": "20-30",
+              "mean": 15.88,
+              "median": 15.3,
+              "n": 618
+            },
+            {
+              "lat": "30-45",
+              "mean": 12.22,
+              "median": 12.1,
+              "n": 798
+            },
+            {
+              "lat": "45-60",
+              "mean": 9.71,
+              "median": 9.06,
+              "n": 564
+            },
+            {
+              "lat": "60-90",
+              "mean": 11.2,
+              "median": 11.01,
+              "n": 512
+            }
+          ]
+        },
+        "variance_table": [
+          [
+            2072,
+            14.467,
+            0.07864
+          ],
+          [
+            3688,
+            14.749,
+            0.07874
+          ]
+        ]
+      },
+      "gaskell_matched": {
+        "file": "Itokawa Hayabusa 50k poly.obj --target 3700 -> 4857 facets",
+        "slope": {
+          "mean": 15.91,
+          "median": 11.79,
+          "max": 149.45,
+          "gt90_pct": 2.29,
+          "bins": {
+            "0-5": 15.8,
+            "5-10": 25.2,
+            "10-15": 25.0,
+            "15-20": 15.7,
+            "20-30": 11.2,
+            "30-90": 4.8
+          },
+          "lat_profile": [
+            {
+              "lat": "0-10",
+              "mean": 15.52,
+              "median": 12.67,
+              "n": 1410
+            },
+            {
+              "lat": "10-20",
+              "mean": 16.67,
+              "median": 13.79,
+              "n": 1253
+            },
+            {
+              "lat": "20-30",
+              "mean": 24.74,
+              "median": 12.98,
+              "n": 947
+            },
+            {
+              "lat": "30-45",
+              "mean": 10.44,
+              "median": 9.07,
+              "n": 692
+            },
+            {
+              "lat": "45-60",
+              "mean": 8.86,
+              "median": 7.4,
+              "n": 347
+            },
+            {
+              "lat": "60-90",
+              "mean": 3.84,
+              "median": 3.76,
+              "n": 208
+            }
+          ]
+        }
+      },
+      "comparison_at_3688_facets": {
+        "area_wtd_slope": {
+          "gaskell_interp": 14.87,
+          "radar": 14.75,
+          "diff_pct": -0.8
+        },
+        "potential_variance": {
+          "gaskell_interp": 0.08545,
+          "radar": 0.07874,
+          "diff_pct": -7.9
+        },
+        "unweighted_mean_slope": {
+          "gaskell": 15.91,
+          "radar": 13.4,
+          "diff_pct": -15.8
+        },
+        "max_slope": {
+          "gaskell": 149.45,
+          "radar": 41.32
+        },
+        "gt90_pct": {
+          "gaskell": 2.29,
+          "radar": 0.0
+        },
+        "gt30_pct": {
+          "gaskell": 4.8,
+          "radar": 1.7
+        }
+      },
+      "finding": "Bulk descriptors agree well: area-weighted slope average within 0.8%, potential variance within 7.9%. Distribution TAILS do not: the radar model has no facet above 41 deg and 1.7% above 30 deg, while the Gaskell model reaches 149 deg with 2.29% above 90 deg and 4.8% above 30 deg. Ground-based shapes therefore support bulk/global gravity descriptors but not local hazard or extreme-slope assessment.",
+      "IMPORTANT_correction": "Our own radar-model run gives 13.40 deg (mean) / 14.75 deg (area-weighted), NOT the ~9 deg quoted in the literature for radar-based Itokawa. The Section 1 abstract claim of a near factor-of-two difference between shape versions under the same method is NOT supported by our computation and must be revised."
+    },
+    "cross_shape_version_Kleopatra": {
+      "status": "CONFOUNDED - report with caveat or exclude",
+      "kleo_mod": {
+        "file": "kleo.v2.7.1148.mod.obj",
+        "vertices": 1148,
+        "facets": 2292,
+        "extent_km": [
+          276.3467,
+          94.204,
+          77.7367
+        ],
+        "slope": {
+          "mean": 12.04,
+          "median": 10.64,
+          "max": 158.15,
+          "gt90_pct": 0.57,
+          "bins": {
+            "0-5": 14.7,
+            "5-10": 31.2,
+            "10-15": 28.8,
+            "15-20": 16.2,
+            "20-30": 8.1,
+            "30-90": 0.3
+          },
+          "lat_profile": [
+            {
+              "lat": "0-10",
+              "mean": 11.03,
+              "median": 10.36,
+              "n": 731
+            },
+            {
+              "lat": "10-20",
+              "mean": 11.98,
+              "median": 11.55,
+              "n": 668
+            },
+            {
+              "lat": "20-30",
+              "mean": 15.25,
+              "median": 10.8,
+              "n": 455
+            },
+            {
+              "lat": "30-45",
+              "mean": 10.58,
+              "median": 9.64,
+              "n": 286
+            },
+            {
+              "lat": "45-60",
+              "mean": 9.77,
+              "median": 8.64,
+              "n": 97
+            },
+            {
+              "lat": "60-90",
+              "mean": 11.47,
+              "median": 10.24,
+              "n": 55
+            }
+          ]
+        },
+        "variance_table": [
+          [
+            2064,
+            11.824,
+            0.02328
+          ],
+          [
+            2292,
+            11.96,
+            0.02354
+          ]
+        ]
+      },
+      "ostro_matched": {
+        "file": "Kleopatra Ostro.obj --target 2300 -> 2854 facets",
+        "slope": {
+          "mean": 22.52,
+          "median": 14.41,
+          "max": 171.93,
+          "gt90_pct": 5.85,
+          "bins": {
+            "0-5": 7.6,
+            "5-10": 19.9,
+            "10-15": 25.8,
+            "15-20": 24.5,
+            "20-30": 14.9,
+            "30-90": 1.5
+          },
+          "lat_profile": [
+            {
+              "lat": "0-10",
+              "mean": 23.25,
+              "median": 14.01,
+              "n": 859
+            },
+            {
+              "lat": "10-20",
+              "mean": 26.3,
+              "median": 15.82,
+              "n": 794
+            },
+            {
+              "lat": "20-30",
+              "mean": 23.62,
+              "median": 15.06,
+              "n": 666
+            },
+            {
+              "lat": "30-45",
+              "mean": 14.61,
+              "median": 12.03,
+              "n": 352
+            },
+            {
+              "lat": "45-60",
+              "mean": 14.21,
+              "median": 12.68,
+              "n": 111
+            },
+            {
+              "lat": "60-90",
+              "mean": 13.55,
+              "median": 11.34,
+              "n": 72
+            }
+          ]
+        }
+      },
+      "comparison_at_2292": {
+        "area_wtd_slope": {
+          "ostro_interp": 19.9,
+          "kleo_mod": 11.96,
+          "diff_pct": -39.9
+        },
+        "potential_variance": {
+          "ostro_interp": 0.03683,
+          "kleo_mod": 0.02354,
+          "diff_pct": -36.1
+        },
+        "unweighted_mean_slope": {
+          "ostro": 22.52,
+          "kleo_mod": 12.04,
+          "diff_pct": -46.5
+        }
+      },
+      "caveat": "The two Kleopatra models differ in SCALE, not only in surface detail: kleo.mod long axis is 276.3 km versus ~217 km for the Ostro model (+27%), while b and c axes are similar (aspect 2.9:1 vs 3.5:1). At fixed density the larger model has more mass and stronger gravity, reducing the relative centrifugal contribution and hence the slope. The 36-40% differences therefore conflate scale, aspect ratio and surface detail, and cannot be attributed to shape-model provenance. Itokawa (Gaskell vs radar, extents agreeing to 6-13%) is the clean cross-version test; Kleopatra is not.",
+      "resolution_study_note": "Both Kleopatra models saturate under decimation (4092 and 2292 facets); neither supports a proper resolution-convergence study. Recommend excluding Kleopatra from the resolution analysis."
+    },
+    "bennu_density_sweep": {
+      "file": "Bennu_v20_200k.obj",
+      "facets": 30561,
+      "period_h": 4.296061,
+      "volume_km3": 0.06150452,
+      "columns": [
+        "rho_gcc",
+        "mean",
+        "median",
+        "eq_lt20",
+        "mid_20_40",
+        "pol_gt60",
+        "cf_over_g_eq",
+        "GM_km3s2"
+      ],
+      "rows": [
+        [
+          0.85,
+          25.55,
+          25.95,
+          23.07,
+          29.38,
+          21.28,
+          0.751,
+          3.4891e-09
+        ],
+        [
+          1.0,
+          19.18,
+          19.24,
+          14.57,
+          22.49,
+          19.43,
+          0.638,
+          4.1048e-09
+        ],
+        [
+          1.15,
+          16.06,
+          15.65,
+          11.61,
+          18.19,
+          18.12,
+          0.555,
+          4.7205e-09
+        ],
+        [
+          1.194,
+          15.45,
+          14.94,
+          11.19,
+          17.26,
+          17.81,
+          0.534,
+          4.9011e-09
+        ]
+      ],
+      "published_Scheeres": {
+        "rho0.85": "~24 deg",
+        "rho1.15": "~15 deg",
+        "equatorial": "~12 deg",
+        "high_lat": "~18 deg"
+      },
+      "agreement": "Now QUANTITATIVE, not just trend: 25.55 vs ~24 at rho=0.85 (+1.5 deg); 16.06 vs ~15 at rho=1.15 (+1.1 deg); equatorial 11.19 vs ~12; polar 17.81 vs ~18. Pre-fix run gave 17.71 at rho=0.85, badly underestimating the published 24 deg.",
+      "prev_wrongsign_rows": [
+        [
+          0.85,
+          17.71
+        ],
+        [
+          1.0,
+          16.86
+        ],
+        [
+          1.15,
+          16.2
+        ],
+        [
+          1.194,
+          16.04
+        ]
+      ]
+    },
+    "smoothing_test": {
+      "operator": "Laplacian vertex smoothing, factor 0.5",
+      "Itokawa": {
+        "facets": 34234,
+        "rows": [
+          [
+            0,
+            15.81,
+            12.34,
+            6.5
+          ],
+          [
+            1,
+            14.82,
+            11.53,
+            4.9
+          ],
+          [
+            3,
+            14.0,
+            10.98,
+            4.3
+          ],
+          [
+            5,
+            13.56,
+            10.77,
+            3.9
+          ],
+          [
+            10,
+            12.9,
+            10.51,
+            3.4
+          ]
+        ],
+        "columns": [
+          "iterations",
+          "mean",
+          "median",
+          "pct_gt30"
+        ]
+      },
+      "Eros": {
+        "facets": 36030,
+        "rows": [
+          [
+            0,
+            13.65,
+            12.05,
+            3.5
+          ],
+          [
+            1,
+            12.23,
+            10.87,
+            1.6
+          ],
+          [
+            3,
+            11.35,
+            10.11,
+            0.8
+          ],
+          [
+            5,
+            10.92,
+            9.74,
+            0.6
+          ],
+          [
+            10,
+            10.3,
+            9.25,
+            0.2
+          ]
+        ],
+        "columns": [
+          "iterations",
+          "mean",
+          "median",
+          "pct_gt30"
+        ]
+      },
+      "key_observation": "Smoothing the spacecraft-derived Itokawa (Gaskell) model for 10 iterations gives 12.90 deg, close to the independent ground-based radar model value of 13.40 deg (3.7% apart). This supports the interpretation that the difference between the two shape versions is dominated by facet-scale roughness. For Eros the published ~11.5 deg lies between the unsmoothed (13.65) and heavily smoothed (10.30) values."
+    }
+  },
+  "software_environment": {
+    "python": "3.13",
+    "polyhedral_gravity": "3.3.1",
+    "reference": "Schuhmacher et al. 2024, JOSS 9(98), 6384, doi:10.21105/joss.06384",
+    "note": "version recorded 1 Aug 2026 via pip show polyhedral-gravity"
+  }
+}

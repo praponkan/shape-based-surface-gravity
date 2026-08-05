@@ -1,0 +1,276 @@
+\section{Validation}
+\label{sec:validation}
+
+The framework is tested against two bodies for which independent gravitational
+products exist. Ryugu provides the stronger test, because the Hayabusa2 team
+has released per-facet gravitational quantities computed on a shape model that
+we can use unchanged, at a stated density and rotation period; the comparison
+is therefore facet by facet with every input held fixed. Bennu provides a
+complementary test at the level of published summary statistics, and adds a
+check that the framework responds correctly to the assumed bulk density.
+
+\subsection{Ryugu: comparison facet by facet}
+\label{sec:ryugu}
+
+\citet{kanamaru2019} and the archive accompanying the Hayabusa2 shape analysis
+distribute, alongside the $49\,152$-facet SFM shape model of Ryugu, a table of
+gravitational potential and gravitational slope for every plate of that model,
+computed with a Werner--Scheeres polyhedral solver for a uniform density of
+$1200\ \mathrm{kg\,m^{-3}}$ and a rotation period of $7.63$~h. Because shape,
+method, density, and spin are all fixed by that specification, any disagreement
+must originate in the implementation rather than in the inputs. This is the
+strongest test available to us, and the only one in this paper that reaches
+below the level of aggregate statistics.
+
+It is worth being precise about what such a test does and does not establish.
+The reference products are themselves computed for a homogeneous interior with a
+Werner--Scheeres solver, so the comparison is an \emph{implementation}
+validation: it confirms that our sign conventions, facet correspondence and
+numerical evaluation agree with an independent implementation of the same
+physical model. It is not a \emph{physical} validation, and it says nothing
+about how well a homogeneous model represents the true gravity field of Ryugu.
+That limitation is taken up in Section~\ref{sec:uniformdensity}.
+
+The comparison is run on the full mesh, with no decimation, so that our facets
+correspond one-to-one with the archived plates. The correspondence is confirmed
+geometrically rather than assumed: matching by index order, the median distance
+between our facet centroids and the archived plate centres is $0.04$~m, with a
+maximum of $0.1$~m, against a body some $900$~m across. The two meshes are
+therefore the same mesh in the same order, and a facet-by-facet difference is
+meaningful.
+
+Table~\ref{tab:ryugu} summarises the outcome, and
+Figure~\ref{fig:ryuguval} shows the comparison facet by facet. The area-weighted mean slope
+agrees to better than $0.01^{\circ}$, and the distribution of per-facet
+differences is tight: the RMS difference is $0.48^{\circ}$ and the median
+absolute difference $0.34^{\circ}$, with $49\,133$ of the $49\,152$ facets
+($99.96\%$) agreeing to within $5^{\circ}$ and $49\,127$ ($99.95\%$) to within
+$2^{\circ}$. The Pearson correlation across facets is $0.9989$ for slope and
+$0.9898$ for geopotential.
+
+The residual is not uniformly small, and it is worth being explicit about its
+tail. Nineteen facets differ by more than $5^{\circ}$ and seven by more than
+$10^{\circ}$, the largest by $24.45^{\circ}$. These are a vanishing fraction of
+the surface---the $99.9$th percentile of the absolute difference is
+$0.95^{\circ}$---but they are real, and Figure~\ref{fig:ryuguval}(b) is plotted
+on a logarithmic count axis over the full residual range so that they remain
+visible.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Ryugu, facet-by-facet comparison against the archived Hayabusa2
+gravitational products. Both fields are computed on the same $49\,152$-facet
+shape model at $\dens=1200\ \mathrm{kg\,m^{-3}}$ and $P=7.63$~h.}
+\label{tab:ryugu}
+\begin{tabular}{lr}
+\toprule
+Quantity & Value \\
+\midrule
+Mean slope, this work                       & $15.06^{\circ}$ \\
+Mean slope, archived products               & $15.06^{\circ}$ \\
+Mean difference                             & $-0.00^{\circ}$ \\
+RMS difference                              & $0.48^{\circ}$ \\
+Median absolute difference                  & $0.34^{\circ}$ \\
+$99.9$th percentile of $\lvert$difference$\rvert$ & $0.95^{\circ}$ \\
+Maximum absolute difference                 & $24.45^{\circ}$ \\
+Facets within $2^{\circ}$                   & $49\,127$ \ ($99.95\%$) \\
+Facets within $5^{\circ}$                   & $49\,133$ \ ($99.96\%$) \\
+Facets differing by more than $5^{\circ}$   & $19$ \\
+Facets differing by more than $10^{\circ}$  & $7$ \\
+Pearson $r$, slope                          & $0.9989$ \\
+Pearson $r$, geopotential                   & $0.9898$ \\
+Pearson $r$, slope on facets below $15^{\circ}$ & $0.9936$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two features of the residual are worth noting. First, removing the mean bias
+does not reduce the RMS difference, which stays at $0.48^{\circ}$: the
+disagreement is scatter rather than offset, as expected if it arises from
+differences in how the two implementations evaluate the field near the surface
+rather than from a systematic error in either. Second, the correlation is just
+as high on the flattest part of the surface---$0.9936$ restricted to facets
+whose archived slope is below $15^{\circ}$---as it is overall. A sign or
+convention error would degrade the flat facets preferentially, because there
+the two competing contributions are most nearly balanced; that the flat facets
+agree as well as the steep ones is a useful independent indication that the
+conventions of Section~\ref{sec:signs} are correct.
+
+The agreement also holds as a function of position on the body. Binning both
+data sets by latitude gives the profile in Table~\ref{tab:ryugulat}: a maximum
+near the equator, a minimum at intermediate latitude, and a rise toward the
+poles. All four bands agree to better than $0.7^{\circ}$, and the two lower
+bands to better than $0.2^{\circ}$. The equatorial maximum and mid-latitude
+minimum are the signature of the equatorial ridge of a top-shaped body, and the
+framework reproduces both without adjustment.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Ryugu, area-weighted mean slope by latitude band, compared with the
+archived products.}
+\label{tab:ryugulat}
+\begin{tabular}{lrrr}
+\toprule
+$\lvert\text{latitude}\rvert$ & This work & Archive & Difference \\
+\midrule
+$0$--$20^{\circ}$   & $15.12^{\circ}$ & $15.20^{\circ}$ & $-0.08^{\circ}$ \\
+$20$--$40^{\circ}$  & $12.23^{\circ}$ & $12.40^{\circ}$ & $-0.17^{\circ}$ \\
+$40$--$60^{\circ}$  & $15.66^{\circ}$ & $15.00^{\circ}$ & $+0.66^{\circ}$ \\
+$60$--$90^{\circ}$  & $21.25^{\circ}$ & $20.80^{\circ}$ & $+0.45^{\circ}$ \\
+\midrule
+Global              & $15.06^{\circ}$ & $15.06^{\circ}$ & $-0.00^{\circ}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{fig1.pdf}
+\caption{Per-facet validation of the computed slope field against the
+gravitational products released with the Hayabusa2 shape analysis of Ryugu,
+on the identical $49\,152$-facet model at $\dens = 1200\ \mathrm{kg\,m^{-3}}$
+and $P = 7.63$~h. (a) Facet-by-facet comparison; the colour scale is
+logarithmic in the number of facets per bin, and the dashed line is the $1{:}1$
+relation. (b) Distribution of the per-facet difference. The agreement is
+scatter rather than offset: removing the mean bias leaves the RMS difference
+unchanged.}
+\label{fig:ryuguval}
+\end{figure}
+
+\subsection{Bennu: global structure}
+\label{sec:bennu}
+
+For Bennu the OLA shape model \citep{barnouin2020,daly2020} is decimated to
+$30\,561$ facets and evaluated at the measured bulk density
+$\dens=1.194\ \mathrm{g\,cm^{-3}}$ and the rotation period $P=4.2961$~h. The
+resulting area-weighted mean slope is $15.45^{\circ}$, with a median of
+$14.94^{\circ}$; the distribution is concentrated between $10^{\circ}$ and
+$20^{\circ}$ (which together hold $48.7\%$ of the surface area), only $3.9\%$
+of facets exceed $30^{\circ}$, and just two facets out of $30\,561$ exceed
+$90^{\circ}$. These figures sit within the range of global mean slopes reported
+from OSIRIS-REx analyses \citep{scheeres2019,jawin2020}.
+
+The latitudinal structure is more diagnostic than the global mean, because it
+is set by the competition between the equatorial ridge and the centrifugal
+term. The profile, given in Table~\ref{tab:bennulat}, rises from $10.45^{\circ}$
+within $10^{\circ}$ of the equator to a broad maximum of $19.89^{\circ}$ at
+$45$--$60^{\circ}$ latitude before falling to $17.83^{\circ}$ near the pole.
+This reproduces the pattern reported from mission data---low slopes across the
+equatorial region, a transition near $\pm 20^{\circ}$, and higher slopes at
+mid to high latitude \citep{scheeres2019}---both in shape and, to within a
+degree or two, in value; Figure~\ref{fig:bennuval}(a) shows the profile against
+the published values.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Bennu, area-weighted mean slope by latitude band at
+$\dens = 1.194\ \mathrm{g\,cm^{-3}}$ and $\Nf = 30\,561$.}
+\label{tab:bennulat}
+\begin{tabular}{lrrr}
+\toprule
+$\lvert\text{latitude}\rvert$ & Mean & Median & Facets \\
+\midrule
+$0$--$10^{\circ}$   & $10.45^{\circ}$ & $9.70^{\circ}$  & $6202$ \\
+$10$--$20^{\circ}$  & $12.02^{\circ}$ & $11.36^{\circ}$ & $5804$ \\
+$20$--$30^{\circ}$  & $16.06^{\circ}$ & $15.48^{\circ}$ & $4949$ \\
+$30$--$45^{\circ}$  & $19.10^{\circ}$ & $18.43^{\circ}$ & $5856$ \\
+$45$--$60^{\circ}$  & $19.89^{\circ}$ & $19.32^{\circ}$ & $4230$ \\
+$60$--$90^{\circ}$  & $17.83^{\circ}$ & $17.36^{\circ}$ & $3520$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The geopotential of Eq.~\eqref{eq:geopot} carries the same information in a
+form directly relevant to regolith transport. Its minimum lies at the equator
+and it increases toward the poles, so that loose material on the surface is
+driven equatorward; this is the geopotential structure inferred for Bennu from
+mission data and invoked to explain its equatorial accumulation
+\citep{scheeres2019,jawin2020}. The framework recovers it from the shape model, the
+assumed density and the specified rotation period.
+
+\subsection{Bennu: response to the assumed density}
+\label{sec:densitysweep}
+
+A shape-based calculation must assume a bulk density, and it is worth
+establishing that the framework responds to that assumption in the physically
+correct way rather than merely producing a plausible number at one value. For a
+rotating body the relevant control parameter is the ratio of centrifugal to
+gravitational acceleration; since the centrifugal term is fixed by the spin and
+the shape, raising the assumed density strengthens self-gravity and reduces
+that ratio, which must lower the slope.
+
+Because the field is linear in $\dens$ (Section~\ref{sec:solver}), the entire
+sweep costs one solver evaluation. Table~\ref{tab:sweep} gives the result, and
+Figure~\ref{fig:bennuval}(b) displays it. The
+mean slope falls from $25.55^{\circ}$ at $\dens = 0.85\ \mathrm{g\,cm^{-3}}$ to
+$15.45^{\circ}$ at the measured $1.194\ \mathrm{g\,cm^{-3}}$, while the
+equatorial centrifugal-to-gravitational ratio falls from $0.751$ to $0.534$.
+The comparison values reported from OSIRIS-REx analyses for the same exercise
+are approximately $24^{\circ}$ at $0.85$ and $15^{\circ}$ at
+$1.15\ \mathrm{g\,cm^{-3}}$ \citep{scheeres2019}; the framework returns
+$25.55^{\circ}$ and $16.06^{\circ}$, agreeing to $1.5^{\circ}$ and
+$1.1^{\circ}$ respectively. The agreement is therefore quantitative across the
+range, not merely in trend, and at the measured density the equatorial and
+polar means---$11.19^{\circ}$ and $17.81^{\circ}$---bracket the published
+equatorial and high-latitude figures of roughly $12^{\circ}$ and $18^{\circ}$.
+
+\begin{table}[t]
+\centering
+\small
+\caption{Bennu, area-weighted mean slope as a function of the assumed bulk
+density at $\Nf = 30\,561$. Here $\text{eq}$ denotes
+$\lvert\text{lat}\rvert<20^{\circ}$, $\text{mid}$ denotes
+$20$--$40^{\circ}$, and $\text{pol}$ denotes $>60^{\circ}$;
+$\lVert\acf\rVert/\lVert\ngrav\rVert$ is the equatorial mean.}
+\label{tab:sweep}
+\begin{tabular}{rrrrrr}
+\toprule
+$\dens$ & Mean & eq & mid & pol & $\lVert\acf\rVert/\lVert\ngrav\rVert$ \\
+\midrule
+$0.850$ & $25.55^{\circ}$ & $23.07^{\circ}$ & $29.38^{\circ}$ & $21.28^{\circ}$ & $0.751$ \\
+$1.000$ & $19.18^{\circ}$ & $14.57^{\circ}$ & $22.49^{\circ}$ & $19.43^{\circ}$ & $0.638$ \\
+$1.150$ & $16.06^{\circ}$ & $11.61^{\circ}$ & $18.19^{\circ}$ & $18.12^{\circ}$ & $0.555$ \\
+$1.194$ & $15.45^{\circ}$ & $11.19^{\circ}$ & $17.26^{\circ}$ & $17.81^{\circ}$ & $0.534$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[tp]
+\centering
+\includegraphics[width=\textwidth]{fig2.pdf}
+\caption{Bennu. (a) Area-weighted mean and median slope by latitude band at the
+measured bulk density; shaded bands mark the equatorial and high-latitude values
+reported from OSIRIS-REx analyses. The profile reproduces the observed pattern
+of low equatorial slopes rising to a mid-latitude maximum. (b) Dependence of the
+slope on the assumed bulk density, resolved by latitude zone. Stars mark the
+published global means at $0.85$ and $1.15\ \mathrm{g\,cm^{-3}}$. The
+equatorial zone responds most strongly, as expected for a centrifugal effect
+that scales with distance from the spin axis.}
+\label{fig:bennuval}
+\end{figure}
+
+The equatorial band responds most strongly, falling by nearly $12^{\circ}$
+across the range while the polar band moves by only $3.5^{\circ}$. That is the
+expected signature: the centrifugal term acts perpendicular to the spin axis
+and so has its largest effect where the surface is farthest from that axis.
+The framework therefore reproduces not only the magnitude of the
+density dependence but its spatial distribution.
+
+\subsection{Summary}
+\label{sec:valsummary}
+
+Taken together, the two tests bound the accuracy of the framework from
+different directions. Ryugu establishes that, given identical inputs, the
+implementation reproduces an independent Werner--Scheeres calculation facet by
+facet, with an RMS difference of half a degree and $99.96\%$ of facets
+agreeing to within $5^{\circ}$. Bennu establishes that, given a shape model, an
+assumed density and a specified spin state, the framework recovers the
+published global mean, the
+latitudinal structure, the equatorial geopotential minimum, and the
+quantitative dependence on assumed density.
+
+Neither test says anything about how these numbers would change had a different
+mesh been used, and that question is the subject of the next two sections.

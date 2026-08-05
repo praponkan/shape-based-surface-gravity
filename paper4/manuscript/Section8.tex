@@ -1,0 +1,131 @@
+\section{Conclusions}
+\label{sec:conclusions}
+
+This paper extends the shape-based framework of Papers~I--III from the scalar
+mean surface gravity to the spatially resolved surface fields---effective
+gravity, gravitational slope, and geopotential---computed facet by facet from a
+polyhedral shape model and an assumed uniform density. The main conclusions are
+as follows.
+
+\begin{enumerate}
+
+\item \emph{The implementation reproduces an independent calculation facet by
+facet.} Compared against the gravitational products released with the Hayabusa2
+shape analysis of Ryugu, on the identical $49\,152$-facet model at the same
+density and rotation period, the area-weighted mean slope agrees to better than
+$0.01^{\circ}$, the RMS per-facet difference is $0.48^{\circ}$, $99.96\%$ of
+facets agree to within $5^{\circ}$ and $99.95\%$ to within $2^{\circ}$, and the
+Pearson
+correlations are $0.9989$ in slope and $0.9898$ in geopotential. The agreement
+holds band by band in latitude to better than $0.7^{\circ}$.
+
+\item \emph{From a shape model, an assumed density and a specified spin state
+the framework recovers the published surface gravity structure of Bennu.} The global mean slope is
+$15.45^{\circ}$; the latitudinal profile rises from $10.45^{\circ}$ near the
+equator to $19.89^{\circ}$ at mid-latitude; the geopotential minimum lies at the
+equator, as inferred from mission data. Sweeping the assumed bulk density
+reproduces the published slope--density relation quantitatively, returning
+$25.55^{\circ}$ and $16.06^{\circ}$ at $0.85$ and $1.15\ \mathrm{g\,cm^{-3}}$
+against roughly $24^{\circ}$ and $15^{\circ}$ reported from OSIRIS-REx analyses.
+
+\item \emph{The area-weighted mean slope did not converge within the tested
+mesh range on shape models that carry substantial unresolved relief.} Across
+meshes from about $2\,000$ to $42\,000$ facets it varies by $1.8\%$ to $25.6\%$
+depending on the body, and on three of five bodies it was still moving by
+$2.6$--$8.2\%$ over the final refinement step, with no plateau. Laplacian
+smoothing at fixed facet count lowers the slope by an amount comparable to what
+refinement adds, identifying surface relief as the cause. A mean slope is
+therefore a statement about a particular mesh and is not reproducible without
+its facet count.
+
+\item \emph{The normalized geopotential dispersion, computed from the same
+field on the same meshes, shows clear practical convergence over the same
+range.} It varies by $0.9\%$ to $5.9\%$ across the
+same range and changes by at most $0.60\%$ over the final refinement step---by
+nothing at all on two bodies---and is the more stable of the two diagnostics on
+every body tested. The distinction follows from what each quantity depends on:
+the geopotential is an integral over the mass distribution and inherits the
+convergence of the polyhedron's volume, whereas the slope depends on the
+orientation of an individual facet, which a rough surface continues to change
+at every scale at which it is resolved.
+
+\item \emph{In the controlled Itokawa comparison the ground-based model
+preserves the global gravity descriptors but not the local slope statistics.}
+Comparing the spacecraft-derived and radar-derived models at approximately
+matched resolution, the area-weighted mean slope agrees to $0.8\%$ and the
+geopotential dispersion to $7.9\%$, while the radar model contains no facet
+steeper than $41^{\circ}$ against $149^{\circ}$ for the spacecraft model, and
+places $1.7\%$ rather than $4.8\%$ of the surface above $30^{\circ}$. On the
+evidence of this single controlled case, population-level characterisation from
+ground-based shapes appears defensible, whereas identification of steep terrain,
+overhangs, or the fraction of surface above the angle of repose does not.
+
+\item \emph{A rotating test case is necessary to verify a small-body gravity
+code.} A non-rotating sphere returns zero slope for either sign of the
+centrifugal term and so cannot detect an error in the rotating frame. The
+uniformly rotating sphere, whose slope field is given in closed form by
+Eq.~\eqref{eq:rotsphere} and derived in Appendix~\ref{app:rotsphere},
+discriminates sharply---the two signs differ by more than seven degrees at
+mid-latitude for $\omegarot^{2}R/g = 0.5$. We recommend it as a routine check
+and provide the implementation.
+
+\end{enumerate}
+
+Two qualifications frame these results. For bodies without a measured mass the
+assumed bulk density remains the dominant uncertainty, shifting the mean slope
+by some $10^{\circ}$ on Bennu across a plausible range---three times the effect
+of mesh resolution---so that constraining the mass buys more than refining the
+shape. And all fields assume a homogeneous interior, an assumption that leaves
+the resolution results untouched but that is known to fail for bilobed bodies
+such as Itokawa, whose head and body differ appreciably in density.
+
+That last limitation points to the natural continuation. A surface shaped by
+long-term downslope transport should approach an equipotential of the true
+gravity field, so that the spread of geopotential over the surface becomes an
+estimator of the interior density distribution rather than merely a description
+of it. Such an inversion requires a diagnostic whose response to the assumed
+density is not swamped by its response to the mesh---the property established
+here for the geopotential dispersion and shown to be absent for the mean slope.
+That development is reserved for future work and lies beyond the scope of the
+present study.
+% ============================================================
+% DATA AVAILABILITY STATEMENT  --  SDGA Paper IV
+%
+% Paste this block at the END of Section8.tex, after the final
+% paragraph of the Conclusions and before \end{document} is reached.
+%
+% The reserved DOI is already filled in below (10.5281/zenodo.21793575).
+% No further editing is needed.
+% ============================================================
+
+\section*{Data availability}
+
+The analysis code, the verification scripts, the five figures, and a
+machine-readable file containing every numerical result quoted in this paper
+are openly available at
+\href{https://doi.org/10.5281/zenodo.21793575}{doi:10.5281/zenodo.21793575},
+released under CC BY 4.0. The deposit includes the two verification programs
+that implement Eqs.~\eqref{eq:ellipsoid} and~\eqref{eq:rotsphere}, so that both
+checks can be reproduced independently of the shape models. Development of the
+code is tracked at
+\url{https://github.com/praponkan/shape-based-surface-gravity}.
+
+Shape models are not redistributed. Those used here are available from the
+OSIRIS-REx mission archive (Bennu), the JAXA DARTS archive accompanying
+\citet{kanamaru2019} (Ryugu shape model and reference gravitational products),
+and the PDS Small Bodies Node (Eros, Itokawa, Gaspra, Ida, Kleopatra); the
+specific models, assumed densities, and rotation periods are listed in
+Table~\ref{tab:shapes}.
+
+
+% ============================================================
+% OPTIONAL -- if the journal requires a separate acknowledgement
+% of the software used, this can follow the statement above.
+% ============================================================
+
+% \section*{Software}
+%
+% Self-gravitation was computed with \texttt{polyhedral-gravity}
+% version~3.3.1 \citep{gravitylib}. Analysis used Python~3.13 with
+% \texttt{numpy} and \texttt{scipy}; figures were produced with
+% \texttt{matplotlib}.

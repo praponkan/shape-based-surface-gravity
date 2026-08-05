@@ -1,0 +1,229 @@
+\documentclass[11pt,a4paper]{article}
+
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{authblk}
+\usepackage{siunitx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage[numbers,sort&compress]{natbib}
+% ---- float placement: these figures are tall (stacked two-panel portrait),
+% so the default \topfraction of 0.7 would defer them to the end of the document.
+\usepackage[section]{placeins}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.70}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.72}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+% Floats are confined to their own section (placeins), but NOT to their own
+% subsection: barriering at subsection level forced page breaks that left
+% large gaps. A table may therefore appear just above the subsection heading
+% that discusses it; that is standard float behaviour and is preferred here to
+% half-empty pages.
+
+
+
+\allowdisplaybreaks
+\setlength{\parindent}{15pt}
+\setlength{\parskip}{0.3em}
+\linespread{1.03}
+
+\captionsetup{font=small,labelfont=bf}
+
+\graphicspath{{.}{./figures/}{./fig/}{./images/}}
+
+% ---- shared macros (consistent with Papers I--III) ----
+\newcommand{\gmean}{\langle g\rangle}
+\newcommand{\RA}{R_{A}}
+\newcommand{\RV}{R_{V}}
+\newcommand{\Ptwo}{P_{2}}
+\newcommand{\Pthree}{P_{3}}
+
+% ---- Paper IV macros: spatial gravity, slope, geopotential dispersion ----
+\newcommand{\geff}{\mathbf{g}_{\mathrm{eff}}}
+\newcommand{\ngrav}{\mathbf{g}}
+\newcommand{\acf}{\mathbf{a}_{\mathrm{c}}}
+\newcommand{\nhat}{\hat{\mathbf{n}}}
+\newcommand{\slope}{\theta}
+\newcommand{\slopeavg}{\bar{\slope}}
+\newcommand{\Upot}{U}
+\newcommand{\Ubar}{\bar{U}}
+\newcommand{\potvar}{\sigma_{U}}
+\newcommand{\potvarn}{\tilde{\sigma}_{U}}
+\newcommand{\omegarot}{\omega}
+\newcommand{\dens}{\varrho}
+\newcommand{\Nf}{N_{f}}
+
+
+
+\begin{document}
+\emergencystretch=2em
+% ==================== TITLE BLOCK ====================
+\begin{center}
+{\LARGE\bfseries Spatial surface gravity of small bodies from polyhedral
+shape models: slope, geopotential, and the resolution robustness of
+geopotential dispersion\par}
+\vspace{0.8em}
+{\itshape Prapon Kanjanatarayont\par}
+\vspace{0.2em}
+{\small\color{gray} Independent Researcher \textperiodcentered\ Thailand\par}
+\vspace{0.1em}
+{\small\color{gray} \texttt{prapon.kanjana@gmail.com}\par}
+\end{center}
+\vspace{1.0em}
+
+
+
+
+\input{Section1}
+\input{Section2}
+\input{Section3}
+\input{Section4}
+\input{Section5}
+\input{Section6}
+\input{Section7}
+\input{Section8}
+
+
+
+\appendix
+\input{AppendixA}
+
+
+\begin{thebibliography}{99}
+
+% ---- companion papers (SDGA series) ----
+\bibitem[Kanjanatarayont(2026a)]{paper1}
+Kanjanatarayont, P., 2026. Surface gravity of small bodies from the
+area-equivalent radius: an $e^{2}$-cancellation theorem and an
+{$\eta \approx 1.05$} domain of validity. Companion paper, Paper I.
+doi:10.5281/zenodo.21327611.
+
+\bibitem[Kanjanatarayont(2026b)]{paper2}
+Kanjanatarayont, P., 2026. The optimal area--volume radius blend for the
+mean surface gravity of small bodies: a non-analytic $\Pthree/\Ptwo$ law.
+Companion paper, Paper II. doi:10.5281/zenodo.21328178.
+
+\bibitem[Kanjanatarayont(2026c)]{paper3}
+Kanjanatarayont, P., 2026. Shape-based estimation of mean surface gravity
+for small bodies: the accuracy of the blended radius and the limits of
+convex models. Companion paper, Paper III. doi:10.5281/zenodo.21622962.
+
+% ---- polyhedral gravity method ----
+\bibitem[Werner \& Scheeres(1996)]{werner1996}
+Werner, R.~A., Scheeres, D.~J., 1996. Exterior gravitation of a
+polyhedron derived and compared with harmonic and mascon gravitation
+representations of asteroid 4769 Castalia. \emph{Celestial Mechanics
+and Dynamical Astronomy} 65, 313--344. doi:10.1007/BF00053511.
+
+\bibitem[Tsoulis(2012)]{tsoulis2012}
+Tsoulis, D., 2012. Analytical computation of the full gravity tensor
+of a homogeneous arbitrarily shaped polyhedral source. \emph{Geophysics}
+77, F1--F11. doi:10.1190/geo2010-0334.1.
+
+\bibitem[Schuhmacher et~al.(2024)]{gravitylib}
+Schuhmacher, J., Blazquez, E., Gratl, F., Izzo, D., G\'omez, P., 2024.
+Efficient polyhedral gravity modeling in modern C++ and Python.
+\emph{Journal of Open Source Software} 9(98), 6384.
+doi:10.21105/joss.06384. Software: \texttt{polyhedral-gravity}, version~3.3.1.
+
+% ---- surface slope / geopotential on small bodies ----
+\bibitem[Scheeres et~al.(2016)]{scheeres2016}
+Scheeres, D.~J., et al., 2016. The geophysical environment of Bennu.
+\emph{Icarus} 276, 116--140. doi:10.1016/j.icarus.2016.04.013.
+
+\bibitem[Scheeres et~al.(2019)]{scheeres2019}
+Scheeres, D.~J., et al., 2019. The dynamic geophysical environment of
+(101955) Bennu based on OSIRIS-REx measurements. \emph{Nature Astronomy}
+3, 352--361. doi:10.1038/s41550-019-0721-3.
+
+\bibitem[Barnouin et~al.(2019)]{barnouin2019}
+Barnouin, O.~S., et al., 2019. Shape of (101955) Bennu indicative of a
+rubble pile with internal stiffness. \emph{Nature Geoscience} 12,
+247--252. doi:10.1038/s41561-019-0330-x.
+
+\bibitem[Barnouin et~al.(2020)]{barnouin2020}
+Barnouin, O.~S., et al., 2020. Digital terrain mapping by the
+OSIRIS-REx mission. \emph{Planetary and Space Science} 180, 104764.
+doi:10.1016/j.pss.2019.104764.
+
+\bibitem[Daly et~al.(2020)]{daly2020}
+Daly, M.~G., et al., 2020. Hemispherical differences in the shape and
+topography of asteroid (101955) Bennu. \emph{Science Advances} 6,
+eabd3649. doi:10.1126/sciadv.abd3649.
+
+\bibitem[Jawin et~al.(2020)]{jawin2020}
+Jawin, E.~R., et al., 2020. Global patterns of recent mass movement on
+asteroid (101955) Bennu. \emph{Journal of Geophysical Research: Planets}
+125, e2020JE006475. doi:10.1029/2020JE006475.
+
+% ---- Eros ----
+\bibitem[Zuber et~al.(2000)]{zuber2000}
+Zuber, M.~T., et al., 2000. The shape of 433 Eros from the NEAR-Shoemaker
+laser rangefinder. \emph{Science} 289, 2097--2101.
+doi:10.1126/science.289.5487.2097.
+
+\bibitem[Thomas et~al.(2002)]{thomas2002}
+Thomas, P.~C., et al., 2002. Eros: shape, topography, and slope processes.
+\emph{Icarus} 155, 18--37. doi:10.1006/icar.2001.6755.
+
+\bibitem[Yeomans et~al.(2000)]{yeomans2000}
+Yeomans, D.~K., et al., 2000. Radio science results during the
+NEAR-Shoemaker spacecraft rendezvous with Eros. \emph{Science}
+289, 2085--2088. doi:10.1126/science.289.5487.2085.
+
+% ---- Itokawa + density estimation ----
+\bibitem[Gaskell et~al.(2008)]{gaskell2008}
+Gaskell, R.~W., et al., 2008. Characterizing and navigating small bodies
+with imaging data. \emph{Meteoritics \& Planetary Science} 43, 1049--1061.
+doi:10.1111/j.1945-5100.2008.tb00692.x.
+
+\bibitem[Fujiwara et~al.(2006)]{fujiwara2006}
+Fujiwara, A., et al., 2006. The rubble-pile asteroid Itokawa as observed
+by Hayabusa. \emph{Science} 312, 1330--1334. doi:10.1126/science.1125841.
+
+\bibitem[Abe et~al.(2006)]{abe2006}
+Abe, S., et al., 2006. Mass and local topography measurements of Itokawa
+by Hayabusa. \emph{Science} 312, 1344--1349. doi:10.1126/science.1126272.
+
+\bibitem[Kanamaru \& Sasaki(2019)]{kanamaru2019}
+Kanamaru, M., Sasaki, S., 2019. Estimation of interior density distribution
+for small bodies: the case of asteroid Itokawa. \emph{Transactions of the
+Japan Society for Aeronautical and Space Sciences, Aerospace Technology
+Japan} 17, 270--275. doi:10.2322/tastj.17.270.
+
+\bibitem[Lowry et~al.(2014)]{lowry2014}
+Lowry, S.~C., et al., 2014. The internal structure of asteroid (25143)
+Itokawa as revealed by detection of YORP spin-up. \emph{Astronomy \&
+Astrophysics} 562, A48. doi:10.1051/0004-6361/201322549.
+
+\bibitem[Ostro et~al.(2005)]{ostro2005}
+Ostro, S.~J., et al., 2005. Radar observations of Itokawa in 2004 and
+improved shape estimation. \emph{Meteoritics \& Planetary Science} 40,
+1563--1574. doi:10.1111/j.1945-5100.2005.tb00136.x.
+
+% ---- rubble piles / general ----
+\bibitem[Walsh(2018)]{walsh2018}
+Walsh, K.~J., 2018. Rubble pile asteroids. \emph{Annual Review of
+Astronomy and Astrophysics} 56, 593--624.
+doi:10.1146/annurev-astro-081817-052013.
+
+\bibitem[Dobrovolskis(2019)]{dobrovolskis2019}
+Dobrovolskis, A.~R., 2019. Classification of ellipsoids by shape
+and surface gravity. \emph{Icarus} 321, 891--928.
+doi:10.1016/j.icarus.2018.11.023.
+
+\end{thebibliography}
+
+
+\end{document}
