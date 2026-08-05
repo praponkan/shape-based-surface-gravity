@@ -4,7 +4,8 @@
     "warning": "Keys named paperIV_* and paperV_* WITHOUT the CORRECTED prefix are SUPERSEDED. They were produced before a sign error in the centrifugal acceleration was found and fixed (30 Jul 2026). They are retained only for transparency and must NOT be used.",
     "what_was_wrong": "The centrifugal term reinforced rather than opposed self-gravity, and the rotational part of the geopotential carried a sign inconsistent with the gravitational part.",
     "how_it_was_found": "Comparison with the analytic slope field of a uniformly rotating sphere (verification/rotsphere_check.py). A non-rotating sphere test cannot detect this error, because it returns zero slope for either sign.",
-    "effect": "Mean slopes changed by -0.6 to -8.3 degrees depending on the body; the Ryugu per-facet correlation against the Hayabusa2 products improved from r=0.87 to r=0.9989 and the geopotential correlation from 0.38 to 0.9898."
+    "effect": "Mean slopes changed by -0.6 to -8.3 degrees depending on the body; the Ryugu per-facet correlation against the Hayabusa2 products improved from r=0.87 to r=0.9989 and the geopotential correlation from 0.38 to 0.9898.",
+    "terminology_note": "Keys and notes written before the final manuscript revision use the phrase 'potential variance' for the quantity the paper now calls the NORMALIZED GEOPOTENTIAL DISPERSION. The quantity is unchanged: it is the area-weighted standard deviation of the surface geopotential divided by the absolute area-weighted mean, i.e. a coefficient of variation, not a variance. The wording was corrected in the manuscript; the JSON keys are left as they are so that earlier outputs remain traceable."
   },
   "session_date": "2026-07-29",
   "note": "All numerical results run by Teera on real shape models. Preserve for Paper IV/V manuscripts.",

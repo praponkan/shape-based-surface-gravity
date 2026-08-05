@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Test the KEY hypothesis (Kanamaru 2019): the area-weighted potential variance
+Test the KEY hypothesis (Kanamaru 2019): the normalized geopotential dispersion
 is LESS sensitive to shape-model resolution than the slope average.
-If confirmed, potential variance is the robust metric for density estimation
+If confirmed, the geopotential dispersion is the robust metric for density estimation
 (Paper V) and a headline finding for Paper IV.
 
 Metrics per resolution (library gravity, uniform density):
@@ -66,4 +66,4 @@ print(f"\nsensitivity (max-min)/mean across resolutions:")
 print(f"  slope_avg    : {(sa_all.max()-sa_all.min())/sa_all.mean()*100:.1f}%")
 print(f"  pot_std_norm : {(ps_all.max()-ps_all.min())/ps_all.mean()*100:.1f}%")
 print("\nIf pot_std_norm sensitivity < slope_avg sensitivity")
-print("=> potential variance is the resolution-robust metric (Kanamaru confirmed).")
+print("=> geopotential dispersion is the resolution-robust metric (Kanamaru confirmed).")

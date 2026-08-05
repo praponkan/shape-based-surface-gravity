@@ -4,7 +4,7 @@
 POTENTIAL SANITY CHECK for Paper V.
 Verify the polyhedral-library gravitational potential against the exact analytic
 potential of a uniform-density ellipsoid (MacMillan/Kellogg). If they match,
-our potential (hence potential variance used in Paper V) is correct in an
+our potential (hence the geopotential dispersion) is correct in an
 ABSOLUTE sense -- independent of JAXA.
 
 USAGE: python potential_check.py

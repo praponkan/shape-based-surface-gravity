@@ -5,7 +5,8 @@ Paper IV — Density sweep of Bennu surface slope.
 
 KEY quantitative test (Scheeres et al.): mean surface slope falls as assumed
 bulk density rises, because gravity scales with density while the centrifugal
-term does not. Reproducing this from shape alone validates the framework
+term does not. Reproducing this from the shape model, an assumed density and
+a specified spin state validates the framework
 quantitatively (not just the spatial pattern).
 
 Calibration approach (verified, unit-safe):

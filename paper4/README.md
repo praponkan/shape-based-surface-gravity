@@ -2,10 +2,12 @@
 
 Supporting material for:
 
-**Spatial surface gravity of small bodies from shape alone: slope, geopotential,
-and the resolution robustness of potential variance**
+**Spatial surface gravity of small bodies from polyhedral shape models:
+slope, geopotential, and the resolution robustness of geopotential dispersion**
 Prapon Kanjanatarayont (Independent Researcher, Thailand)
 ORCID 0009-0009-4081-7422 · prapon.kanjana@gmail.com
+
+Archived release: doi:10.5281/zenodo.21793575
 
 Companion papers in the SDGA series:
 - Paper I   — doi:10.5281/zenodo.21327611
@@ -20,15 +22,17 @@ Repository: https://github.com/praponkan/shape-based-surface-gravity
 
 Everything needed to reproduce the numerical results of Paper IV: the analysis
 code, two independent verification scripts against exact analytic solutions,
-mesh diagnostics, the complete numerical results in machine-readable form, and
-the manuscript source written so far.
+mesh diagnostics, the five figures, the complete numerical results in
+machine-readable form, and the full manuscript source.
 
 ```
 code/           analysis programs used to produce the paper's numbers
 verification/   checks against exact analytic solutions
 diagnostics/    mesh and axis checks run before any analysis
+figures/        make_paper4_figures.py and the five figure PDFs
 results/        all_results.json  — every number in the paper
-manuscript/     main.tex, Section1.tex (LaTeX source, in progress)
+manuscript/     complete LaTeX source: main.tex, Sections 1-8,
+                Appendix A, figures.tex, data_availability.tex
 ```
 
 ## 2. Requirements
@@ -93,8 +97,10 @@ Lengths are in km in the shape files and converted to SI internally.
   normal; zero on a surface perpendicular to the local effective gravity.
 - Geopotential: V = U_grav - (1/2) w^2 r_perp^2, with U_grav negative
   (the `polyhedral-gravity` library returns the opposite sign; the code negates it).
-- Normalized potential variance: area-weighted standard deviation of V divided
-  by the absolute area-weighted mean of V (dimensionless).
+- Normalized geopotential dispersion: area-weighted standard deviation of V
+  divided by the absolute area-weighted mean of V (dimensionless). It is a
+  coefficient of variation, not a variance; the paper therefore calls it a
+  dispersion.
 
 **Sign-convention warning.** The two solvers store gravity differently:
 `surface_slope.py` (pure numpy) stores an OUTWARD-pointing vector, while
@@ -132,8 +138,10 @@ rotating sphere at k = w^2R/g = 0.5: agreement within 0.14 deg.
 
 **Ryugu, per facet, against the Hayabusa2 products** (identical shape, density,
 and spin; 49,152 facets): mean slope 15.06 deg against 15.06 deg; RMS difference
-0.48 deg; 99.9% of facets within 2 deg and 100% within 5 deg; Pearson r = 0.9989
-in slope and 0.9898 in geopotential.
+0.48 deg; 49,133 of 49,152 facets (99.96%) agree within 5 deg and 49,127
+(99.95%) within 2 deg; 19 facets differ by more than 5 deg and seven by more
+than 10 deg, the largest by 24.45 deg; Pearson r = 0.9989 in slope and 0.9898
+in geopotential.
 
 **Bennu.** Mean slope 15.45 deg at 30,561 facets and rho = 1.194. Density sweep:
 25.55 deg at rho = 0.85 and 16.06 deg at rho = 1.15, against roughly 24 and 15 deg
@@ -142,13 +150,15 @@ against roughly 12 and 18 deg.
 
 **Resolution behaviour** (2,000 to 42,000 facets, five bodies): the
 area-weighted mean slope varies by 1.8% (Gaspra) to 25.6% (Ryugu), the
-normalized potential variance by 0.9% (Itokawa) to 5.9% (Ryugu). The potential
-variance is the more stable diagnostic on every body. Between the two finest
-meshes the potential variance has plateaued (0.00-0.60%) while the mean slope
-has not converged (up to 8.24%).
+normalized geopotential dispersion by 0.9% (Itokawa) to 5.9% (Ryugu). The
+dispersion is the more stable diagnostic on every body. Between the two finest
+meshes the dispersion is already near a plateau (0.00-0.60%), whereas the mean
+slope shows no comparable plateau within the tested resolution range and is
+still changing by up to 8.24%.
 
 **Cross-version comparison, Itokawa** (Gaskell vs radar at ~3,688 facets):
-area-weighted mean slope agrees to 0.8% and potential variance to 7.9%, but the
+area-weighted mean slope agrees to 0.8% and geopotential dispersion to 7.9%,
+but the
 tails do not — maximum slope 149 deg vs 41 deg, and 4.8% vs 1.7% of facets above
 30 deg. Smoothing the Gaskell model for 10 Laplacian iterations gives 12.90 deg,
 within 3.7% of the independent radar model (13.40 deg), indicating that the
@@ -168,8 +178,8 @@ only as a caveat.
   they were computed.
 - `density_estimate.py` is a pilot: the head region is closed with a planar cap
   carrying about a 3% volume bias, and the head-only model has no interior
-  minimum. Paper V replaces the cap with a true interior volume mesh and adds
-  the compressed-neck model.
+  minimum. Replacing the cap with a true interior volume mesh and adding a
+  compressed-neck model is reserved for future work.
 
 ## 8. Numerical-correctness note
 

@@ -17,7 +17,7 @@ Method:
         field(total) = rho_Body*field(full,1) + (rho_Head-rho_Body)*field(headcap,1)
      This requires a closed Head sub-polyhedron. We build it by taking Head
      facets + a planar cap at x_split.
-  4. Compute area-weighted surface potential variance; scan rho_Head; find min.
+  4. Compute the area-weighted geopotential dispersion; scan rho_Head; find min.
   5. Report rho_Head at minimum, implied rho_Body, and COM-COF offset.
 
 USAGE: python density_estimate.py "Itokawa Hayabusa 50k poly.obj" --xsplit 0.150 --mtotal 3.58e10
@@ -144,7 +144,7 @@ if __name__=="__main__":
     for rhoH,rhoB,pv in results:
         mark=' <== MIN' if (rhoH,rhoB,pv)==best else ''
         if rhoH%200<50: print(f"  {rhoH:>9.0f} {rhoB:>9.0f} {pv:>13.6f}{mark}")
-    print(f"\n  MINIMUM potential variance at:")
+    print(f"\n  MINIMUM geopotential dispersion at:")
     print(f"    rho_Head = {best[0]:.0f} kg/m^3   (Kanamaru: 2750)")
     print(f"    rho_Body = {best[1]:.0f} kg/m^3   (Kanamaru: ~1930)")
     # COM-COF offset
