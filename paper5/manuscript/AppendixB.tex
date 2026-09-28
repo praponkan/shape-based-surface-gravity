@@ -1,0 +1,219 @@
+\section{The conical-region error}
+\label{app:cone}
+
+This appendix records an error made during the development of this work, why
+the verification then in place could not detect it, and how it was eventually
+found. It is included because the failure is instructive rather than
+idiosyncratic: the construction that produced it is a natural one, the mesh it
+produces is valid by every ordinary measure, and the resulting scientific
+conclusion was not merely inaccurate but inverted.
+
+\subsection{The construction}
+\label{app:cone:construction}
+
+The task is to build a closed mesh bounding the material beyond a plane. A
+natural approach, and the one first taken, avoids clipping altogether. Select
+the facets whose centroids satisfy $x > c$; these form an open surface patch.
+Find the boundary edges of the patch---those belonging to exactly one selected
+facet---and close the surface by adding, for each such edge $(i,j)$, the
+triangle $(O, \mathbf{v}_j, \mathbf{v}_i)$, where $O$ is a point inside the
+body, in our case the mean of the vertices.
+
+The appeal of this is that it requires no geometric predicates beyond a
+centroid test, no intersection arithmetic, and no tolerance. The resulting mesh
+is closed, consistently oriented, and its volume, computed by the divergence
+theorem, agrees with the sum of the signed tetrahedra
+$\{(O, \mathbf{v}_a, \mathbf{v}_b, \mathbf{v}_c)\}$ over the selected facets to
+machine precision. All of this is true. None of it is relevant.
+
+\subsection{What the mesh actually bounds}
+\label{app:cone:solid}
+
+The solid enclosed is not the material beyond the plane. It is the radial cone
+with apex at $O$ subtended by the selected surface patch: the union of all
+segments joining $O$ to a point of the patch. For a sphere with $O$ at the
+centre this is a spherical sector. The two solids share their outer boundary
+and nothing else. The plane-cut lobe is bounded below by the plane $x = c$; the
+sector is bounded below by a lateral surface running from the rim of the patch
+to the interior point $O$, and therefore includes material at every $x$ between
+$x_O$ and $c$ that the intended region excludes.
+
+For a sphere of radius $R$ cut at $x = c$, with $O$ at the centre, both solids
+admit closed forms, given as Eqs.~\eqref{eq:appcap} and~\eqref{eq:appcone} of
+Appendix~\ref{app:clip}. At $R = 1$, $c = 0.5$:
+\begin{equation}
+\frac{V_{\mathrm{sector}}}{V_{\mathrm{cap}}}
+= \frac{2\pi R^{2}h/3}{\pi h^{2}(3R-h)/3}
+= \frac{2R^{2}}{h(3R-h)}
+= 1.600 ,
+\qquad
+\bar{x}_{\mathrm{cap}} - \bar{x}_{\mathrm{sector}} = 0.1125\,R .
+\label{eq:appconeratio}
+\end{equation}
+The sector has sixty per cent more volume and its centroid lies more than a
+tenth of a radius further in. Figure~\ref{fig:cone} shows the two.
+
+The discrepancy is not a small-parameter effect that vanishes for a thin cap.
+As $h \to 0$ the ratio in Eq.~\eqref{eq:appconeratio} diverges as
+$2R/(3h)$: the thinner the intended region, the worse the substitution. This
+matters directly, because Section~\ref{sec:itokawa:sweep} advances the plane
+precisely into that regime.
+
+
+
+\subsection{The consequence on Itokawa}
+\label{app:cone:consequence}
+
+The density model assigns an elevated density to the region and reduces the
+complement to conserve the total mass. With the correct region, raising
+$\denshead$ adds mass in the head, displacing the centre of mass toward $+x$.
+With the sector, it adds mass along a wedge whose centroid lies at $+0.5625R$
+rather than $+0.6750R$ on the sphere analogue, and on Itokawa reaches back past
+the neck into the body.
+
+The recovered contrast inverted. Table~\ref{tab:appcone} gives both models as
+they were computed with the conical construction, alongside the plane-cut
+result at the same plane on the same shape model.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The Itokawa inversion computed with the conical region, against the
+plane-cut result. The conical runs used a mesh decimated to $41{,}369$ facets
+and a body volume of $0.0177848$~km$^{3}$; the plane-cut column is the
+reference run of Section~\ref{sec:itokawa:reference} on the unreduced mesh.
+Both conical models return a head several times \emph{less} dense than the
+body, with the minimum pinned to the lower edge of the density scan.}
+\label{tab:appcone}
+\begin{tabular}{lrrr}
+\toprule
+ & \multicolumn{2}{c}{Conical region} & Plane-cut \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-4}
+Quantity & head & neck & head \\
+\midrule
+Region facets            & $6{,}412$ & $5{,}730$ & $7{,}950$ \\
+Region volume (km$^3$)   & $0.004229$ & $0.001486$ & $0.002922$ \\
+Volume fraction          & $23.8\%$ & $8.4\%$ & $16.4\%$ \\
+Volume closure error     & $2.1\times10^{-14}\%$ & $0\%$ & $2.1\times10^{-14}\%$ \\
+$\densR$ (kg\,m$^{-3}$)  & $300$ & $300$ & $2800$ \\
+$\densrest$ (kg\,m$^{-3}$) & $2547$ & $2169$ & $1858$ \\
+Contrast                 & $0.118$ & $0.138$ & $1.507$ \\
+Interior minimum         & no & no & yes \\
+Improvement              & $6.121\%$ & $3.831\%$ & $16.889\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Three features of the conical columns are consistent with a region that reaches
+into the body. The recovered density sits at $300$~kg\,m$^{-3}$, the lower
+limit of the scan, in both models: the objective function is minimized by
+removing as much mass as the scan permits from a wedge that spans the neck, and
+would have gone lower had it been allowed to. Neither minimum is interior, so
+the edge-minimum guard of Section~\ref{sec:failures:edge} would flag both---but
+that guard was added later, and at the time the values were reported as
+results. And the head region holds $23.8\%$ of the volume against $16.4\%$ for
+the plane-cut region at the same plane, the excess being precisely the wedge
+between $O$ and the plane.
+
+The volume closure error is the point of the table. At
+$2.1\times10^{-14}$ per cent it is as small as floating-point arithmetic allows,
+and it is identical for the conical and the plane-cut construction. A check
+that returns the same value for a correct solid and for one wrong by a factor
+of $1.6$ in volume is measuring something other than correctness.
+
+
+
+
+\subsection{Why the verification did not catch it}
+\label{app:cone:verification}
+
+The construction was accompanied by a check described as a volume-closure test.
+It compared the volume of the assembled mesh, computed by the divergence
+theorem over its facets, against the sum of the signed tetrahedra used to build
+it. On the Itokawa head region it agreed to $2\times10^{-14}$ per cent.
+
+The agreement was exact and meaningless. Both quantities describe the same
+solid---the sector---and the test verified that the mesh had been assembled
+consistently from the tetrahedra, which it had. A test constructed this way
+cannot fail for the reason that mattered, and therefore carries no information
+about it. Nor would the other checks of Section~\ref{sec:methods:verify} have helped, had
+they existed at the time. The complement test is passed by both constructions,
+since sectors over complementary patches partition the body just as plane-cut
+lobes do. The manifold test is passed by the sector, which is a perfectly good
+closed surface. And the containment test finds nothing, because the sector is a
+single component and there is no other component for any of its facets to lie
+inside. Of the five checks the paper now applies, exactly one distinguishes the
+two solids.
+
+What distinguishes them is a statement about their vertices rather than their
+volumes, their topology or their embedding. Every vertex of the plane-cut region
+satisfies $x \ge c$ by construction. The sector contains $O$, which does not.
+Testing
+\begin{equation}
+\max_i \,(c - x_i) \le \epsilon
+\label{eq:apppredicate}
+\end{equation}
+over the vertices of the region returns $0$ for the lobe and $0.5$ for the
+sector in the units of the sphere test, where the plane sits at $x = 0.5$ and
+$O$ at the origin. The test costs three lines and inspects the property that
+was actually in doubt.
+
+\subsection{How it was found}
+\label{app:cone:discovery}
+
+Not by any check. The conical results were internally consistent, passed every
+test then applied, and gave a smooth, well-behaved dispersion curve. They were
+questioned because the recovered contrast disagreed in \emph{sign} with
+\citet{lowry2014} and \citet{kanamaru2019}, both of which report a denser head.
+
+The diagnosis followed from constructing the same region on a unit sphere,
+where the closed forms of Appendix~\ref{app:clip:analytic} are available. The
+tetrahedral construction returned a volume of $1.047453$ and a centroid of
+$0.562213$, matching the sector formulae to five and four decimals
+respectively, and matching the spherical cap not at all.
+
+Three observations follow that are worth carrying beyond this particular error.
+
+A disagreement with published work is not a verification method, but it is
+sometimes the only signal available. Had Itokawa's true structure been unknown,
+or had the sign happened to come out right, the error would have survived.
+
+Analytic test cases are cheap and decisive. A sphere has closed-form caps,
+slabs and sectors; the entire diagnosis took one script and no shape model. The
+same lesson recurs in Section~\ref{sec:discussion:ellipsoid}, where an analytic
+ellipsoid settles in one experiment a question that mesh-to-mesh comparison had
+answered wrongly. It is worth constructing such a case before trusting a
+numerical routine, not after.
+
+And a verification test should be designed against a specific hypothesis of
+failure. The question is not whether a check passes, but what it would look
+like if the code were wrong in a way one has not thought of. The volume-closure
+test answered the question ``was the mesh assembled consistently?''; nobody had
+asked ``is this the solid I meant?'' The same pattern recurred later in the
+work, with the buried facets of Section~\ref{sec:failures:buried}: the manifold
+test, added precisely because volume comparison had proved insufficient, was
+itself insufficient against a failure nobody had yet imagined. Each check
+answers the question its author posed, and the list of questions is never
+known to be complete.
+
+\subsection{Status of the superseded results}
+\label{app:cone:status}
+
+All results computed with the conical construction are superseded, and none
+appear in this paper except in Table~\ref{tab:appcone}, where they are shown
+for comparison. They are retained in the archived results file
+(Section~\ref{sec:conclusions}, data availability) under a key marking them as
+superseded, together with the diagnosis, so that the record of the work is
+complete and the error can be reproduced by anyone wishing to check this
+account.
+
+One further point should be recorded. The pilot study preceding this work,
+whose results informed Paper~IV, was internally inconsistent in a related way:
+it evaluated the potential on a planar-capped head mesh while computing the
+region volume as a sum of origin-anchored tetrahedra, which is a sector volume.
+The mismatch is the likely origin of a three per cent volume discrepancy noted
+at the time and left unexplained. No conclusion of Paper~IV depends on it,
+since that paper reports no density inversion, but the episode is recorded here
+for completeness.
+
+

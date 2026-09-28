@@ -1,0 +1,620 @@
+%=======================================================================
+%  Paper V — Section 3 (Itokawa: the one strong inversion signal) FINAL
+%
+%  Requires the macros listed at the head of Section 2.
+%
+%  Values superseded from earlier drafts of this section:
+%      scan interval 300-3900        -> 300-4000, widened to 300-8000
+%      I = 16.888 %                  -> 16.9 %
+%      contrast 1.507                -> 1.51 +/- 0.09
+%      Dx_COM 16.86 m                -> 16.9 +/- 2.9 m
+%      "identical across meshes"     -> bounded at half a scan step
+%      compositional bounds          -> now carry their own uncertainties
+%      neck model reported as a fit  -> reported as a non-detection
+%
+%  All values confirmed against paperV_final.json and paper4_recheck.json.
+%  Further corrections in this pass:
+%      curvature bounds 130 -> 129, neck 261 -> 259 kg/m3
+%      neck slab fraction 12.01 -> 12.05 %
+%      dipole test moved to the eleven planes below the grain-density
+%      ceiling, to match Section 5: g = -0.244, s = -1.141 +/- 0.018, 21 sigma;
+%      eleven-plane block added to the sweep table
+%=======================================================================
+
+\section{Itokawa: the one strong inversion signal}
+\label{sec:itokawa}
+
+Of the five bodies examined, Itokawa is the only one on which the
+two-region inversion produces a dispersion improvement that cannot be
+accounted for by mesh resolution alone. This section reports that result
+and then tries to break it: by changing the mesh, by moving the dividing
+plane, by changing the region shape, by changing the assumed mass, and by
+rescaling the shape model. The result survives in the sense that the
+recovered contrast is always positive and of the same order; it does not
+survive in the sense of being independent of the choices made, and
+Section~\ref{sec:constrains} takes up what that means.
+
+\subsection{Result at the detected neck}
+\label{sec:itokawa:reference}
+
+The neck detector of Section~\ref{sec:methods:neck} returns
+$\xsplit = \SI{0.1608}{\kilo\metre}$ with a prominence of $0.170$,
+placing $16.43\%$ of the volume in the head, whose centroid lies at
+$x_R = \SI{+0.2197}{\kilo\metre}$. This is the reference solution of the
+paper. It is not the plane used by \citet{kanamaru2019}, which lies at
+$\SI{0.150}{\kilo\metre}$ and encloses $17.89\%$; the two are kept apart
+throughout, and Section~\ref{sec:itokawa:comparison} quotes the second
+where a comparison with published values is intended.
+
+Scanning the head density over $4000$~kg\,m$^{-3}$ in steps of
+$\SI{25}{\kilo\gram\per\cubic\metre}$ and imposing the mass constraint at
+each step gives
+%
+\begin{equation}
+\denshead = 2800 \pm \SI{129}{\kilo\gram\per\cubic\metre},
+\qquad
+\densrest = 1858 \pm \SI{27}{\kilo\gram\per\cubic\metre},
+\qquad
+C = \denshead/\densrest = 1.51 \pm 0.09 ,
+\label{eq:itokawaref}
+\end{equation}
+%
+with a dispersion improvement of $\improve = 16.9\%$ over the uniform
+body. The interval on $\denshead$ is the curvature sensitivity interval
+defined in Section~\ref{sec:methods:minimisation}, not a confidence
+interval; that on $\densrest$ combines it with the plane-placement
+scatter of Table~\ref{tab:itokawasweep}; and that on $C$ follows from the
+first two, which move in opposite directions because the mass constraint
+ties them, so that their fractional contributions add rather than combine
+in quadrature: $129/2800 + 25.4/1858 = 4.6\% + 1.4\% = 6.0\%$, the
+$\SI{25.4}{\kilo\gram\per\cubic\metre}$ being the curvature interval
+propagated through the mass constraint, $[f/(1-f)]\times129$ at
+$f = 0.1643$. The $\pm\SI{27}{\kilo\gram\per\cubic\metre}$ quoted for
+$\densrest$ above is larger because it adds, in quadrature, the
+$\SI{8}{\kilo\gram\per\cubic\metre}$ by which $\densrest$ moves across the
+admissible planes; that term belongs to the interval on $\densrest$ but not
+to the budget on $C$, which is evaluated at a fixed plane. A further
+term comes from the choice of spin axis: taking the rotational potential about
+the recovered principal axis instead of the observed pole moves the contrast
+by $3.5\%$ (Section~\ref{sec:methods}). That term is a modelling choice
+independent of the other two, so it combines with them in quadrature, giving
+$6.9\%$; added linearly, as the most conservative reading would have it, the
+total is $9.5\%$. We note
+that the agreement of the central value with published contrasts,
+discussed in Section~\ref{sec:itokawa:comparison}, is well inside this
+interval and should not be quoted to a precision it does not support.
+
+The derived quantities are
+%
+\begin{equation}
+\Dmass = (2.75 \pm 0.48)\times10^{9}~\mathrm{kg}
+       = 7.7 \pm 1.3\%~\text{of}~\Mtot ,
+\qquad
+\dCOM = 16.9 \pm \SI{2.9}{\metre} .
+\label{eq:itokawaderived}
+\end{equation}
+%
+Both follow from $\densrest$ through
+Equations~\eqref{eq:excessidentity} and~\eqref{eq:excessmass} and are not
+independent measurements; they are reported because
+Section~\ref{sec:itokawa:comparison} compares the second against an
+external constraint, and because Section~\ref{sec:constrains} uses the
+first. Computed directly from the shape model, the centre of figure lies at
+$x_{\mathrm{cf}} = \SI{0.36}{\metre}$, within half a metre of the origin of
+the supplied model; inverting Equation~\eqref{eq:excessmass} at this plane
+gives $x_R - x_{\mathrm{cf}} = \SI{219.3}{\metre}$ against a region centroid
+at $\SI{219.7}{\metre}$, consistent to the rounding.
+
+Two figures should be recorded alongside these. The amplification factor
+of Equation~\eqref{eq:amplification} is $\ampfac = 12.0$ at this plane,
+so a fractional scatter quoted for $\densrest$ corresponds to twelve
+times that in $\Dmass$. And the displacement statistic of
+Equation~\eqref{eq:sstat} is $\Sstat = 5.8$, which is the quantity that
+separates a detection from a uniform body: for a uniform body
+$\densrest \equiv \densbulk$ holds identically, $\Sstat$ is zero however
+small the scatter, and no amount of stability in $\densrest$ is evidence
+of anything.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\textwidth]{fig03_dispersion_curves.pdf}
+\caption{Normalized geopotential dispersion against region density, each
+body at its own reference plane, normalized by its own bulk density and by
+its own uniform-density dispersion so that the five are comparable. Each
+body has its own line style and its own marker at the minimum, so the five
+remain distinguishable in monochrome. Itokawa has a deep, broad well,
+reaching $0.831$ of
+the uniform value at a region density $1.39$ times the bulk; the other four
+have shallow wells pinned near it, the deepest of them Arrokoth at $0.987$.
+Every curve is the run its section reports, the Arrokoth one with the buried
+facets of Section~\ref{sec:methods:shapes} excluded, so the improvements in
+the legend are those of Table~\ref{tab:nulls}.}
+\label{fig:curves}
+\end{figure}
+
+\subsection{Resolution stability of the inferred density}
+\label{sec:itokawa:mesh}
+
+Paper~IV established that the objective function is stable under
+decimation. That does not establish that the density recovered by
+minimizing it is stable, which is a separate question and the one that
+matters here. We repeated the inversion on meshes of $20{,}000$,
+$30{,}000$, $40{,}000$ and $49{,}152$ facets (Figure~\ref{fig:meshconv}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{fig04_mesh_convergence.pdf}
+\caption{Recovered density against facet count with the dividing plane held
+fixed. Top: Itokawa. The three finest meshes share the plane
+$\xsplit = \SI{0.1608}{\kilo\metre}$ and are flat to the resolution of the
+scan; the coarsest, which the detector placed at
+$\SI{0.1702}{\kilo\metre}$, is shown as a single point and differs by the
+plane and not by the resolution. Bottom: Arrokoth at its neck, unchanged
+across all three meshes. The shaded band is $\pm$ one scan step, which is
+the resolution of the answer; a change smaller than the band is not a
+change.}
+\label{fig:meshconv}
+\end{figure}
+
+The three finest meshes return the same dividing plane,
+$\SI{0.1608}{\kilo\metre}$, and on those three the recovered $\denshead$
+is unchanged. We state what that does and does not mean. Because no
+sub-grid refinement is applied, ``unchanged'' bounds the variation at
+half a scan step, $\SI{12.5}{\kilo\gram\per\cubic\metre}$ or $0.45\%$;
+it does not resolve it. The accompanying figure, that $\densrest$ moves
+by $\SI{0.1}{\kilo\gram\per\cubic\metre}$ or $0.005\%$, is a weaker
+statement still: with $\denshead$ pinned to the same grid point and
+$\Mtot$ fixed, Equation~\eqref{eq:massbalance} makes $\densrest$ a
+function of $\VR$ and $\Vtot$ alone, so the figure measures how little
+the enclosed volumes change under decimation rather than how little the
+inversion changes. Both are worth reporting; neither is a measurement of
+the objective's resolution sensitivity.
+
+The coarsest mesh is the informative case. At $20{,}000$ facets the
+detector returns $\SI{0.1702}{\kilo\metre}$ instead of
+$\SI{0.1608}{\kilo\metre}$, a displacement of $\SI{9.4}{\metre}$.
+Table~\ref{tab:itokawasweep} gives
+$\mathrm{d}\denshead/\mathrm{d}\xsplit \simeq
+\SI{10.9}{\kilo\gram\per\cubic\metre\per\metre}$ over that interval, so
+the displacement alone would move the recovered head density by about
+$\SI{100}{\kilo\gram\per\cubic\metre}$, or $3.6\%$---eight times the
+bound obtained on the three finer meshes. The value actually returned on
+that mesh is $\SI{2900}{\kilo\gram\per\cubic\metre}$, at the plane
+$\xsplit = \SI{0.1702}{\kilo\metre}$ that the detector returns there. That is
+exactly the value the unreduced mesh returns at
+$\SI{0.1700}{\kilo\metre}$ (Table~\ref{tab:itokawasweep}), so the
+disagreement between the two meshes is attributable to the plane in full and
+to the objective function not at all: each returns the same density at its
+own plane, and they differ only because the detector places the plane
+$\SI{9.4}{\metre}$ apart on them.
+Resolution sensitivity therefore enters this calculation through the
+plane detector rather than through the objective function, and a study
+that fixed the plane externally would not see it at all. We regard this
+as the more useful statement of the two, and it is the reason
+Section~\ref{sec:guidelines} recommends reporting the detected plane on
+every mesh rather than the density alone.
+
+At the reference plane the improvement of $16.9\%$ is $12.5$ times the
+value the envelope of Paper~IV takes on Itokawa specifically, $1.35\%$ over
+the ladder from $2{,}000$ to $42{,}000$ facets with quadric decimation. It is
+$2.9$ times the upper edge of the cross-body range, $5.9\%$, but that edge is
+attained on Eros, so the ratio to it is the weaker of the two comparisons.
+The envelope is a scale, not a threshold
+(Section~\ref{sec:intro:relaxation}), and the comparison establishes only
+that the improvement is not of the size that a change of discretization
+would produce.
+
+\subsection{Sensitivity to the dividing plane}
+\label{sec:itokawa:sweep}
+
+The plane is chosen, not measured. We therefore swept it from
+$\SI{0.130}{\kilo\metre}$ to $\SI{0.240}{\kilo\metre}$ and repeated the
+inversion at each position. Table~\ref{tab:itokawasweep} gives the
+result. It is the central piece of evidence in this paper, and
+Section~\ref{sec:constrains} is built on it.
+
+A statement about the scan is needed before the outer planes are read.
+The interval searched was $4000$~kg\,m$^{-3}$ for
+$\xsplit \le \SI{0.1800}{\kilo\metre}$ and $8000$~kg\,m$^{-3}$ for
+$\xsplit \ge \SI{0.1850}{\kilo\metre}$, the widening being made in
+anticipation of the steep rise in recovered density at the outer planes
+rather than in response to a boundary minimum: at
+$\SI{0.1850}{\kilo\metre}$ the recovered value of $3075$ lies at $38\%$
+of its scan limit, whereas at $\SI{0.1800}{\kilo\metre}$, where the
+interval was not widened, $3025$ lies at $76\%$ of its own. The two
+intervals share the same $\SI{25}{\kilo\gram\per\cubic\metre}$ grid, so
+widening adds candidate points without displacing existing ones and no
+discontinuity is introduced at the changeover. Every plane in
+Table~\ref{tab:itokawasweep} returns an interior minimum under the rule
+of Section~\ref{sec:methods:minimisation}; the closest approach to any
+scan boundary is $3025$ against a limit of $4000$, a margin of
+$\SI{975}{\kilo\gram\per\cubic\metre}$. No row is a boundary minimum and
+none is discarded.
+
+Three features of the table should be read before its statistics. First,
+the recovered head density rises monotonically and at an accelerating
+rate: the gradient $\mathrm{d}\denshead/\mathrm{d}\xsplit$ is
+$\SI{7.5}{\kilo\gram\per\cubic\metre\per\metre}$ over the first four
+planes and reaches
+$\SI{55.0}{\kilo\gram\per\cubic\metre\per\metre}$ over the last two,
+while $\densrest$ changes by only
+$-\SI{0.22}{\kilo\gram\per\cubic\metre\per\metre}$ over the admissible
+range---smaller by a factor of $34$ than the gentlest part of the
+$\denshead$ gradient and $250$ than the steepest. Second, the improvement
+also rises monotonically, from $12.9\%$ to $26.4\%$, with no interior
+turning point: the objective prefers the planes furthest along the body,
+which are the planes the composition forbids
+(Section~\ref{sec:itokawa:ceiling}). The reported $\improve = 16.9\%$ is
+therefore the improvement \emph{at the detected neck}, not the best the
+objective can do, and we describe it that way throughout. Interpolating
+between the planes at $0.190$ and $\SI{0.195}{\kilo\metre}$, the improvement
+at the block-density bound is $21.5\%$: the objective prefers the edge of the
+admissible range to the neck by $4.6$ percentage points, a difference that
+itself lies inside the mesh-resolution sensitivity envelope. Third,
+$\densrest$ is not flat but traces a shallow minimum near
+$\SI{0.200}{\kilo\metre}$, falling from $1865.9$ to $1849.8$ and rising
+again to $\SI{1855.5}{\kilo\gram\per\cubic\metre}$; the variation is
+systematic rather than noise, and the minimum lies outside the admissible
+range, so it should not be read as an optimum.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{The Itokawa split-plane sweep, thirteen planes on the unreduced
+$49{,}152$-facet mesh at $\Mtot = 3.58\times10^{10}$~kg. The planes at
+$\SI{0.1600}{\kilo\metre}$ and $\SI{0.1608}{\kilo\metre}$ are distinct,
+separated by $\SI{0.8}{\metre}$: the first belongs to the sweep grid, the
+second is the saddle returned by the detector and is the reference
+solution (bold). The scan column gives the interval over which $\densR$
+was searched; it was widened at $\xsplit \ge \SI{0.1850}{\kilo\metre}$ in
+anticipation of the steep rise in recovered density, not in response to a
+boundary minimum, and the two intervals share the same
+$\SI{25}{\kilo\gram\per\cubic\metre}$ grid. Every plane returns an
+interior minimum, the closest approach to a boundary being $3025$ against
+a limit of $4000$. Planes below the first rule exceed the empirical
+block-density bound and those below the second the LL-chondrite
+grain-density ceiling of Section~\ref{sec:itokawa:ceiling}; they are
+listed because the monotone rise of $\improve$ through them is the
+evidence for Section~\ref{sec:plane}, not because they describe a
+possible interior. The four quantity columns are ordered by how nearly
+invariant they are, and the ordering is the result. $\denshead$ is
+recovered on the scan grid with no sub-grid refinement, and the two
+places where $\dCOM$ decreases as the plane advances are that grid rather
+than a geometric effect, since $x_R - x_{\mathrm{cf}}$ increases
+monotonically from $203.9$ to $\SI{262.6}{\metre}$ throughout.}
+
+\label{tab:itokawasweep}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{lrrrrrrr}
+\toprule
+$\xsplit$ & $\VR/\Vtot$ & $\densrest$ & $\Dmass$ & $\dCOM$
+ & $\denshead$ & scan & $\improve$ \\
+(km) & (\%) & (kg\,m$^{-3}$) & ($10^{9}$~kg) & (m)
+ & (kg\,m$^{-3}$) & (kg\,m$^{-3}$) & (\%) \\
+\midrule
+$0.1300$ & $20.73$ & $1865.9$ & $2.614$ & $14.89$ & $2575$ & $300$--$4000$ & $12.9$ \\
+$0.1400$ & $19.28$ & $1860.7$ & $2.707$ & $15.81$ & $2650$ & $300$--$4000$ & $14.1$ \\
+$0.1500$ & $17.89$ & $1857.7$ & $2.761$ & $16.51$ & $2725$ & $300$--$4000$ & $15.4$ \\
+$0.1600$ & $16.54$ & $1856.9$ & $2.774$ & $16.97$ & $2800$ & $300$--$4000$ & $16.8$ \\
+$\mathbf{0.1608}$ & $\mathbf{16.43}$ & $\mathbf{1858.1}$ & $\mathbf{2.753}$
+ & $\mathbf{16.86}$ & $\mathbf{2800}$ & $\mathbf{300}$--$\mathbf{4000}$ & $\mathbf{16.9}$ \\
+$0.1700$ & $15.18$ & $1854.1$ & $2.825$ & $17.66$ & $2900$ & $300$--$4000$ & $18.2$ \\
+$0.1800$ & $13.80$ & $1850.9$ & $2.881$ & $18.40$ & $3025$ & $300$--$4000$ & $19.6$ \\
+$0.1850$ & $13.08$ & $1853.0$ & $2.844$ & $18.37$ & $3075$ & $300$--$8000$ & $20.3$ \\
+$0.1900$ & $12.36$ & $1852.5$ & $2.852$ & $18.63$ & $3150$ & $300$--$8000$ & $21.0$ \\
+\cmidrule(l){1-8}
+\multicolumn{8}{l}{\footnotesize\itshape
+ below: $\denshead$ exceeds the empirical block-density bound,
+ $3220 \pm \SI{220}{\kilo\gram\per\cubic\metre}$} \\
+$0.1950$ & $11.62$ & $1850.2$ & $2.893$ & $19.11$ & $3250$ & $300$--$8000$ & $21.7$ \\
+$0.2000$ & $10.87$ & $1849.8$ & $2.901$ & $19.38$ & $3350$ & $300$--$8000$ & $22.4$ \\
+\cmidrule(l){1-8}
+\multicolumn{8}{l}{\footnotesize\itshape
+ below: $\denshead$ exceeds the LL-chondrite grain density,
+ $3540 \pm \SI{130}{\kilo\gram\per\cubic\metre}$} \\
+$0.2200$ & $7.86$ & $1851.9$ & $2.863$ & $20.04$ & $3900$ & $300$--$8000$ & $24.8$ \\
+$0.2400$ & $5.00$ & $1855.5$ & $2.798$ & $20.52$ & $5000$ & $300$--$8000$ & $26.4$ \\
+\midrule
+\multicolumn{8}{l}{\bfseries All thirteen planes\quad
+ ($\VR$ spanning a factor $4.15$)} \\
+mean       & $13.90$ & $1855.2$ & $2.805$ & $17.93$ & $3169.2$ & & \\
+half-range &         & $0.434\%$ & $5.12\%$ & $15.70\%$ & $38.26\%$ & & \\
+CV         &         & $\mathbf{0.251\%}$ & $\mathbf{2.95\%}$
+           & $\mathbf{9.31\%}$ & $20.61\%$ & & \\
+$\ampfac$  &         & \multicolumn{6}{l}{mean $11.77$, range $11.34$--$12.70$} \\
+\midrule
+\multicolumn{8}{l}{\bfseries Below the grain-density ceiling, $n=11$\quad 
+
+ ($\VR$ spanning a factor $1.907$) %; used for scaling in Section~\ref{sec:constrains})
+ } \\
+mean       & $15.25$ & $1855.4$ & $2.800$ & $17.51$ & $2936$ & & \\
+half-range &         & $0.434\%$ & $5.12\%$ & $12.82\%$ & $13.20\%$ & & \\
+CV         &         & $\mathbf{0.268\%}$ & $\mathbf{3.16\%}$
+           & $\mathbf{8.15\%}$ & $8.60\%$ & & \\
+$\ampfac$  &         & \multicolumn{6}{l}{mean $11.80$} \\
+\midrule
+\multicolumn{8}{l}{\bfseries Admissible planes only, $n=9$\quad
+ ($\VR$ spanning a factor $1.68$)} \\
+mean       & $16.14$ & $1856.6$ & $2.779$ & $17.12$ & $2855.6$ & & \\
+half-range &         & $0.404\%$ & $4.80\%$ & $10.92\%$ & $10.07\%$ & & \\
+CV         &         & $\mathbf{0.252\%}$ & $\mathbf{3.00\%}$
+           & $\mathbf{7.42\%}$ & $6.89\%$ & & \\
+$\ampfac$  &         & \multicolumn{6}{l}{mean $11.90$} \\
+\bottomrule
+\end{tabular}
+
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+\textbf{Mass-balance audit.} Every row satisfies
+$\Dmass = (\densbulk-\densrest)\Vtot$ with
+$\densbulk = \SI{2012.87}{\kilo\gram\per\cubic\metre}$, and independently
+$\Dmass = \Ddens\,\VR$, to the printed precision
+(Section~\ref{sec:methods:verify}). The $\dCOM$ column is likewise not
+independent: by Equation~\eqref{eq:excessmass} it is $\Dmass$ multiplied
+by the purely geometric factor $(x_R-x_{\mathrm{cf}})/\Mtot$. Its value
+lies in testing a rival hypothesis, not in adding data.
+\\[3pt]
+\textbf{Exclusion of the dipole hypothesis.} If the conserved quantity
+were the mass dipole $D = \Dmass\,(x_R-x_{\mathrm{cf}})$ rather than the
+excess mass, $\dCOM$ would be the flatter column. It is not: its
+coefficient of variation exceeds that of $\Dmass$ by $2.6$ over the
+eleven planes below the grain-density ceiling and $3.2$ over all thirteen.
+Quantitatively, $\mathrm{d}\log(x_R-x_{\mathrm{cf}})/\mathrm{d}\log\VR =
+-0.244$ over the eleven planes, so dipole conservation requires a scaling
+slope $s = -0.756$; the measured value is $s = -1.141 \pm 0.018$,
+twenty-one standard errors away (Section~\ref{sec:constrains:slope}).
+\end{minipage}
+\end{table}
+
+\subsection{A physical bound on the plane}
+\label{sec:itokawa:ceiling}
+
+Because the objective rises monotonically with plane position, it cannot
+select the plane, and an external bound is needed. Two are available, and
+both are bounds on the recovered head density rather than on the plane
+directly; each is converted into a plane position through the measured
+gradient of Table~\ref{tab:itokawasweep}, and each therefore inherits an
+uncertainty that we state rather than suppress.
+
+The hard bound is compositional. Itokawa is an LL~chondrite parent body
+\citep{nakamura2011}, and no assemblage of LL material can exceed its
+grain density, $3540 \pm \SI{130}{\kilo\gram\per\cubic\metre}$
+\citep{consolmagno2008}. A head denser than this would require a
+composition the returned samples exclude. Interpolating
+Table~\ref{tab:itokawasweep} between $\SI{0.2000}{\kilo\metre}$ and
+$\SI{0.2200}{\kilo\metre}$, where the local gradient is
+$\SI{27.5}{\kilo\gram\per\cubic\metre\per\metre}$, places the crossing at
+$\xsplit = \SI{0.2069}{\kilo\metre}$, and the $\pm130$ on the grain
+density makes that $\SI{0.2069+-0.0047}{\kilo\metre}$. Two caveats
+attach. The interpolation spans an interval over which
+$\denshead(\xsplit)$ is convex---the gradient rises from $20$ to
+$\SI{27.5}{\kilo\gram\per\cubic\metre\per\metre}$ across it---so the
+secant lies above the curve and the true crossing is at a slightly larger
+$\xsplit$: the figure is a conservative lower bound on the admissible
+range, not a best estimate. And the grain density is a zero-porosity
+limit, so a head at exactly that value would be a solid monolith, which
+the surface morphology does not support.
+
+The softer bound is empirical. The bulk density of LL~chondrite falls,
+which includes their internal microporosity, is
+$3220 \pm \SI{220}{\kilo\gram\per\cubic\metre}$ \citep{consolmagno2008}.
+This is a meteorite measurement, not a measurement of boulders on Itokawa,
+and it bounds the density of the blocks a rubble pile is built from only on
+the assumption that those blocks resemble the falls.
+A head region denser than the densest individual block it could be made
+of would require the head to be less porous than its own constituents.
+The crossing falls between $\SI{0.1900}{\kilo\metre}$ and
+$\SI{0.1950}{\kilo\metre}$, where the local gradient is
+$\SI{20}{\kilo\gram\per\cubic\metre\per\metre}$, at
+$\xsplit = \SI{0.1935}{\kilo\metre}$; the $\pm220$ on the bound makes
+that $\SI{194+-11}{\metre}$, which should not be quoted to the tenth of a
+metre.
+
+We adopt the softer bound as the edge of the admissible range, giving the
+nine planes from $\SI{0.1300}{\kilo\metre}$ to
+$\SI{0.1900}{\kilo\metre}$ over which Table~\ref{tab:itokawasweep}
+reports its second set of statistics. The detected neck at
+$\SI{160.8}{\metre}$ sits comfortably inside it, $\SI{33}{\metre}$ from
+the edge and three times the uncertainty on the edge. The essential point
+is not the numerical value of either bound but that a bound from outside
+the method was needed at all: the objective function, left to itself,
+runs to a head density that the meteorite collection forbids.
+
+\subsection{Comparison with published determinations}
+\label{sec:itokawa:comparison}
+
+Table~\ref{tab:itokawacompare} sets our result beside the published ones.
+Two cautions govern how it should be read.
+
+First, the comparison must be made at a common plane.
+\citet{kanamaru2019} divide at $\SI{0.150}{\kilo\metre}$; at that plane
+our inversion returns $\denshead = 2725$, $\densrest = 1857.7$,
+$C = 1.467$ and $\dCOM = \SI{16.51}{\metre}$, and those are the values
+entered in the table. The reference solution of
+Section~\ref{sec:itokawa:reference} belongs to a different plane and a
+different row, and the two sets should not be interchanged.
+
+Second, three of the four entries are not independent of one another.
+\citet{motooka2012}, \citet{kanamaru2019} and this work all minimize a
+functional of the surface geopotential, differing in the weighting and in
+the surface subset. Agreement among them tests implementations, not
+physics, and the recovery of $1.467$ against $1.460$ is expected rather
+than confirmatory---the more so since our own interval on $C$ is
+$\pm0.09$, two orders of magnitude wider than the difference. The only
+entry derived from independent physics is \citet{lowry2014}, whose YORP
+spin-up measurement gives $\densbody = 1750 \pm 110$ and
+$\denshead = 2850 \pm \SI{500}{\kilo\gram\per\cubic\metre}$, hence a
+contrast of $1.63 \pm 0.30$ if the quoted uncertainties are combined in
+quadrature, and a centre-of-mass offset of $\SI{21+-12}{\metre}$. Our
+$C = 1.47 \pm 0.09$ and $\dCOM = \SI{16.5+-2.9}{\metre}$ lie inside those
+intervals, but the intervals are wide, and the test is correspondingly
+weak: a contrast anywhere between $1.33$ and $1.93$ would have passed it.
+
+\begin{table}[htbp]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{2pt}
+\caption{Published two-density determinations for Itokawa and this work,
+all quoted at or referred to the dividing plane
+$\xsplit = \SI{0.150}{\kilo\metre}$. The first three rows minimize a
+functional of the surface geopotential and are not independent of one
+another; only \citet{lowry2014} rests on different physics. Contrasts are
+computed from the tabulated densities.}
+\label{tab:itokawacompare}
+\begin{tabular}{lllrrrr}
+\toprule
+Source & Method & Surface used & $\denshead$ & $\densbody$ & $C$ & $\dCOM$ \\
+       &        &              & \multicolumn{2}{c}{(kg\,m$^{-3}$)} & & (m) \\
+\midrule
+\citet{lowry2014}       & YORP spin-up            & ---            & $2850\pm500$ & $1750\pm110$ & $1.63\pm0.30$ & $21\pm12$ \\
+\citet{kanamaru2019}    & potential variance      & global         & $2730$       & $1870$       & $1.460$       & $16$ \\
+\citet{kanamaru2019pss} & potential variance      & smooth terrain & $2450$       & $1930$       & $1.269$       & --- \\
+This work               & dispersion minimization & global         & $2725$       & $1857.7$     & $1.47\pm0.09$ & $16.5\pm2.9$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% The centre-of-mass offset of Kanamaru et al. (2019, PSS) is not quoted in
+% the same form as the others and is left empty rather than converted.
+
+The spread among the three equipotential-family results is itself
+informative. \citet{kanamaru2019pss}, restricting the average to the
+smooth terrains, obtain a contrast of $1.269$ against $1.460$ on the
+global surface: a change of surface subset moves the answer by more than
+our quoted interval. The choice of which facets enter
+Equation~\eqref{eq:dispersion} is therefore a modelling decision of the
+same order as the choice of dividing plane, and we have not explored it.
+
+\subsection{The head--neck ambiguity}
+\label{sec:itokawa:ambiguity}
+
+The head model is one hypothesis about where the anomaly sits. The neck
+model of Section~\ref{sec:methods:identity}, in which the dense region is
+a slab spanning the constriction, is another, and
+\citet{kanamaru2019pss} report that on the smooth terrains it fits
+marginally better. On the global surface we find the opposite, and by a
+margin that can be stated quantitatively.
+
+The neck slab, with upper edge at $\SI{0.2029}{\kilo\metre}$ and lower
+edge at $\SI{0.1187}{\kilo\metre}$, a width of
+$w = \SI{0.0842}{\kilo\metre}$, encloses $12.05\%$ of the volume.
+The inversion returns
+$\densneck = 2525 \pm \SI{259}{\kilo\gram\per\cubic\metre}$ and
+$\densrest = \SI{1943}{\kilo\gram\per\cubic\metre}$, a contrast of
+$1.300$, with an improvement of $\improve = 2.3\%$. Four comparisons
+follow.
+
+The improvement does not clear the bar the paper sets for itself. At
+$2.3\%$ it lies inside the $0.9$--$5.9\%$ mesh-resolution envelope, which
+is where the four weak-signal bodies of Section~\ref{sec:nulls} also sit.
+By the criterion applied to them, the neck model is not a detection, and
+we do not report it as one.
+
+The curvature interval is wider in relative terms, $\pm259$ on $2525$
+being $10.3\%$ against $4.6\%$ for the head model, so the objective is
+less sharply curved about its minimum and the parameter is less well
+determined.
+
+The displacement statistic is smaller and its denominator larger.
+Propagating the curvature interval through the mass constraint gives
+$\delta\densrest = [f/(1-f)]\times 259 =
+\SI{35.5}{\kilo\gram\per\cubic\metre}$ at $f = 0.1205$, against
+$\densbulk - \densrest = \SI{69.9}{\kilo\gram\per\cubic\metre}$, so
+$\Sstat = 2.0$ for the neck model against $5.8$ for the head model. On
+the statistic of Equation~\eqref{eq:sstat}, which is the one that does
+not reward a model merely for being stable, the head model is favoured by
+a factor of nearly three.
+
+The amplification factor differs sharply between the two models and must
+be quoted with either. Because the neck model places less excess mass,
+$\ampfac = \densrest/(\densbulk-\densrest) = 1943/69.9 = 27.8$, against
+$12.0$ for the head model. A reader comparing the fractional stability of
+$\densrest$ between the two models without dividing by $\ampfac$ would
+conclude that the neck model was more than twice as well constrained,
+when the opposite is the case.
+
+One consequence deserves emphasis rather than burial. The two models
+return background densities of $1858$ and
+$\SI{1943}{\kilo\gram\per\cubic\metre}$, differing by
+$\SI{85}{\kilo\gram\per\cubic\metre}$, or $3.2$ times the combined
+uncertainty on the head-model value. The quantity that
+Section~\ref{sec:constrains} identifies as the one the method constrains
+is therefore not invariant under a change of region shape, only under a
+change of plane position within a fixed region shape. That is a narrower
+claim than the stability of Table~\ref{tab:itokawasweep} taken alone
+would suggest, and we make it in that narrower form.
+
+\subsection{Insensitivity to the assumed mass}
+\label{sec:itokawa:mass}
+
+The total mass enters as a constraint, so it is worth asking how much of
+the result depends on it. We repeated the reference inversion with
+$\Mtot$ varied over a factor of four, from half to twice the measured
+value---far beyond the published uncertainty on $GM$, which is about five
+per cent \citep{abe2006}. The rotation period was held fixed. Across that
+range the recovered contrast moved by $11.7\%$, from $1.404$ to $1.569$,
+and the improvement by $0.75$ percentage points, from $16.30\%$ to
+$17.05\%$.
+
+Two things should be said about this insensitivity, because it is easy to
+over-read. It is not surprising: the contrast is a ratio, and to first
+order a change in $\Mtot$ rescales both densities together. What does
+\emph{not} rescale is the amplification factor, because
+Equation~\eqref{eq:ampsensitivity} makes $\ampfac$ respond to a shift in
+$\densbulk$ with a gain of about thirteen. A one per cent error in the
+mass therefore moves $\ampfac$ by roughly thirteen per cent, and with it
+the division between the algebraic and physical parts of the stability
+ratio reported in Section~\ref{sec:constrains}. The contrast is robust to
+the assumed mass; the interpretation of the stability is not, and the
+error budget of Section~\ref{sec:constrains} carries the mass term for
+that reason.
+
+\subsection{Sensitivity to the shape model volume}
+\label{sec:itokawa:scale}
+
+Our mesh encloses $\Vtot = \SI{0.0177856}{\cubic\kilo\metre}$ against the
+$(1.84\pm0.092)\times10^{7}~\mathrm{m^{3}}$ adopted by \citet{abe2006}, a
+difference of $-3.3\%$ and $-0.67\sigma$
+(Section~\ref{sec:methods:shapes}). Since $\densbulk = \Mtot/\Vtot$
+enters Equation~\eqref{eq:amplification} directly, the difference matters
+more than its size suggests.
+
+Rescaling the model linearly to the published volume moves the contrast
+by $-0.32\%$ and the excess mass by $-0.92\%$, both under one per cent, while
+$\densbulk$ falls from $2012.9$ to
+$\SI{1945.7}{\kilo\gram\per\cubic\metre}$ and $\ampfac$ moves from $12.0$
+to $12.4$. The rotation period was held at its measured value, so the
+rescaling alters the rotational term relative to the gravitational one: it
+is a physical change to the problem, not a relabelling of it.
+The contrast and the excess mass are robust; $\ampfac$, and hence the
+decomposition of Section~\ref{sec:constrains}, is not. We report both
+values of $\ampfac$ wherever the decomposition is quoted.
+
+\subsection{Summary of this section}
+\label{sec:itokawa:summary}
+
+Itokawa returns a dispersion improvement of $16.9\%$ at the detected
+neck, with a head density of
+$2800 \pm \SI{129}{\kilo\gram\per\cubic\metre}$ against a background of
+$1858 \pm \SI{27}{\kilo\gram\per\cubic\metre}$, a contrast of
+$1.51 \pm 0.09$, an excess mass of $7.7 \pm 1.3\%$ of the total, and a
+centre-of-mass offset of $\SI{16.9+-2.9}{\metre}$. The background density
+is displaced from the bulk density by $5.8$ times its own uncertainty.
+
+The result is stable under decimation at the level the scan grid can
+resolve, and the residual resolution sensitivity enters through the plane
+detector rather than the objective. It is stable under a change of
+dividing plane in the sense that $\densrest$ varies by a quarter of a per
+cent across thirteen planes, but not in the sense that $\denshead$ does,
+which varies by twenty. It is not stable under a change of region shape:
+the neck model returns a background density
+$\SI{85}{\kilo\gram\per\cubic\metre}$ higher, though with an improvement
+inside the resolution envelope and an $\Sstat$ of $2.0$ against $5.8$, so
+the head model is preferred on the paper's own criteria. It agrees with
+published determinations, but three of the four rest on the same physics
+as ours, and the fourth has intervals wide enough that agreement is weak
+evidence. And the objective does not choose its own plane: left to itself
+it runs to a head density the meteorite collection forbids, and an
+external bound at $\SI{194+-11}{\metre}$ is what stops it.

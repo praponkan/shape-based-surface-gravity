@@ -1,0 +1,312 @@
+\section{Plane clipping and its verification}
+\label{app:clip}
+
+This appendix sets out the region construction of
+Section~\ref{sec:methods:clip} in enough detail to be reimplemented, derives
+the closed-form quantities used to verify it, and states the tolerance
+treatment on which its robustness depends.
+
+\subsection{The algorithm}
+\label{app:clip:alg}
+
+Let $(\mathcal{V},\mathcal{F})$ be a closed, outward-oriented triangle mesh and
+let the cutting plane be $x = c$. We construct the closed mesh bounding the
+solid $\{x > c\}$; the complement and the slab of the neck model follow by
+reversing the sense and by clipping twice.
+
+Each vertex is classified by its signed distance $d_i = x_i - c$ into one of
+three states,
+\begin{equation}
+\mathrm{code}(i) =
+\begin{cases}
++1, & d_i > \tau, \\
+\phantom{+}0, & |d_i| \le \tau, \\
+-1, & d_i < -\tau,
+\end{cases}
+\label{eq:appclassify}
+\end{equation}
+with $\tau$ the tolerance of Section~\ref{app:clip:tol}. Vertices in state $0$
+are snapped exactly onto the plane, $x_i \leftarrow c$, and are thereafter
+treated as belonging to the kept side.
+
+A facet is discarded if all three codes are $\le 0$ and retained unchanged if
+all three are $\ge 0$. Otherwise it is clipped. Traversing its three edges in
+order, the vertex $i$ is emitted whenever $\mathrm{code}(i) \ge 0$, and an
+intersection point is emitted whenever an edge changes sign \emph{strictly},
+that is when $\mathrm{code}(i)\,\mathrm{code}(j) < 0$, at
+\begin{equation}
+\mathbf{p} = \mathbf{v}_i + t\,(\mathbf{v}_j - \mathbf{v}_i),
+\qquad
+t = \frac{d_i}{d_i - d_j},
+\label{eq:appintersect}
+\end{equation}
+with the $x$-coordinate of $\mathbf{p}$ set to $c$ exactly rather than left to
+rounding. The requirement that the sign change be strict is what prevents a
+vertex lying on the plane from generating two coincident intersection points;
+this is developed in Section~\ref{app:clip:tol}. The resulting polygon is
+emitted as a fan from its first vertex after consecutive coincident points have
+been removed, and is discarded if fewer than three distinct vertices remain.
+
+Intersection points are cached by the edge that produced them. An edge is
+identified by the unordered pair of its endpoint indices, so the two facets
+sharing a cut edge receive the same new vertex index. Created per facet
+instead, they would receive two distinct indices at the same position: the
+volume would be unchanged, since it is a sum of signed tetrahedra, but the
+surface would be split along the entire cut and would fail the manifold test of
+Section~\ref{app:clip:verify}.
+
+\subsection{Closing the opening}
+\label{app:clip:cap}
+
+Every edge of the retained surface whose two endpoints both lie on the plane
+and which has non-zero length is a boundary edge. These are traced into closed
+loops by following, from each edge, the unique unvisited outgoing edge at its
+head; the traversal terminates when it returns to its start or runs out. Each
+loop is then capped separately, to its own apex: for a loop $\mathcal{L}$ with
+vertex set $\mathcal{V}_\mathcal{L}$, the apex $\mathbf{a}$ is the centroid of
+$\mathcal{V}_\mathcal{L}$ projected onto the plane, and for each
+$(i,j) \in \mathcal{L}$ the triangle $(\mathbf{a}, \mathbf{v}_j, \mathbf{v}_i)$
+is added, the reversed traversal orienting the cap outward.
+
+That a fan closes a planar loop correctly, for any coplanar apex, follows from
+the signed-area identity: for a closed loop $\{\mathbf{v}_k\}$ in a plane with
+unit normal $\nhat$,
+\begin{equation}
+\sum_k \tfrac{1}{2}\,\nhat \cdot
+\big[(\mathbf{v}_k - \mathbf{a}) \times (\mathbf{v}_{k+1} - \mathbf{a})\big]
+\;=\; A_{\mathrm{signed}},
+\label{eq:appfan}
+\end{equation}
+independently of $\mathbf{a}$, provided $\mathbf{a}$ lies in the plane.
+
+The identity holds for each loop separately, and this is why the loops must be
+traced rather than fanned together. A single apex shared between two disjoint
+loops still gives the correct total signed area---so the volume would be
+right---but the resulting triangles are not a surface: the two loops become
+connected through a vertex that belongs to both, and the mesh is no longer a
+manifold. The condition arises whenever a cross-section is multiply connected
+or the region falls into more than one piece, and both occur in this study. The
+Arrokoth shape model is supplied as two unjoined shells, so a plane beyond its
+neck produces a region in two pieces, each with its own cap.
+
+\subsection{Tolerance and degenerate facets}
+\label{app:clip:tol}
+
+The tolerance is set to
+\begin{equation}
+\tau = 10^{-10} \, \lVert \mathbf{v}_{\max} - \mathbf{v}_{\min} \rVert ,
+\label{eq:apptol}
+\end{equation}
+the bounding-box diagonal of the mesh, so that it scales with the body.
+
+Its purpose is to prevent a specific degeneracy. Suppose a vertex $k$ lies
+exactly on the plane, $d_k = 0$, and is classified by a strict test as
+\emph{outside}. Both edges incident on it from inside then satisfy
+$d_i > 0 > d_k$ formally, and Eq.~\eqref{eq:appintersect} returns $t = 1$ for
+each, placing both intersection points at $\mathbf{v}_k$ itself. The clipped
+polygon acquires two coincident vertices, and the triangles formed with them
+have zero area, on the surface and on the cap alike.
+
+The consequence is more severe than a small geometric error. A facet of zero
+area has an undefined normal, and in the Werner--Scheeres formulation the
+per-facet contribution is assembled from that normal; the evaluation returns
+NaN not at points near the facet but at every field point on the body. The
+failure is therefore total rather than local, and it is parameter-dependent: at
+$\xsplit = 0.1608$~km on Itokawa no such vertex is encountered and the
+computation is clean, while at $0.1300$~km four are, and all $49{,}152$ field
+values are lost.
+
+Two guards are applied after clipping. Facets with a repeated vertex index are
+removed, as are facets whose area falls below $10^{-12}$ times the median
+positive area. In practice the classification of Eq.~\eqref{eq:appclassify}
+prevents such facets from being created at all: on the runs reported in this
+paper the number removed is zero.
+
+Slivers---facets of small but non-zero area, produced where a vertex lies just
+outside the tolerance---are not removed, and the polyhedral gravity
+implementation flags them as potentially unstable. Their contribution is
+proportional to their area and should vanish, but catastrophic cancellation is
+conceivable when a facet millimetres across is evaluated at coordinates of
+order kilometres. This was therefore measured directly. Raising $\tau$ by four
+orders of
+magnitude, to $10^{-6}$ of the diagonal, removes them: on 67P the minimum facet
+area rose from $2.381\times10^{-12}$ to $3.660\times10^{-8}$~km$^2$ and eight
+facets were eliminated. Every reported quantity agreed to the digits printed,
+the dispersion at seven planes being identical to eight decimals and the
+recovered contrast, improvement and excess mass unchanged in the seventh
+significant figure or beyond. On a synthetic body the agreement was exact.
+
+\subsection{Closed-form quantities for verification}
+\label{app:clip:analytic}
+
+Two solids with elementary closed forms are used to verify the construction.
+
+For a sphere of radius $R$ cut at $x = c$, write $h = R - c$ for the height of
+the resulting cap. Integrating the disc of radius $\sqrt{R^2 - x^2}$ over
+$x \in [c, R]$ gives
+\begin{equation}
+V_{\mathrm{cap}} = \pi \int_{c}^{R} (R^2 - x^2)\,\mathrm{d}x
+= \frac{\pi h^{2} (3R - h)}{3},
+\qquad
+\bar{x}_{\mathrm{cap}} = \frac{3\,(2R - h)^{2}}{4\,(3R - h)} .
+\label{eq:appcap}
+\end{equation}
+For $R = 1$ and $c = 0.5$ these are $0.6544985$ and $0.6750000$.
+
+For the slab $|x| \le a$ of the same sphere,
+\begin{equation}
+V_{\mathrm{slab}} = \pi \int_{-a}^{a} (R^2 - x^2)\,\mathrm{d}x
+= 2\pi\!\left( R^{2} a - \frac{a^{3}}{3} \right),
+\label{eq:appslab}
+\end{equation}
+which for $R = 1$ and $a = 0.2$ gives $1.2398819$.
+
+The corresponding radial cone---the solid produced by the construction of
+Appendix~\ref{app:cone}, whose apex is the sphere's centre and whose base is
+the spherical cap, and which for a sphere is a spherical sector---has
+\begin{equation}
+V_{\mathrm{sector}} = \tfrac{1}{3}\,R\,A_{\mathrm{cap}}
+= \tfrac{1}{3}\,R\,(2\pi R h)
+= \frac{2\pi R^{2} h}{3},
+\qquad
+\bar{x}_{\mathrm{sector}} = \tfrac{3}{4}\!\left( R - \frac{h}{2} \right),
+\label{eq:appcone}
+\end{equation}
+giving $1.0471976$ and $0.5625000$ for the same cut. The centroid follows from
+the fan of tetrahedra sharing the apex, whose centroids lie three quarters of
+the way from apex to base, the base being a spherical cap of mean
+$x$-coordinate $R - h/2$.
+
+\subsection{Verification}
+\label{app:clip:verify}
+
+Table~\ref{tab:appverify} reports what the implementation returns on an
+icosphere of $20{,}480$ facets.
+
+\begin{table}[htbp]
+\centering
+\caption{Verification of the clipping construction against
+Eqs.~\eqref{eq:appcap}--\eqref{eq:appcone}, on a unit icosphere of $20{,}480$
+facets. The residuals near $0.1\%$ are the polyhedral approximation of the
+sphere: at the same subdivision the whole-body volume differs from $4\pi/3$ by
+$0.05\%$. The clipping itself is exact for the given polyhedron.}
+\label{tab:appverify}
+\begin{tabular}{lrrr}
+\toprule
+Quantity & Measured & Closed form & Difference \\
+\midrule
+Cap volume, $c = 0.5$        & $0.653931$ & $0.654498$ & $-0.087\%$ \\
+Cap centroid, $c = 0.5$      & $0.674936$ & $0.675000$ & $-0.010\%$ \\
+Slab volume, $a = 0.2$       & $1.239437$ & $1.239882$ & $-0.036\%$ \\
+Sector volume, $c = 0.5$     & $1.047453$ & $1.047198$ & $+0.024\%$ \\
+Sector centroid, $c = 0.5$   & $0.562213$ & $0.562500$ & $-0.051\%$ \\
+\midrule
+Complement closure error     & \multicolumn{3}{r}{$2.0\times10^{-14}\%$} \\
+Predicate violation, lobe    & \multicolumn{3}{r}{$0$} \\
+Predicate violation, sector  & \multicolumn{3}{r}{$0.5$} \\
+Euler characteristic, lobe   & \multicolumn{3}{r}{$2$} \\
+Facets failing containment   & \multicolumn{3}{r}{$0$ (one component)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Four checks are applied to every region, and a fifth where the shape model
+has more than one component. Each inspects a property the others do not, and
+the set was arrived at by failure: each was added after something passed all
+the checks then in place.
+
+The \emph{analytic} comparison tests magnitude but would be passed by any
+construction returning the right volume for the wrong reason.
+
+The \emph{complement} test, $V(x>c) + V(x<c) = \Vtot$, tests internal
+consistency and is passed by the sector as readily as by the lobe, since both
+partition the tetrahedral sum.
+
+The \emph{predicate} test inspects the identity of the solid, requiring
+$\min_i x_i \ge c$ over the vertices of the region. It is the only one of the
+first three that the sector fails.
+
+The \emph{manifold} test inspects topology. Every directed edge must appear
+exactly once with its reverse present, and the Euler characteristic
+$\chi = V - E + F$ must equal $2$ for each connected component. This is
+insensitive to none of the same failures: a surface split along the cut, as
+described in Section~\ref{app:clip:alg}, passes the analytic, complement and
+predicate tests, because none of them consults connectivity, and fails only
+this one. Conversely a sector passes the manifold test and fails the predicate.
+
+The \emph{containment} test inspects the embedding. Where the mesh has more
+than one component, each facet centroid is tested by ray casting for
+containment in every other component, and those found inside are excluded from
+the area-weighted sums. It catches what none of the other four can: a mesh in
+two closed pieces is topologically sound whatever their arrangement in space,
+so a facet buried inside the opposite shell passes every previous check while
+contributing a geopotential evaluated at a point that is not on the surface.
+On the Arrokoth model $455$ facets, $0.943\%$ of the area, fail it, and
+excluding them moves the assumed bulk density at which the recovered contrast
+crosses unity from about $345$ to just below
+$\SI{250}{\kilo\gram\per\cubic\metre}$
+(Section~\ref{sec:nulls:arrokoth}).
+
+The criterion is stated per connected component rather than as $\chi = 2$,
+because a region cut from a body supplied as several unjoined shells is
+legitimately in several pieces. Of the shape models used here, Arrokoth has
+$\chi = 4$ over two components as supplied, and the 67P SPC~2017 model is not
+closed at all, with one repeated and two unmatched directed edges. Both defects
+are inherited by any region cut from those models, and neither affects a volume
+or a potential.
+
+The same containment machinery bears on the volume. Two components that
+overlapped in space would have the material in the overlap counted twice,
+since the divergence-theorem volume sums over all facets without regard to
+whether they bound the same region. Measured by Monte Carlo over the
+overlapping bounding box with $200{,}000$ samples, the intersection of the two
+Arrokoth shells is $0.044 \pm 0.001$ per cent of the total volume, consistent
+with zero: the shells touch but do not interpenetrate, and no material is
+double counted. It is the surface average, not the volume, that the buried
+facets corrupt.
+
+A stress case is worth recording. On an icosphere subdivided so that $128$
+vertices lie exactly on $x = 0$, cutting at that plane returns a hemisphere of
+volume $2.093260$ against the closed-form $2\pi/3 = 2.094395$, a difference of
+$-0.054\%$, with $\chi = 2$, zero degenerate facets and a minimum facet area of
+$1.92\times10^{-4}$. A strict-inequality classification would produce
+coincident points on every one of those $128$ vertices, which is why the
+tolerance-based classification of Section~\ref{app:clip:tol} is required.
+
+\subsection{Detecting the dividing plane}
+\label{app:clip:neck}
+
+The saddle detector of Section~\ref{sec:methods:neck} operates on the binned
+profile $w(x)$, the ninetieth percentile of facet-centroid distance from the
+$x$ axis within each of sixty bins. Two aspects of its implementation are worth
+stating.
+
+Candidates are identified on \emph{runs} of equal value rather than at single
+points. A run $[j,k]$ with $w_j = \dots = w_k$ within tolerance is a local
+minimum if $w_{j-1} > w_j$ and $w_{k+1} > w_k$, and its position is taken as
+the midpoint. A strict point test, requiring $w_j < w_{j\pm1}$, fails on a
+symmetric profile, where two samples straddle the minimum with equal values;
+applied to Itokawa it returned no neck at all. It also fails on any plateau.
+
+The prominence of Eq.~\eqref{eq:prominence} is measured against the
+\emph{lower} of the two flanking maxima, in the manner of the topographic
+quantity of the same name. This has a consequence worth noting: Eros scores
+higher than Itokawa, $0.216$ against $0.170$, despite its shallower saddle,
+because its two flanking humps are nearly equal ($7.9072$ and $7.8902$~km,
+differing by $0.2\%$) while Itokawa's differ by $15\%$ ($0.1437$ and
+$0.1215$~km). Prominence measures how well separated the lobes are, not how
+deep the neck is, and the two are not the same.
+
+The detector is also mesh-dependent. On Itokawa it returns $0.1702$~km on the
+$20{,}000$-facet mesh and $0.1608$~km on the meshes of $30{,}000$, $40{,}000$
+and $49{,}152$ facets, a difference of $9.4$~m. Any test that holds the
+plane fixed must therefore supply it explicitly rather than rely on the
+detector returning the same value twice.
+
+The threshold $p \ge 0.02$ is not a fine judgement. Across the bodies examined
+the accepted values run from $0.490$ down to $0.091$, and the single rejected
+value is $0.0004$: the gap spans more than two orders of magnitude. Where no
+candidate qualifies the routine returns no plane, and the neck model is skipped
+rather than run on a guess.
+
+

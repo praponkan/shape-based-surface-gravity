@@ -1,0 +1,866 @@
+[
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "qem",
+  "target": 2000,
+  "facets": 2000,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 14.068657501285486,
+  "dispersion": 0.032213183243339855,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:08:40"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "qem",
+  "target": 4000,
+  "facets": 4000,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.877220723505992,
+  "dispersion": 0.03303161881459026,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:08:54"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "qem",
+  "target": 8000,
+  "facets": 8000,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.860489796530326,
+  "dispersion": 0.033598655415582546,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:09:14"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "qem",
+  "target": 16000,
+  "facets": 16000,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.870632616793515,
+  "dispersion": 0.0340201718319958,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:10:15"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "qem",
+  "target": 32000,
+  "facets": 32000,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.634046840240396,
+  "dispersion": 0.03412372004195009,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:13:48"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "qem",
+  "target": 42000,
+  "facets": 42000,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.592629397971178,
+  "dispersion": 0.03415699134474129,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:19:48"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "cluster",
+  "target": 2000,
+  "facets": 2097,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 11.034484999882462,
+  "dispersion": 0.032405145584645065,
+  "mesh": {
+   "repeated": 58,
+   "unmatched": 44,
+   "euler": 27,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:19:50"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "cluster",
+  "target": 4000,
+  "facets": 4668,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 11.426369274781122,
+  "dispersion": 0.03317093749671403,
+  "mesh": {
+   "repeated": 85,
+   "unmatched": 65,
+   "euler": 36,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:19:54"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "cluster",
+  "target": 8000,
+  "facets": 8120,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 11.830904937194887,
+  "dispersion": 0.033597765847765346,
+  "mesh": {
+   "repeated": 123,
+   "unmatched": 86,
+   "euler": 46,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:20:08"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "cluster",
+  "target": 16000,
+  "facets": 16697,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 12.404900603066158,
+  "dispersion": 0.033963490684283566,
+  "mesh": {
+   "repeated": 99,
+   "unmatched": 62,
+   "euler": 33,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:21:05"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "cluster",
+  "target": 32000,
+  "facets": 36030,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.26316869057178,
+  "dispersion": 0.03412523851221442,
+  "mesh": {
+   "repeated": 75,
+   "unmatched": 39,
+   "euler": 22,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:25:26"
+ },
+ {
+  "body": "Eros",
+  "shape_model": "Eros Gaskell 50k poly.obj",
+  "decimator": "cluster",
+  "target": 42000,
+  "facets": 42907,
+  "bulk_density_gcc": 2.67,
+  "period_h": 5.27,
+  "mean_slope_deg": 13.452514652927714,
+  "dispersion": 0.03415356720316017,
+  "mesh": {
+   "repeated": 34,
+   "unmatched": 22,
+   "euler": 13,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:31:37"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "qem",
+  "target": 2000,
+  "facets": 2000,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 17.464111523093408,
+  "dispersion": 0.08491596851200074,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:31:49"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "qem",
+  "target": 4000,
+  "facets": 4000,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 17.03112052569091,
+  "dispersion": 0.08503445405527833,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:32:03"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "qem",
+  "target": 8000,
+  "facets": 8000,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.913955761266052,
+  "dispersion": 0.08556268641402681,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:32:26"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "qem",
+  "target": 16000,
+  "facets": 16000,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.810778021062067,
+  "dispersion": 0.08591534363782839,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:33:26"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "qem",
+  "target": 32000,
+  "facets": 32000,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.711955297581568,
+  "dispersion": 0.08605543491186222,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:36:58"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "qem",
+  "target": 42000,
+  "facets": 42000,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.749418542222827,
+  "dispersion": 0.08606242534875286,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:42:56"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "cluster",
+  "target": 2000,
+  "facets": 2183,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 14.71024199499449,
+  "dispersion": 0.08527032491123057,
+  "mesh": {
+   "repeated": 46,
+   "unmatched": 39,
+   "euler": 23,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:42:57"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "cluster",
+  "target": 4000,
+  "facets": 4857,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 14.930559190346642,
+  "dispersion": 0.0856172202035347,
+  "mesh": {
+   "repeated": 123,
+   "unmatched": 95,
+   "euler": 52,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:43:02"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "cluster",
+  "target": 8000,
+  "facets": 8232,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 15.366675929577418,
+  "dispersion": 0.08590422862032718,
+  "mesh": {
+   "repeated": 146,
+   "unmatched": 108,
+   "euler": 56,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:43:16"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "cluster",
+  "target": 16000,
+  "facets": 16676,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.05198137958113,
+  "dispersion": 0.0860369141713269,
+  "mesh": {
+   "repeated": 98,
+   "unmatched": 70,
+   "euler": 37,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:44:12"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "cluster",
+  "target": 32000,
+  "facets": 34234,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.627905186508308,
+  "dispersion": 0.08608002471677295,
+  "mesh": {
+   "repeated": 48,
+   "unmatched": 26,
+   "euler": 15,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:48:07"
+ },
+ {
+  "body": "Itokawa",
+  "shape_model": "Itokawa Hayabusa 50k poly.obj",
+  "decimator": "cluster",
+  "target": 42000,
+  "facets": 48785,
+  "bulk_density_gcc": 1.95,
+  "period_h": 12.132,
+  "mean_slope_deg": 16.804739520730394,
+  "dispersion": 0.0860635946669298,
+  "mesh": {
+   "repeated": 2,
+   "unmatched": 1,
+   "euler": 3,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T20:56:06"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "qem",
+  "target": 2000,
+  "facets": 2000,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 13.038997699728831,
+  "dispersion": 0.058457503750989744,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:56:14"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "qem",
+  "target": 4000,
+  "facets": 4000,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.943329917926778,
+  "dispersion": 0.059339356293124965,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:56:24"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "qem",
+  "target": 8000,
+  "facets": 8000,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.715391737607574,
+  "dispersion": 0.05999127569396474,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:56:43"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "qem",
+  "target": 16000,
+  "facets": 16000,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.654844240136923,
+  "dispersion": 0.06015433435185891,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T20:57:39"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "qem",
+  "target": 32000,
+  "facets": 32000,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.641224275566133,
+  "dispersion": 0.06016587563286005,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:01:06"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "qem",
+  "target": 42000,
+  "facets": 32040,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.641224320836448,
+  "dispersion": 0.060165875651011703,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:04:33"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "cluster",
+  "target": 2000,
+  "facets": 2821,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.413389598343386,
+  "dispersion": 0.05928980884359696,
+  "mesh": {
+   "repeated": 53,
+   "unmatched": 49,
+   "euler": 27,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:04:34"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "cluster",
+  "target": 4000,
+  "facets": 5240,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.46567375718082,
+  "dispersion": 0.05980100721477086,
+  "mesh": {
+   "repeated": 61,
+   "unmatched": 53,
+   "euler": 29,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:04:40"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "cluster",
+  "target": 8000,
+  "facets": 9587,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.537799404315322,
+  "dispersion": 0.060045539651738575,
+  "mesh": {
+   "repeated": 130,
+   "unmatched": 102,
+   "euler": 53,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:04:59"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "cluster",
+  "target": 16000,
+  "facets": 17279,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.598784425503702,
+  "dispersion": 0.060142682022990245,
+  "mesh": {
+   "repeated": 122,
+   "unmatched": 93,
+   "euler": 49,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:06:01"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "cluster",
+  "target": 32000,
+  "facets": 28984,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.639771100999731,
+  "dispersion": 0.06016575523131025,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:08:51"
+ },
+ {
+  "body": "Gaspra",
+  "shape_model": "Gaspra Thomas.obj",
+  "decimator": "cluster",
+  "target": 42000,
+  "facets": 32040,
+  "bulk_density_gcc": 2.7,
+  "period_h": 7.042,
+  "mean_slope_deg": 12.641224320836448,
+  "dispersion": 0.060165875651011703,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:12:18"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "qem",
+  "target": 2000,
+  "facets": 2000,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 14.795539253849807,
+  "dispersion": 0.0358433500330451,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:12:28"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "qem",
+  "target": 4000,
+  "facets": 4000,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 14.36420504384902,
+  "dispersion": 0.035909421048974904,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:12:39"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "qem",
+  "target": 8000,
+  "facets": 8000,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 14.12995288993341,
+  "dispersion": 0.03631911771873289,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:12:59"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "qem",
+  "target": 16000,
+  "facets": 16000,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.973350988395536,
+  "dispersion": 0.036529047773282176,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:13:55"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "qem",
+  "target": 32000,
+  "facets": 32000,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.932715331294112,
+  "dispersion": 0.036428203389061026,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:17:23"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "qem",
+  "target": 42000,
+  "facets": 32040,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.932715335358747,
+  "dispersion": 0.03642820337931635,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:20:50"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "cluster",
+  "target": 2000,
+  "facets": 2141,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.170757791617033,
+  "dispersion": 0.034896377304957635,
+  "mesh": {
+   "repeated": 53,
+   "unmatched": 41,
+   "euler": 23,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:20:51"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "cluster",
+  "target": 4000,
+  "facets": 4427,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.459014732487827,
+  "dispersion": 0.0354451495786898,
+  "mesh": {
+   "repeated": 80,
+   "unmatched": 70,
+   "euler": 37,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:20:56"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "cluster",
+  "target": 8000,
+  "facets": 9651,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.750978965043156,
+  "dispersion": 0.036153109632789324,
+  "mesh": {
+   "repeated": 172,
+   "unmatched": 129,
+   "euler": 67,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:21:15"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "cluster",
+  "target": 16000,
+  "facets": 18471,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.903487244636935,
+  "dispersion": 0.036416801251927075,
+  "mesh": {
+   "repeated": 211,
+   "unmatched": 119,
+   "euler": 65,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:22:24"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "cluster",
+  "target": 32000,
+  "facets": 28423,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.932254817503384,
+  "dispersion": 0.036431581142739734,
+  "mesh": {
+   "repeated": 21,
+   "unmatched": 8,
+   "euler": 7,
+   "closed": false
+  },
+  "timestamp": "2026-08-19T21:25:07"
+ },
+ {
+  "body": "Ida",
+  "shape_model": "Ida Thomas.obj",
+  "decimator": "cluster",
+  "target": 42000,
+  "facets": 32040,
+  "bulk_density_gcc": 2.6,
+  "period_h": 4.634,
+  "mean_slope_deg": 13.932715335358747,
+  "dispersion": 0.03642820337931635,
+  "mesh": {
+   "repeated": 0,
+   "unmatched": 0,
+   "euler": 2,
+   "closed": true
+  },
+  "timestamp": "2026-08-19T21:28:42"
+ }
+]

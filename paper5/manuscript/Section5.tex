@@ -1,0 +1,614 @@
+%=======================================================================
+%  Paper V — Section 5 (What the method constrains)   FINAL
+%
+%  Requires the macros listed at the head of Section 2, plus:
+%      \newcommand{\Dipole}{D}
+%      \newcommand{\geomslope}{g}
+%
+%  PRINCIPAL FINDING OF THIS REVISION -------------------------------
+%  Every statistic in ver10 of this section (A = 11.8, s = -1.14,
+%  +/-13.1 %, +/-5.1 %) belongs to the ELEVEN planes at
+%  x_split <= 0.2000 km, i.e. those below the LL-chondrite grain-density
+%  ceiling. ver10 labelled this subset as the one the BLOCK-density
+%  bound permits, which is the nine planes at x_split <= 0.1900 km and
+%  gives different numbers. The eleven-plane subset spans a factor
+%  1.907 in V_R, which is what the synthetic family's factor 1.90 was
+%  matched to; the nine-plane subset spans 1.68 and all thirteen span
+%  4.15. All three are now reported side by side in Table 5.1.
+%
+%  Superseded values:
+%      "+/-13.1 % over the block-density range" -> 13.20 %, grain ceiling
+%      "+/-0.435 %"                             -> 0.434 %
+%      "factor of about ninety"                 -> decomposed, 3 subsets
+%      "dipole displaced in observed direction" -> OPPOSITE direction
+%      "no explanation for excess steepness"    -> Eq. (steepidentity)
+%      "rho_rest = 1855 +/- 8"                  -> plane-placement spread;
+%                                                  budget is +/- 27
+%      "Delta M ... to +/-5.1 %"                -> +/-17.5 % with budget
+%      dipole "three times less steady"         -> 21 sigma slope test
+%
+%  All values confirmed against paperV_final.json and synth_final.json.
+%  Changes in this pass: the stability ratio is decomposed into identity,
+%  subtraction and compensation (32.1 = 11.78 x 7.52 / 2.77), replacing the
+%  single 'residual' of 2.7, which was the rho_R-vs-Delta M comparison under
+%  another name; per-body synthetic table with standard errors; correlation
+%  reported as Pearson with its two-tailed p and the Spearman value beside it.
+%=======================================================================
+
+\section{What the method constrains}
+\label{sec:constrains}
+
+Sections~\ref{sec:itokawa} and~\ref{sec:nulls} report one strong signal and
+four weak ones. This section asks a different question: where the method
+does respond strongly, what quantity has it determined? The answer is not
+the density of the region, and establishing that is the principal result of
+this paper.
+
+\subsection{The observation, and the subset it depends on}
+\label{sec:constrains:observation}
+
+Across the thirteen-plane Itokawa sweep of Table~\ref{tab:itokawasweep} the
+recovered region density varies by $\pm38.3\%$ about its mean while the
+background density varies by $\pm0.434\%$. Both figures depend on how far
+the sweep is allowed to run, and because the planes at the far end are ones
+Section~\ref{sec:itokawa:ceiling} excludes on compositional grounds, the
+dependence has to be made explicit before anything is inferred from it.
+
+Table~\ref{tab:subsets} therefore reports every statistic over three nested
+subsets: all thirteen planes; the eleven at
+$\xsplit \le \SI{0.2000}{\kilo\metre}$, which lie below the LL-chondrite
+grain-density ceiling and are the widest set that is compositionally
+defensible; and the nine at $\xsplit \le \SI{0.1900}{\kilo\metre}$, which
+lie below the softer empirical block-density bound adopted in
+Section~\ref{sec:itokawa:ceiling}. We use the eleven-plane subset for the
+scaling analysis of Sections~\ref{sec:constrains:slope}
+to~\ref{sec:constrains:synthetic}, for one reason and not for its
+convenience: it spans a factor $1.907$ in region volume, and the synthetic
+family of Section~\ref{sec:constrains:synthetic} was built to span $1.90$.
+A scaling exponent compared between sweeps of different span is not a
+comparison. Where a conclusion changes between subsets we say so; the
+central ones do not.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{Sweep statistics over three nested subsets of the planes of
+Table~\ref{tab:itokawasweep}. Coefficients of variation use the $n-1$
+denominator. $\ampfac$ is evaluated per plane from
+Equation~\eqref{eq:amplification} and averaged. The last three
+ratios decompose $\CV(\densR)/\CV(\densrest)$ exactly: the identity of
+Equation~\eqref{eq:excessidentity} fixes $\CV(\Dmass)/\CV(\densrest)$,
+the subtraction that defines $\Ddens$ fixes $\CV(\Ddens)/\CV(\densR)$,
+and only $\CV(\Ddens)/\CV(\Dmass)$, the compensation between contrast and
+region volume, is a property of the objective function. The scaling exponent $s$ is
+defined by Equation~\eqref{eq:slope} and fitted by ordinary least squares;
+$\geomslope$ is the purely geometric slope of
+Equation~\eqref{eq:geomslope}.}
+\label{tab:subsets}
+\begin{tabular}{lrrr}
+\toprule
+ & All planes & Below grain ceiling & Below block bound \\
+$\xsplit$ range (km) & $0.1300$--$0.2400$ & $0.1300$--$0.2000$ & $0.1300$--$0.1900$ \\
+$n$ & $13$ & $11$ & $9$ \\
+span in $\VR$ & $4.15$ & $\mathbf{1.907}$ & $1.68$ \\
+\midrule
+$\densR$ mean (kg\,m$^{-3}$)      & $3169$   & $2936$   & $2856$ \\
+\quad half-range                  & $38.26\%$ & $13.20\%$ & $10.07\%$ \\
+\quad CV                          & $20.61\%$ & $8.60\%$  & $6.89\%$ \\
+\midrule
+$\densrest$ mean (kg\,m$^{-3}$)   & $1855.2$ & $1855.4$ & $1856.6$ \\
+\quad half-range                  & $0.434\%$ & $0.434\%$ & $0.404\%$ \\
+\quad CV                          & $0.251\%$ & $0.268\%$ & $0.252\%$ \\
+\midrule
+$\Dmass$ mean ($10^{9}$~kg)       & $2.805$  & $2.800$  & $2.779$ \\
+\quad half-range                  & $5.12\%$  & $5.12\%$  & $4.80\%$ \\
+\quad CV                          & $2.95\%$  & $3.16\%$  & $3.00\%$ \\
+\midrule
+$\dCOM$ mean (m)                  & $17.93$  & $17.51$  & $17.12$ \\
+\quad half-range                  & $15.70\%$ & $12.82\%$ & $10.92\%$ \\
+\quad CV                          & $9.31\%$  & $8.15\%$  & $7.42\%$ \\
+\midrule
+$\Ddens$ CV                       & $49.85\%$ & $23.79\%$ & $20.13\%$ \\
+\midrule
+$\bar{\ampfac}$                   & $11.77$  & $11.80$  & $11.90$ \\
+$\CV(\densR)/\CV(\densrest)$      & $82.2$   & $32.1$   & $27.3$ \\
+\quad identity, $\CV(\Dmass)/\CV(\densrest)$ & $11.76$ & $11.78$ & $11.88$ \\
+\quad subtraction, $\CV(\Ddens)/\CV(\densR)$ & $2.42$ & $2.77$ & $2.92$ \\
+\quad compensation, $\CV(\Ddens)/\CV(\Dmass)$ & $16.9$ & $\mathbf{7.52}$ & $6.71$ \\
+\midrule
+$s$                               & $-1.041\pm0.020$ & $\mathbf{-1.141\pm0.018}$ & $-1.159\pm0.025$ \\
+$\geomslope$                      & $-0.177$ & $-0.244$ & $-0.262$ \\
+$\mathrm{d}\log \Dipole/\mathrm{d}\log\VR$
+                                  & $-0.217\pm0.020$ & $-0.385\pm0.018$ & $-0.420\pm0.025$ \\
+\quad departure from dipole       & $10.9\sigma$ & $21.4\sigma$ & $16.8\sigma$ \\
+\midrule
+$\max \improve$                   & $26.4\%$ & $22.4\%$ & $21.0\%$ \\
+\bottomrule
+\end{tabular}
+% Confirmed against paperV_final.json. The three values of geomslope were
+% recomputed directly from the region centroids and x_cf = 0.36 m and agree.
+\end{table}
+
+Three things in that table carry the argument.
+
+First, the background density is better determined than the region density
+by a factor of $82$ over all thirteen planes and $32$ over the eleven. That
+comparison is between $\densR$ and $\densrest$, which are measured in the
+same units and are the two densities of the same model; they are not,
+however, independent parameters, since the mass constraint of
+Equation~\eqref{eq:massbalance} leaves exactly one degree of freedom, and
+the pair $(\densR,\VR)$ is degenerate along $\Ddens\VR = \mathrm{const}$.
+The inversion selects a point on that hyperbola only once the dividing
+surface has been fixed by other means.
+
+Second, only part of that factor is a result. Over the eleven planes it
+decomposes exactly as $32.1 = 11.78 \times 7.52 / 2.77$.
+Equation~\eqref{eq:excessamplify} fixes the first factor as algebra,
+present whatever the objective function does. The third is also algebra:
+$\Ddens$ is the difference between $\densR$ and a nearly constant
+$\densrest$, so its coefficient of variation exceeds that of $\densR$ by the
+ratio of their means. What remains, the factor of $7.5$ by which $\Dmass$ is
+steadier than $\Ddens$, is the compensation between contrast and region
+volume; since $\Dmass = \Ddens\VR$, it measures directly how far $\Ddens$
+falls as $\VR$ grows, and it is the part we report. Dividing the net ratio
+by $\bar{\ampfac}$ alone, as an earlier draft of this section did, gives
+$\CV(\densR)/\CV(\Dmass) = 2.7$, which is the comparison of $\densR$ with
+$\Dmass$ under another name: it leaves the subtraction factor in place and
+understates the compensation by $2.8$.
+
+Third, the ordering is not a property of the method. On 67P the region
+density varies by $\pm3.1\%$ across its sweep while the excess mass varies
+by $\pm34.4\%$---the reverse of Itokawa. On Arrokoth the density difference
+$\Ddens$ passes through zero inside the sweep
+(Section~\ref{sec:nulls:arrokoth}), so the sweep mean of $\Dmass$ lies
+inside its own spread and no fractional range for it is meaningful; we
+report instead that $\lvert\Dmass\rvert/\Mtot$ stays below $12\%$ at every
+plane on both bodies. Figure~\ref{fig:rho_dm} shows the three sweeps on a
+common scale.
+These are half-ranges over the eight planes of the 67P sweep, from
+$\xsplit = 0.70$ to $\SI{1.20}{\kilo\metre}$, which span a factor $1.504$ in
+$\VR$ against the $1.907$ used for Itokawa.
+
+\begin{figure}[p]
+\centering
+\includegraphics[height=0.86\textheight]{fig06_rho_vs_dM.pdf}
+\caption{Recovered region density and excess mass across each split-plane
+sweep, both as deviations from their own sweep mean and on a common
+symmetric-log scale, against the region volume fraction. On Itokawa the
+excess mass is nearly flat while the density slopes; on 67P and Arrokoth the
+order is reversed. The shaded band marks $\pm20\%$. Arrokoth's excess mass
+changes sign across its sweep, so its fractional range is not meaningful
+and no scaling exponent exists. The Itokawa planes beyond
+$\SI{0.2000}{\kilo\metre}$, which the grain-density ceiling of
+Section~\ref{sec:itokawa:ceiling} excludes, are drawn open.}
+\label{fig:rho_dm}
+\end{figure}
+
+\subsection{A diagnostic that does not break down}
+\label{sec:constrains:slope}
+
+Comparing fractional ranges fails when a quantity passes through zero,
+because the mean then sits inside the spread. On the Arrokoth sweep
+$\Ddens$ runs from $+25.0$ to $\SI{-61.5}{\kilo\gram\per\cubic\metre}$, so
+its fractional range is meaningless; a ratio-based analysis of the synthetic
+bodies produces apparent ratios of up to $1623$ that are artefacts of
+dividing by nearly zero.
+
+Since $\Dmass = \Ddens\,\VR$, the behaviour is captured instead by the
+exponent
+%
+\begin{equation}
+s \;=\; \frac{\mathrm{d}\log\lvert\Ddens\rvert}{\mathrm{d}\log \VR} ,
+\label{eq:slope}
+\end{equation}
+%
+fitted by ordinary least squares across the planes of a sweep. A slope of
+$-1$ means $\Dmass$ is held fixed as the plane moves; a slope of $0$ means
+the density difference is held fixed instead. Two conditions are required
+for the exponent to be measurable: $\Ddens$ must keep its sign, and the
+sweep must span an adequate range in $\VR$. We adopt a minimum span of
+$1.35$, below which the logarithmic fit is unconstrained. The threshold
+does no work in this paper: the Itokawa sweep spans $1.907$, the 67P sweep
+$1.504$ and every synthetic sweep $1.90$ by construction, so no reported
+exponent lies near it, and we report the standard error with every
+exponent so that the reader can judge each fit directly.
+
+Equation~\eqref{eq:excessidentity} gives the exponent a second reading, and
+it is worth stating in its differential form rather than only at the single
+point $s=-1$. Since $\Dmass = \Ddens\VR$ and
+$\Dmass = (\densbulk - \densrest)\Vtot$ with $\densbulk$ and $\Vtot$ fixed,
+%
+\begin{equation}
+s + 1 \;\equiv\; \frac{\mathrm{d}\log\Dmass}{\mathrm{d}\log\VR}
+      \;\equiv\; \frac{\mathrm{d}\log\!\left(\densbulk-\densrest\right)}
+                      {\mathrm{d}\log\VR} ,
+\label{eq:steepidentity}
+\end{equation}
+%
+of which the special case
+%
+\begin{equation}
+s = -1 \iff \Ddens \VR = \mathrm{const} \iff \densrest = \mathrm{const}
+\label{eq:slopeequiv}
+\end{equation}
+%
+is the statement made in earlier drafts. Equation~\eqref{eq:steepidentity}
+is an identity, not a result, and two consequences follow from it that
+should be kept in view. The exponent is not independent evidence about
+$\densrest$: it is a re-parametrization of the same information. What it
+adds is direction rather than magnitude---it distinguishes a systematic
+drift in the background density from scatter about a fixed value, which a
+coefficient of variation cannot do---and it remains finite where fractional
+ranges do not.
+
+On the eleven Itokawa planes below the grain-density ceiling, $s = -1.141 \pm 0.018$. On 67P,
+$s = -2.80 \pm 0.27$ over eight planes spanning a factor $1.504$ in $\VR$;
+the uncertainty is fifteen times that on Itokawa, as expected on a body whose
+dispersion improvement is $0.574\%$. On Arrokoth the density difference
+changes sign and no exponent exists.
+
+The Itokawa exponent is steeper than $-1$, and
+Equation~\eqref{eq:steepidentity} says what that steepness is. It is the
+systematic drift of the background density already documented in
+Section~\ref{sec:itokawa:sweep}: $\densbulk - \densrest$ rises from $147.0$
+to $\SI{163.1}{\kilo\gram\per\cubic\metre}$ as the region shrinks, giving
+$\mathrm{d}\log(\densbulk-\densrest)/\mathrm{d}\log\VR = -0.16$ between the
+endpoints, against the $-0.141$ that the fitted exponent implies. Earlier
+drafts reported that the excess steepness was unexplained; it is not a
+separate phenomenon from the shallow minimum in $\densrest$, and
+Equation~\eqref{eq:steepidentity} makes the two the same statement.
+
+\subsection{Excluding conservation of the mass dipole}
+\label{sec:constrains:dipole}
+
+A distinct hypothesis has to be disposed of before the excess mass can be
+called the conserved quantity. Suppose the objective function held fixed not
+$\Dmass$ but the mass dipole
+$\Dipole = \Dmass\,(x_R - x_{\mathrm{cf}})$, which is $\Mtot\dCOM$ by
+Equation~\eqref{eq:excessmass} and is the quantity the YORP measurement of
+\citet{lowry2014} constrains. The two hypotheses make different and
+quantitatively separated predictions, because the geometric factor is not
+constant along a sweep.
+
+Write
+%
+\begin{equation}
+\geomslope \;\equiv\;
+ \frac{\mathrm{d}\log\!\left(x_R - x_{\mathrm{cf}}\right)}{\mathrm{d}\log\VR} ,
+\label{eq:geomslope}
+\end{equation}
+%
+which involves no density and no objective function: it is fixed by the
+shape model and the plane positions alone. Then
+$\mathrm{d}\log \Dipole/\mathrm{d}\log\VR = (s+1) + \geomslope$, and dipole
+conservation requires that combination to vanish, hence
+$s = -1 - \geomslope$. On the eleven planes below the grain ceiling
+$\geomslope = -0.244$, so dipole conservation predicts $s = -0.756$.
+
+The measured value is $s = -1.141 \pm 0.018$. The prediction and the
+measurement therefore lie on \emph{opposite} sides of $-1$: the observed
+exponent is steeper, dipole conservation requires shallower. An earlier
+draft of this section asserted the reverse, that dipole conservation would
+displace the exponent in the observed direction, and that assertion was
+wrong in sign.
+
+Stated directly, the dipole itself scales as
+%
+\begin{equation}
+\frac{\mathrm{d}\log \Dipole}{\mathrm{d}\log\VR}
+ = -0.385 \pm 0.018 ,
+\label{eq:dipoleslope}
+\end{equation}
+%
+which is twenty-one standard errors from the zero that conservation
+requires. The conclusion does not depend on the choice of subset: the same
+calculation over all thirteen planes gives $-0.217 \pm 0.020$, and over the
+nine planes below the block-density bound $-0.420 \pm 0.025$, or $10.9$ and
+$16.8$ standard errors respectively (Table~\ref{tab:subsets}). A second and
+cruder statement points the same way: across the eleven planes the
+centre-of-mass offset has a coefficient of variation of $8.15\%$ against
+$3.16\%$ for the excess mass, so the dipole is the less steady of the two
+by a factor of $2.6$ rather than the more steady.
+% Confirmed: geomslope recomputed directly from the region centroids and
+% x_cf = 0.36 m reproduces -0.177, -0.244 and -0.262.
+
+
+\subsection{A controlled experiment}
+\label{sec:constrains:synthetic}
+
+Three real bodies with three different behaviours do not settle why. A
+fourth real body could not settle it either: we cannot choose in advance
+whether it will carry a signal, and no body's true interior is known, so
+agreement would establish only that something had happened twice.
+
+We therefore constructed eight synthetic contact binaries as unions of
+prolate lobes of revolution, meshed directly, with the strength of the
+inversion signal varied by geometry alone. It should be stated at the outset
+that no density anomaly is imposed: every synthetic body is of uniform
+density by construction, and what varies between them is shape. The family
+divides into three groups. A near-spherical control stands in for a body
+with no interior structure. A symmetric family of equal lobes is symmetric
+about its own neck, so the dispersion-minimizing contrast should be close to
+unity and the response weak by construction. An asymmetric family of unequal
+lobes has a geometric mass asymmetry, in the sense that a uniform body of
+that shape carries its volume unequally about the dividing plane, and the
+inversion has something to respond to. Within each family the neck is
+deepened while the enclosed volume varies by no more than $7\%$.
+
+Two design points matter. Planes are selected by bisection on the volume
+fraction rather than by position, so that every body spans the same factor
+$1.90$ in region volume as the eleven Itokawa planes below the grain-density ceiling, which span
+$1.907$; selection by fixed distance produces spans of only $1.13$ to
+$1.54$, which is not a comparison on equal terms. The full thirteen-plane
+Itokawa sweep spans $4.15$ and is not comparable with the synthetic family
+on this measure, which is the reason Table~\ref{tab:subsets} exists. And the
+total mass is held at $\SI{2000}{\kilo\gram\per\cubic\metre}$ times the
+enclosed volume with a rotation period of $\SI{12.13}{\hour}$ throughout, so
+that only the shape differs.
+
+It should be said clearly what this experiment does not test.
+Potential-dispersion minimization does not fit observed data: it assumes the
+true density is the one that flattens the surface geopotential. Imposing an
+arbitrary density on a synthetic body and asking the method to recover it
+would fail by construction and would test nothing. What is examined here is
+the structure of the objective function---which quantity it holds fixed as
+the dividing plane moves, and how that depends on the strength of its
+response. Because no known density anomaly is injected, the experiment
+characterises the regimes of the objective function; it does not by itself
+establish that an exponent near $-1$ implies a physical mass anomaly in a
+real body.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{The synthetic family, one row per body. Improvements are the
+maximum over each sweep, and the Itokawa figures given for comparison are
+therefore also maxima---$22.4\%$ over the eleven planes below the grain
+ceiling---rather than the $16.9\%$ reported at the detected neck in
+Section~\ref{sec:itokawa:reference}. Every sweep uses seven planes spanning
+a factor $1.90$ in $\VR$. Standard errors on $s$ are those of the
+least-squares fit. $\bar{\ampfac}$ is the amplification factor of
+Equation~\eqref{eq:excessamplify} averaged over the sweep; it is what
+separates the $\densR$ and $\Dmass$ half-ranges, which are therefore not
+directly comparable, and it is not meaningful on the three symmetric bodies,
+where $\Dmass$ passes through zero. The last column is the compensation
+ratio, the half-range of $\Ddens$ divided by that of $\Dmass$.}
+\label{tab:synthetic}
+\begin{tabular}{lrrrrrr}
+\toprule
+Body & $\improve_{\max}$ & $s$ & $\bar{\ampfac}$ & $\densR$ range
+ & $\Dmass$ range & $\Ddens/\Dmass$ \\
+\midrule
+\texttt{sphere}        & $1.24\%$  & none & $44$ & $\pm3.10\%$ & sign change & --- \\
+\texttt{sym\_waist}    & $3.68\%$  & none & ---  & $\pm5.61\%$ & sign change & --- \\
+\texttt{sym\_neck}     & $4.35\%$  & none & ---  & $\pm6.22\%$ & sign change & --- \\
+\texttt{sym\_deep}     & $4.47\%$  & none & ---  & $\pm5.60\%$ & sign change & --- \\
+\addlinespace
+\texttt{asym\_waist}   & $16.67\%$ & $-2.020\pm0.109$ & $15.0$ & $\pm9.28\%$  & $\pm31.3\%$ & $1.9$ \\
+\texttt{asym\_neck}    & $17.63\%$ & $-2.366\pm0.165$ & $16.2$ & $\pm9.37\%$  & $\pm39.2\%$ & $1.7$ \\
+\texttt{asym\_deep}    & $19.50\%$ & $-2.069\pm0.094$ & $14.9$ & $\pm8.81\%$  & $\pm29.1\%$ & $2.0$ \\
+\texttt{asym\_extreme} & $43.71\%$ & $-1.217\pm0.023$ & $8.1$  & $\pm12.78\%$ & $\pm6.2\%$  & $6.1$ \\
+\midrule
+\itshape Itokawa, eleven planes & \itshape $22.4\%$ & \itshape $-1.141\pm0.018$
+ & \itshape $11.8$ & \itshape $\pm13.20\%$ & \itshape $\pm5.12\%$
+ & \itshape $7.1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pattern is monotonic. Where the response is weak the density difference
+changes sign across the sweep and neither quantity is invariant, because
+neither has anything to be invariant about. At moderate response the
+exponent sits near $-2$, so the excess mass rises as the region shrinks and
+the density is the steadier of the two. Only at the strongest response does
+the exponent approach $-1$ and the excess mass become the steadier quantity.
+Figure~\ref{fig:slope} plots the relation with the three real bodies
+overlaid.
+
+The Pearson correlation between signal strength and exponent is $0.95$
+across the $n = 4$ synthetic bodies for which an exponent exists
+($p = 0.05$ two-tailed, $0.03$ one-tailed); the four bodies without an
+exponent cannot enter it. The Spearman rank correlation over the same four
+is only $0.40$ ($p = 0.6$), because the three clustered bodies are not in
+rank order: the Pearson value is carried by the single body at $43.7\%$. Four points, three of them clustered between $16.7\%$ and
+$19.5\%$, cannot establish a functional form, and we return to this in
+Section~\ref{sec:constrains:limits}.
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig07_slope_vs_signal.pdf}
+\caption{Scaling exponent $s=\mathrm{d}\log\lvert\Ddens\rvert/
+\mathrm{d}\log\VR$ against signal strength for the synthetic family, with
+the real bodies overlaid. A slope of $-1$ means the excess mass is held
+fixed and $0$ that the density difference is. Bodies whose density
+difference changes sign have no exponent and are placed on the lower row:
+the symmetric synthetic family and Arrokoth. The exponent approaches $-1$
+only as the signal strengthens, with a Pearson correlation of $0.95$ over the four
+synthetic bodies that have one. Itokawa, at $-1.141\pm0.018$, is matched
+only by the strongest synthetic body. 67P does not follow the pattern: its
+exponent of $-2.80$ is steeper than the moderate group while its dispersion
+improvement, $0.574\%$, places it among the weak bodies, which in the
+synthetic family have no exponent at all.}
+\label{fig:slope}
+\end{figure}
+
+The single synthetic body that reproduces Itokawa's behaviour is the one
+with the strongest response, and it reproduces it on every measure:
+exponent $-1.22$ against $-1.141$, density half-range $\pm12.78\%$ against
+$\pm13.20\%$, excess-mass half-range $\pm6.22\%$ against $\pm5.12\%$. The
+agreement is close on the eleven-plane subset and would not be on the
+others---the thirteen-plane density half-range is $\pm38.3\%$---which is
+the sharpest illustration of why the subset has to be declared before the
+comparison is made.
+
+One real body does not follow the pattern and we record it rather than
+absorb it. 67P returns a measurable exponent of $-2.80$ while its
+dispersion improvement, $0.574\%$, lies in the range where every synthetic
+body has no exponent at all. Either the correspondence between improvement
+and exponent is not one-to-one, or the 67P exponent is being measured on a
+sweep whose $\Ddens$ is small enough throughout that the fit is dominated by
+the systematics catalogued in Section~\ref{sec:nulls:67p}. We cannot
+separate the two with the present data.
+
+\subsection{The claim, restricted to the strong-signal regime}
+\label{sec:constrains:claim}
+
+Where the dispersion responds strongly to a contrast, the quantity the
+inversion determines is the background density $\densrest$, and equivalently
+through Equation~\eqref{eq:excessidentity} the mass anomaly $\Dmass$; the
+pair $(\densR, \VR)$ is degenerate along $\Ddens \VR = \mathrm{const}$.
+Where the response is weak, $\densrest$ drifts with the dividing plane and
+nothing is determined. This accounts for why Itokawa behaves as it does and
+why Arrokoth and the symmetric synthetic bodies do not, without appeal to
+anything peculiar to any of them; 67P is the case it does not account for.
+
+What the synthetic experiment establishes is a property of the objective
+function in a regime, not a physical inference. It shows that when the
+minimization responds strongly, the quantity it pins down is $\Dmass$ rather
+than $\densR$. Whether a strong response on a real body \emph{implies} a
+physical mass anomaly is a separate question that these data do not settle,
+since no known anomaly was injected. On Itokawa the case for a physical
+anomaly rests elsewhere: on the independent YORP determination of
+\citet{lowry2014}, which makes no appeal to surface relaxation---and which,
+by Section~\ref{sec:constrains:dipole}, constrains a quantity the objective
+function demonstrably does not hold fixed, so the two lines of evidence are
+genuinely independent rather than two readings of the same one.
+
+The practical consequence is a reporting rule. Publish $\densrest$ and
+$\Dmass$, which the method constrains, each with the amplification factor
+$\ampfac$ and the plane at which it was evaluated; publish $\densR$ only
+together with the dividing surface that produced it, since it is the ratio
+of a constrained mass to a volume the investigator chose.
+
+For Itokawa the numbers are these, and the distinction between the two kinds
+of interval matters more than either value. Over the eleven planes below
+the grain ceiling the background density has a mean of
+$\SI{1855}{\kilo\gram\per\cubic\metre}$ with a plane-placement half-range of
+$\SI{8}{\kilo\gram\per\cubic\metre}$, and the excess mass a mean of
+$2.80\times10^{9}$~kg with a half-range of $5.1\%$. Those spreads describe
+how little the answer moves when the plane moves; they are not
+uncertainties, and quoting them as such---as an earlier draft of this
+section did, in the form $1855\pm8$---understates the interval by more than
+a factor of three. The uncertainty is the one assembled in
+Equation~\eqref{eq:budget}, dominated by the curvature sensitivity interval:
+$\densrest = 1858\pm\SI{27}{\kilo\gram\per\cubic\metre}$ and
+$\Dmass = (2.75\pm0.48)\times10^{9}$~kg, or $7.7\pm1.3\%$ of the total, both
+evaluated at the reference plane.
+
+This also frames the head--neck ambiguity of
+Section~\ref{sec:itokawa:ambiguity} correctly. A mass anomaly does not
+specify the region that carries it. Two structures placing comparable excess
+mass at comparable distance from the centre of figure will produce
+comparable centre-of-mass offsets and comparable dispersion reductions, and
+the method cannot separate them. That is not a defect of this implementation
+but a property of what the data determine. It is also why the background
+densities returned by the two region shapes differ by
+$\SI{85}{\kilo\gram\per\cubic\metre}$: the invariance established here holds
+under a change of plane position within a fixed region shape, and not under
+a change of region shape.
+
+\subsection{Limits of this evidence}
+\label{sec:constrains:limits}
+
+Five limits should be stated plainly.
+
+The experiment varies shape, not density. Every synthetic body is uniform,
+so what the exponent tracks is the strength of the inversion's response, and
+the identification of that response with a physical mass anomaly is an
+interpretation rather than a measured result. A version of this experiment
+that built a body whose surface had relaxed onto an equipotential of a
+planted interior would test the interpretation directly;
+Section~\ref{sec:discussion:rate} explains why we do not report one.
+
+The exponent is not independent of the background density.
+Equation~\eqref{eq:steepidentity} makes $s+1$ identical to the logarithmic
+drift of $\densbulk-\densrest$, so the scaling analysis and the stability
+analysis of Section~\ref{sec:constrains:observation} are two readings of the
+same data and should not be counted as two pieces of evidence. What the
+exponent adds is the distinction between drift and scatter, and a
+well-defined quantity where fractional ranges diverge. The dipole test of
+Section~\ref{sec:constrains:dipole} is not subject to this objection,
+because it compares the measured exponent against a value fixed by geometry
+alone.
+
+Four of the eight synthetic bodies produce a measurable exponent, and three
+of those cluster between $16.7\%$ and $19.5\%$ improvement while the fourth
+sits at $43.7\%$. The correlation of $0.95$ therefore rests on a single
+high-leverage point, and with $n=4$ its nominal $p$ of $0.03$ should not be
+read as strong. The \emph{direction} of the effect is supported; its
+functional form is not determined, and a threshold anywhere between roughly
+$20\%$ and $44\%$ fits the data equally well.
+
+The numerical threshold does not transfer. The synthetic bodies require
+about $44\%$ improvement to reach excess-mass invariance while Itokawa
+reaches it at $22\%$ over the eleven planes below the grain ceiling, or $26\%$ if the
+compositionally excluded planes are counted. They are smooth surfaces of
+revolution; real bodies carry roughness, which Paper~IV found contributes an
+error floor of order two percentage points. No threshold value should be
+quoted as universal, and we quote none.
+
+The experiment uses the same forward model in both directions. It therefore
+examines the structure of the objective function, not the accuracy of the
+forward model. That accuracy was established separately in Paper~IV against
+an independent field, and is tested again here against an analytic ellipsoid
+in Section~\ref{sec:discussion:ellipsoid}.
+
+\subsection{Sensitivity to the assumed mass as a candidate diagnostic}
+\label{sec:constrains:mass}
+
+The mass-assumption tests of Sections~\ref{sec:itokawa:mass}
+and~\ref{sec:nulls:arrokoth} were run for a different purpose, but placed
+side by side they suggest a second, provisional way of separating a
+strong-signal case from a weak one. The comparison has to be made carefully,
+because the obvious reading of it is the wrong one.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Response of the recovered contrast to the assumed total mass. The
+final column is the logarithmic sensitivity
+$\mathrm{d}\log C/\mathrm{d}\log\Mtot$, which is what makes the two rows
+comparable: the mass ranges tested differ by a factor of two, so the raw
+changes in the third column do not. On the raw change Itokawa appears the
+\emph{more} sensitive of the two, which is the opposite of the intended
+reading; per e-fold of assumed mass, Arrokoth is the more sensitive by a
+factor of $1.6$. The property that separates the two bodies is not the size
+of the change but whether the resulting interval reaches unity.}
+\label{tab:massdiag}
+\begin{tabular}{llllr}
+\toprule
+Body & Mass range & Contrast range & Behaviour
+ & $\mathrm{d}\log C/\mathrm{d}\log\Mtot$ \\
+\midrule
+Itokawa  & factor $4$ & $1.404$--$1.569$ & excludes unity throughout
+ & $0.080$ \\
+Arrokoth & factor $2$ & $0.9159$--$0.9999$ & reaches unity
+ & $0.127$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+On the body with a strong response the inference is robust to the mass
+assumption, the contrast staying clear of unity across a factor of four in
+assumed mass; on the one without, a factor of two carries the answer to the
+threshold of a sign reversal. The diagnostic is therefore the position of
+the interval relative to unity and not its width. The test is cheaper than a
+split-plane sweep---three or four runs at different assumed masses, with no
+bisection and no plane search---though a dividing region is of course still
+required.
+
+We put this forward as a candidate diagnostic rather than an established
+one, and with a specific reservation beyond the obvious ones. It rests on
+two bodies that differ in several respects besides signal strength, among
+them spin rate, size and whether the mass is measured at all, and those are
+not separated here. The last of them is awkward: the diagnostic is of use
+precisely where the mass is unknown, and on such a body there is no measured
+value against which to calibrate the interval, while on a body where the
+mass is known---Itokawa---the diagnostic is not needed. Whether it
+generalises is untested, and the synthetic family of
+Section~\ref{sec:constrains:synthetic}, where the mass is known exactly by
+construction and the signal strength can be dialled, is the natural place to
+test it.

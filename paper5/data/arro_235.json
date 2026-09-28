@@ -1,0 +1,223 @@
+{
+ "buried_facets": 455,
+ "buried_area_pct": 0.9429695670046695,
+ "components": 2,
+ "results": [
+  {
+   "plane": "neck",
+   "x_split_km": -4.7863,
+   "all": {
+    "rho_R": 240.0,
+    "rho_rest": 225.15522442369172,
+    "contrast": 1.0659312952400062,
+    "improvement_pct": 1.4345054149482512,
+    "dispersion_uniform": 0.04115500853448969,
+    "dispersion_min": 0.04056463770854002,
+    "excess_mass_pct": 4.1897572129130625,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 240.0,
+    "rho_rest": 225.15522442369172,
+    "contrast": 1.0659312952400062,
+    "improvement_pct": 1.2239240524284993,
+    "dispersion_uniform": 0.038081903116790806,
+    "dispersion_min": 0.037615809544921885,
+    "excess_mass_pct": 4.1897572129130625,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  },
+  {
+   "plane": "frac 40.0%",
+   "x_split_km": 3.6040229954561775,
+   "all": {
+    "rho_R": 250.0,
+    "rho_rest": 225.0020072210856,
+    "contrast": 1.111101198996645,
+    "improvement_pct": 5.494544470565082,
+    "dispersion_uniform": 0.04115500853448969,
+    "dispersion_min": 0.0388937282886973,
+    "excess_mass_pct": 4.25495568840224,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 245.0,
+    "rho_rest": 228.335340554419,
+    "contrast": 1.0729832684030325,
+    "improvement_pct": 4.854981192043795,
+    "dispersion_uniform": 0.038081903116790806,
+    "dispersion_min": 0.03623303388289827,
+    "excess_mass_pct": 2.83652324130083,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": -3.430644357870738
+  },
+  {
+   "plane": "frac 44.5%",
+   "x_split_km": 2.6446838151488947,
+   "all": {
+    "rho_R": 245.0,
+    "rho_rest": 226.98415195072386,
+    "contrast": 1.0793705106477531,
+    "improvement_pct": 5.477372296551057,
+    "dispersion_uniform": 0.041155008534489695,
+    "dispersion_min": 0.038900795498378334,
+    "excess_mass_pct": 3.411494168591283,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 245.0,
+    "rho_rest": 226.98415195072386,
+    "contrast": 1.0793705106477531,
+    "improvement_pct": 5.0899613230119565,
+    "dispersion_uniform": 0.03808190311679081,
+    "dispersion_min": 0.036143548977079276,
+    "excess_mass_pct": 3.411494168591283,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  },
+  {
+   "plane": "frac 49.5%",
+   "x_split_km": 1.5384928681035204,
+   "all": {
+    "rho_R": 245.0,
+    "rho_rest": 225.2004046191123,
+    "contrast": 1.0879198925702434,
+    "improvement_pct": 5.581402187555373,
+    "dispersion_uniform": 0.04115500853448969,
+    "dispersion_min": 0.03885798198785708,
+    "excess_mass_pct": 4.170531696367782,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 245.0,
+    "rho_rest": 225.2004046191123,
+    "contrast": 1.0879198925702434,
+    "improvement_pct": 5.045125488544084,
+    "dispersion_uniform": 0.03808190311679081,
+    "dispersion_min": 0.036160623316122936,
+    "excess_mass_pct": 4.170531696367782,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  },
+  {
+   "plane": "frac 55.0%",
+   "x_split_km": 0.21448407615629267,
+   "all": {
+    "rho_R": 245.0,
+    "rho_rest": 222.7804540725595,
+    "contrast": 1.0997374119733305,
+    "improvement_pct": 5.089979854552617,
+    "dispersion_uniform": 0.041155008534489716,
+    "dispersion_min": 0.03906022689094478,
+    "excess_mass_pct": 5.200292609051129,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 245.0,
+    "rho_rest": 222.7804540725595,
+    "contrast": 1.0997374119733305,
+    "improvement_pct": 4.321408886771337,
+    "dispersion_uniform": 0.038081903116790834,
+    "dispersion_min": 0.036436228371250184,
+    "excess_mass_pct": 5.200292609051129,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  },
+  {
+   "plane": "frac 61.2%",
+   "x_split_km": -1.6107152709698502,
+   "all": {
+    "rho_R": 240.0,
+    "rho_rest": 227.1165060119882,
+    "contrast": 1.0567263657505006,
+    "improvement_pct": 3.669219019541575,
+    "dispersion_uniform": 0.041155008534489695,
+    "dispersion_min": 0.03964494113384824,
+    "excess_mass_pct": 3.3551735800903684,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 240.0,
+    "rho_rest": 227.1165060119882,
+    "contrast": 1.0567263657505006,
+    "improvement_pct": 3.473763361918942,
+    "dispersion_uniform": 0.03808190311679082,
+    "dispersion_min": 0.03675902791879827,
+    "excess_mass_pct": 3.3551735800903684,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  },
+  {
+   "plane": "frac 68.0%",
+   "x_split_km": -6.595521327716927,
+   "all": {
+    "rho_R": 240.0,
+    "rho_rest": 224.37876353953615,
+    "contrast": 1.0696199418075114,
+    "improvement_pct": 0.23857514068139235,
+    "dispersion_uniform": 0.0411550085344897,
+    "dispersion_min": 0.041056822914981105,
+    "excess_mass_pct": 4.520164406510437,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 240.0,
+    "rho_rest": 224.37876353953615,
+    "contrast": 1.0696199418075114,
+    "improvement_pct": 0.09806472054870123,
+    "dispersion_uniform": 0.03808190311679081,
+    "dispersion_min": 0.038044558204919705,
+    "excess_mass_pct": 4.520164406510437,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  },
+  {
+   "plane": "frac 75.6%",
+   "x_split_km": -9.80479644236259,
+   "all": {
+    "rho_R": 235.0,
+    "rho_rest": 235.00493578955553,
+    "contrast": 0.9999789970813211,
+    "improvement_pct": -0.00030237908498069644,
+    "dispersion_uniform": 0.041155008534489675,
+    "dispersion_min": 0.041155132978627905,
+    "excess_mass_pct": -0.001587845864270547,
+    "interior_minimum": true,
+    "facets_used": 40960
+   },
+   "clean": {
+    "rho_R": 235.0,
+    "rho_rest": 235.00493578955553,
+    "contrast": 0.9999789970813211,
+    "improvement_pct": -0.0004112626800359681,
+    "dispersion_uniform": 0.03808190311679079,
+    "dispersion_min": 0.03808205973344616,
+    "excess_mass_pct": -0.001587845864270547,
+    "interior_minimum": true,
+    "facets_used": 40505
+   },
+   "contrast_change_pct": 0.0
+  }
+ ]
+}

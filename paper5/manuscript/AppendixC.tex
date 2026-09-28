@@ -1,0 +1,273 @@
+\section{The synthetic contact binaries}
+\label{app:synth}
+
+This appendix specifies the synthetic bodies used in
+Section~\ref{sec:constrains:synthetic}, states the design decisions that make
+them a controlled experiment rather than a demonstration, and records two
+errors in the first version of that experiment.
+
+\subsection{Why synthetic bodies}
+\label{app:synth:why}
+
+The background density, and with it the excess mass that
+Eq.~\eqref{eq:excessidentity} ties to it, is the more invariant quantity on
+Itokawa and the less invariant one on 67P and Arrokoth. Three real bodies establish that the
+behaviour varies; they cannot establish what it varies with. A fourth real body
+would not settle it either. We cannot choose in advance whether a given
+asteroid carries a detectable anomaly, and no body's interior is known
+independently, so agreement would establish only that something had occurred
+twice.
+
+What is needed is a family in which the strength of the signal can be set by
+the experimenter while everything else is held fixed. That requires synthetic
+bodies. The cost is that they are idealised, and Section~\ref{app:synth:limits}
+states what that costs.
+
+\subsection{Construction}
+\label{app:synth:build}
+
+Each body is the union of prolate lobes of revolution about $x$. The outer
+half-width is
+\begin{equation}
+w(x) = \max_{i}\; A_i \sqrt{1 - \left(\frac{x - c_i}{a_i}\right)^{2}},
+\label{eq:appsynthprofile}
+\end{equation}
+taken as zero where the radicand is negative, with $A_i$, $c_i$ and $a_i$ the
+amplitude, centre and half-length of lobe $i$. The surface is meshed directly
+by revolving the profile: $100$ stations in $x$, $48$ around, with apex
+vertices closing both ends, giving about $9{,}500$ facets. Orientation is fixed
+by requiring the total signed volume to be positive.
+
+Using a union of analytic lobes rather than a boolean operation on two meshes
+avoids the intersection curve entirely, so no body in the family contains a
+seam, a sliver, or a non-manifold edge. It also makes each body a single
+connected component, so the containment test of
+Section~\ref{app:clip:verify} has nothing to find: the failure mode that
+affects the Arrokoth shape model cannot arise here. The profile is trimmed at a half-width
+of $10^{-6}$ of its maximum rather than at an absolute threshold; an absolute
+one leaves a ring of vertices a few nanometres from the axis near each tip,
+distinct by index but coincident in position, which is enough to make the mesh
+fail a manifold test. Every body in the family, as built, has
+$\chi = 2$ with no repeated or unmatched directed edges, and no clipped region
+in the experiment was rejected by the manifold check.
+
+\subsection{The family}
+\label{app:synth:family}
+
+The eight bodies fall into three groups, and the grouping is the design.
+
+A near-spherical control stands in for a body with no interior structure. A
+\emph{symmetric} family of equal lobes is symmetric about its own neck, so the
+density that flattens the geopotential should be close to uniform and the
+signal weak by construction, whatever the depth of the neck. An
+\emph{asymmetric} family of unequal lobes has a geometric mass asymmetry for
+the inversion to find. Within each family the neck is deepened by moving the
+lobes apart while the enclosed volume varies by no more than seven per cent, so
+that depth of neck and size of body are not confounded.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The synthetic family. Lobes are given as $(A_i, c_i, a_i)$ in km.
+Prominence is that measured by the detector of
+Section~\ref{sec:methods:neck}; the neck ratio is the half-width at the saddle
+divided by the largest half-width. All bodies were run at a bulk density of
+$2000$~kg\,m$^{-3}$ and a rotation period of $12.13$~h, with seven planes
+spanning a factor $1.900$ in region volume, and all have $\chi = 2$.}
+\label{tab:appsynth}
+\begin{tabular}{llrrr}
+\toprule
+Body & Lobes $(A, c, a)$ & $\Vtot$ (km$^3$) & Neck ratio & Prominence \\
+\midrule
+\texttt{sphere} & $(0.15, 0.00, 0.16)$ & $0.01503$ & $0.650$ & none \\
+\addlinespace
+\texttt{sym\_waist} & $(0.14, \mp0.11, 0.185)$ & $0.02705$ & $0.787$ & $0.170$ \\
+\texttt{sym\_neck} & $(0.14, \mp0.15, 0.185)$ & $0.02951$ & $0.587$ & $0.360$ \\
+\texttt{sym\_deep} & $(0.14, \mp0.18, 0.185)$ & $0.03025$ & $0.235$ & $0.627$ \\
+\addlinespace
+\texttt{asym\_waist} & $(0.15, -0.13, 0.20)$, $(0.12, +0.12, 0.17)$ & $0.02707$ & $0.653$ & $0.124$ \\
+\texttt{asym\_neck} & $(0.15, -0.13, 0.20)$, $(0.12, +0.18, 0.17)$ & $0.02849$ & $0.485$ & $0.272$ \\
+\texttt{asym\_deep} & $(0.15, -0.13, 0.20)$, $(0.12, +0.22, 0.17)$ & $0.02893$ & $0.289$ & $0.449$ \\
+\texttt{asym\_extreme} & $(0.15, -0.13, 0.20)$, $(0.10, +0.20, 0.14)$ & $0.02461$ & $0.196$ & $0.362$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The bodies are on the scale of Itokawa, a few hundred metres, and share its
+rotation period. The near-spherical control has no saddle and its plane was
+imposed, as Bennu's was.
+
+\subsection{Selecting the planes}
+\label{app:synth:planes}
+
+Planes are chosen by bisection on the fraction of volume they leave above them,
+not by position. For a target fraction $f$ the plane is found by bisecting on
+$x$ until $\lvert V(x > \xsplit)/\Vtot - f \rvert$ is below tolerance; thirty
+iterations give agreement to four decimal places in the fraction, at a cost of
+under a second per plane.
+
+Seven targets are placed geometrically about the fraction at the detected
+saddle, spanning a factor
+\begin{equation}
+\frac{f_{\max}}{f_{\min}} = 1.900 ,
+\label{eq:appspan}
+\end{equation}
+chosen to match the Itokawa sweep. This is the point on which the experiment
+turns. A plane moved a fixed distance sweeps very different amounts of volume
+on bodies of different shape---on Arrokoth, whose neck is long and thin,
+$3.5$~km of travel changes the region volume by only five per cent against
+ninety on Itokawa---so equal distances do not probe the same thing. Selecting
+by volume fraction makes the sweeps comparable across bodies, and it is also
+the variable against which the exponent of Eq.~\eqref{eq:slope} is fitted.
+
+\subsection{What is not being tested}
+\label{app:synth:not}
+
+It is worth being explicit, since the natural expectation of a synthetic
+experiment is different. We do not impose a known density on a synthetic body
+and ask the method to recover it. That test would fail by construction and
+would establish nothing.
+
+Potential-dispersion minimization does not fit observed data. It assumes that
+the true density is the one that renders the surface geopotential most uniform.
+It assumes that the true density is the one that renders the surface
+geopotential most uniform, and the objective is built from the shape and the
+trial density alone: a field computed beforehand from an imposed interior is
+never read. Planting a contrast in a body and leaving its shape unaltered
+therefore changes nothing the minimization can see, and the recovered value is
+whatever the shape alone would have given. What the experiment examines
+is the structure of the objective function: which quantity it holds fixed as
+the dividing plane moves, and how that depends on the strength of the response.
+
+Every body in the family is therefore of uniform density. What varies is shape.
+A consequence is that the experiment cannot establish that a strong response
+implies a physical mass anomaly, only that in the strong-response regime the
+quantity held fixed is the background density, and with it $\Dmass$, rather
+than $\densR$. A genuine ground-truth test would have to build the body the
+premise describes---a shape whose surface has relaxed onto an equipotential of
+a planted interior---before inverting it.
+Section~\ref{sec:discussion:rate} reports our attempt at that construction and
+why its outcome is not presented.
+
+\subsection{Results}
+\label{app:synth:results}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Results for the synthetic family. Half-ranges are taken over the seven
+planes of each sweep, and standard errors on $s$ are those of the
+least-squares fit. Where the density difference changes sign no exponent
+exists and the fractional range of $\Dmass$ is not meaningful, its mean lying
+inside its spread. $\bar{\ampfac}$ is the amplification factor of
+Equation~\eqref{eq:excessamplify} averaged over the sweep: it is what
+separates the $\denshead$ and $\Dmass$ columns, so those two are not
+comparable across rows without it, and it is undefined on the symmetric
+bodies, where $\Dmass$ passes through zero. The last column is the
+compensation ratio, the half-range of $\Ddens$ divided by that of $\Dmass$,
+which is the part of the stability ratio that is not fixed by algebra
+(Section~\ref{sec:constrains:observation}). The Itokawa row is the eleven
+planes below the grain-density ceiling, the set whose span of $1.907$ matches
+the $1.900$ used here; its maximum improvement over that set is $22.4\%$
+rather than the $16.9\%$ quoted at the detected neck.}
+\label{tab:appsynthres}
+\begin{tabular}{lrrrrrr}
+\toprule
+Body & $\improve_{\max}$ & $s$ & $\bar{\ampfac}$ & $\denshead$ half-range
+ & $\Dmass$ half-range & $\Ddens/\Dmass$ \\
+\midrule
+\texttt{sphere}       & $1.24\%$  & none & $44$ & $3.10\%$  & sign change & --- \\
+\texttt{sym\_waist}   & $3.68\%$  & none & ---  & $5.61\%$  & sign change & --- \\
+\texttt{sym\_neck}    & $4.35\%$  & none & ---  & $6.22\%$  & sign change & --- \\
+\texttt{sym\_deep}    & $4.47\%$  & none & ---  & $5.60\%$  & sign change & --- \\
+\addlinespace
+\texttt{asym\_waist}  & $16.67\%$ & $-2.020\pm0.109$ & $15.0$ & $9.28\%$  & $31.3\%$ & $1.9$ \\
+\texttt{asym\_neck}   & $17.63\%$ & $-2.366\pm0.165$ & $16.2$ & $9.37\%$  & $39.2\%$ & $1.7$ \\
+\texttt{asym\_deep}   & $19.50\%$ & $-2.069\pm0.094$ & $14.9$ & $8.81\%$  & $29.1\%$ & $2.0$ \\
+\addlinespace
+\texttt{asym\_extreme}& $43.71\%$ & $-1.217\pm0.023$ & $8.1$  & $12.78\%$ & $6.2\%$  & $6.1$ \\
+\midrule
+Itokawa (real)        & $22.4\%$  & $-1.141\pm0.018$ & $11.8$ & $13.20\%$ & $5.12\%$ & $7.1$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The design succeeded in separating the groups. Every symmetric body, however
+deep its neck, produces a weak signal and a density difference that changes
+sign across its sweep; the deepest, \texttt{sym\_deep}, has a prominence of
+$0.627$---the highest in the family, a more sharply necked profile than
+\texttt{asym\_extreme}---and still returns only
+$4.47\%$. Depth of neck is not signal strength. The asymmetric bodies produce
+signals three to ten times larger at comparable neck depths, because they have
+a mass asymmetry to find.
+
+The exponent varies monotonically with signal strength across the four bodies
+that have one, and the Pearson correlation is $0.95$ ($p = 0.05$ two-tailed, $n = 4$), while
+the Spearman rank correlation over the same four is only $0.40$, the three
+clustered bodies not being in rank order. Only \texttt{asym\_extreme}
+approaches $-1$, the value at which Eq.~\eqref{eq:slopeequiv} makes the
+background density the quantity held fixed as the plane moves, and it is the only body in the family that reproduces Itokawa's
+behaviour---on the exponent, on the density half-range, and on the excess-mass
+half-range simultaneously.
+
+\subsection{Two errors in the first version}
+\label{app:synth:errors}
+
+Both are recorded because either would have produced a plausible and wrong
+conclusion.
+
+\emph{The sweeps were not comparable.} The first version swept a fixed
+$\pm0.05$~km on every body. Because the bodies differ in how sharply their
+cross-section changes near the neck, this produced volume-fraction spans of
+$1.13$ to $1.54$ against the $1.90$ of the Itokawa sweep. A body whose region
+volume barely changes cannot show either quantity varying, so the comparison
+measured the sweep design rather than the bodies. The bisection scheme of
+Section~\ref{app:synth:planes} was introduced to correct this.
+
+\emph{The diagnostic broke down where it mattered most.} The first version
+compared fractional half-ranges directly. That statistic divides by the mean,
+and on a body with no anomaly the mean of $\Dmass$ sits inside its own spread,
+so the quotient is arbitrary. The symmetric bodies returned apparent ratios of
+up to $1623$, which were read at first as an extraordinarily strong result in
+the opposite direction. They were artefacts of dividing by nearly zero. The
+exponent of Eq.~\eqref{eq:slope} was introduced because it does not have this
+failure mode: where the density difference changes sign, the exponent simply
+does not exist, and its absence is the correct answer rather than a large
+number.
+
+\subsection{Limitations}
+\label{app:synth:limits}
+
+Four bodies in the family carry a measurable exponent, and three of those
+cluster between $16.7\%$ and $19.5\%$ in signal strength while the fourth sits
+at $43.71\%$. The correlation therefore rests on a single high-leverage point,
+which is what the Spearman value of $0.40$ records.
+The direction of the effect is supported; its functional form is not
+determined, and a threshold anywhere between roughly twenty and forty-four per
+cent fits the data as well as a gradual trend does. Filling that gap would
+require bodies designed to land in it, which the present family does not
+attempt.
+
+The numerical threshold does not transfer to real bodies. \texttt{asym\_extreme}
+requires $43.71\%$ to reach the regime in which the background density is
+pinned, while Itokawa reaches it at $22.4\%$ over the eleven planes below
+the grain-density ceiling, or $26.4\%$ if the compositionally excluded
+planes are counted. The synthetic surfaces are smooth surfaces of revolution; real
+bodies carry roughness at every resolved scale, which Paper~IV found
+contributes an error floor of order two percentage points to the dispersion. No
+threshold value from this experiment should be quoted as universal, and none is
+quoted in this paper.
+
+The experiment uses the same forward model in both directions and therefore
+examines the objective function, not the accuracy of the gravity calculation.
+That accuracy is tested separately in
+Section~\ref{sec:discussion:ellipsoid} against a homogeneous ellipsoid with a
+closed-form surface gravity.
+
+Finally, the family varies one geometric parameter---the separation of two
+lobes of fixed shape. Real contact binaries differ in more ways than that, and
+whether the relation between signal strength and exponent survives variation in
+lobe elongation, in the ratio of lobe sizes, or in spin rate has not been
+tested here.
+
+

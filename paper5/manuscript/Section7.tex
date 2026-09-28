@@ -1,0 +1,523 @@
+%=======================================================================
+%  Paper V — Section 7 (Failure modes)   FINAL
+%
+%  Requires the macros listed at the head of Section 2.
+%
+%  PRINCIPAL CORRECTION IN THIS REVISION -----------------------------
+%  Section 7.3 fixes the region fraction at the misplaced Eros plane at
+%  f = 0.8844 (complement 11.56 %), recovered exactly from the reported
+%  rho_rest = 19,259 at rho_R = 500. This overturns the claim made in
+%  Section 4.4 of an earlier draft that the displacement statistic S
+%  reaches 19 at that plane: the correct value is 2.86, BELOW the 5.8
+%  returned by Itokawa, so S ranks the artefact correctly. What fails
+%  instead is the amplification factor, |A| = 9.12 < 12.0, which ranks
+%  the artefact as the stronger signal of the two. Section 4.4 and
+%  Table 4.2 must be revised accordingly.
+%
+%  Superseded values:
+%      "2.1e-14 in relative terms" volume closure -> 2.0e-14 per cent
+%      "S = 19 at the misplaced plane" -> 2.86 (Section 4.4)
+%      complement-too-small "survives: background density"
+%                                      -> destroys it; 3.83 % vs 1.38 %
+%      "7.5 kg/m3 per metre"           -> 10.0 at the reference plane,
+%                                         and 0.28 for rho_rest
+%      3700/4125 as a flatness demonstration
+%                                      -> a sub-grid location of the
+%                                         minimiser at rho_R ~ 3912
+%
+%  All values confirmed against paperV_final.json and paper4_recheck.json.
+%  Resolved in this pass: closure residual is a percentage, not a relative
+%  value; the "-355/+1114" pair conflated the 0.60 % and 5.9 % levels;
+%  the Eros envelope is 6.03 % (quadric) or 5.40 % (clustering); the window
+%  diagnostic reproduces 10.3 % once the bounds are applied to both
+%  densities, and Itokawa recomputes to 87.6 %; the Arrokoth crossover with
+%  the buried facets excluded lies within 1 kg/m3 of 250.
+%=======================================================================
+
+\section{Failure modes}
+\label{sec:failures}
+
+Most of what went wrong in this work went wrong silently. A region can
+enclose the wrong solid and still report an exact volume; a minimum can be
+pinned to the edge of a scan and still report an improvement; a set of
+facets can lie inside the body and still enter a surface average. This
+section catalogues the seven failures encountered, with the quantity each
+destroys and the check that catches it, because a reader applying the
+method needs the failure list more than the result list.
+
+Two of them are recorded not because they are subtle but because they were
+ours: the wrong solid of Section~\ref{sec:methods:cone} survived a
+volume-closure test, and the buried facets of
+Section~\ref{sec:methods:shapes} survived every geometric check the
+implementation then had. The others are properties of the method that any
+implementation will meet.
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3.5pt}
+\caption{The seven failure modes. ``Destroys'' names the quantity that
+becomes untrustworthy, and is stated in terms of the quantities
+Section~\ref{sec:constrains} identifies as constrained ($\densrest$ and
+$\Dmass$) rather than in terms of $\densR$, which the method does not
+determine in any case. Note the asymmetry between the fourth and fifth
+rows: a region that is too small degrades only $\densR$, while a
+complement that is too small degrades $\densrest$, and it is the second
+that matters.}
+\label{tab:failures}
+\setlength{\tabcolsep}{5pt}
+\small
+\begin{tabular}{p{2.3cm}p{2.6cm}p{3.6cm}p{2.4cm}p{3.0cm}}
+\toprule
+Failure & Encountered & Symptom & Destroys & Caught by \\
+\midrule
+Wrong solid built
+ & Itokawa, all planes
+ & volume exact, mesh watertight, contrast inverted
+ & everything
+ & vertex predicate; mass-balance audit \\
+\addlinespace
+Degenerate facets
+ & Itokawa, $\xsplit = \SI{0.130}{\kilo\metre}$
+ & NaN at every field point, not merely near the plane
+ & everything
+ & self-announcing \\
+\addlinespace
+Facets not on the surface
+ & Arrokoth, two unjoined shells
+ & $0.943\%$ of the area buried; a sign reversal appears that is not there
+ & sign of $\Dmass$
+ & per-component Euler check; containment test \\
+\addlinespace
+Region too small
+ & Itokawa, $\SI{0.240}{\kilo\metre}$, $f = 5.0\%$
+ & curvature interval widens from $\pm4.6\%$ to $\pm7.1\%$
+ & $\densR$ only
+ & curvature interval \\
+\addlinespace
+Complement too small
+ & Eros, $\SI{-10.76}{\kilo\metre}$, complement $11.56\%$
+ & curvature interval in $\densR$ \emph{narrows} to $\pm15$, which looks like precision
+ & $\densrest$, at $3.83\%$ against $1.38\%$
+ & interval propagated to $\densrest$, not read in $\densR$ \\
+\addlinespace
+Minimum at a scan edge
+ & Arrokoth neck, $f = 1.0\%$
+ & $\improve = 13.6\%$ from a density pinned to the scan floor
+ & everything
+ & boundary-minimum guard; specific improvement \\
+\addlinespace
+Plane misplaced
+ & Eros, $\SI{-10.76}{\kilo\metre}$
+ & $C = 0.876 \pm 0.039$, excluding unity at $3.2$ intervals; $\dCOM$ reversed and four times larger
+ & everything
+ & envelope comparison; plane provenance; admissible-scan fraction \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Building the wrong solid}
+\label{sec:failures:cone}
+
+The first failure is the one described in Section~\ref{sec:methods:cone},
+and it is placed first because it is the only one that produced a
+publishable-looking wrong answer across every plane simultaneously.
+
+Closing a clipped region by fanning its boundary edges to a single interior
+point produces a watertight mesh whose divergence-theorem volume agrees
+with the sum of its own tetrahedra to machine precision. The
+volume-closure test then in use compared exactly those two quantities, and
+reported a residual of $2.0\times10^{-14}$ per cent, that is
+$2.0\times10^{-16}$ in relative terms---round-off, and nothing else. That
+figure lies below the double-precision epsilon because the two half-space
+meshes share most of their facets with the whole-body mesh, so the round-off
+is common to both sides of the comparison and cancels
+(Section~\ref{sec:methods:verify}). The solid enclosed was nevertheless a radial cone over
+the surface patch rather than the plane-cut lobe, too large by a factor of
+$1.600$ on a unit sphere and with its centroid displaced by $0.1125\,R$.
+% Resolved from the code: density_estimate.py records
+% complement_closure_pct = 100 x |V_R + V_complement - V_tot| / V_tot, so the
+% archived 1.95e-14 is a percentage. Section 2.6 and this subsection now agree.
+
+On Itokawa the consequence was a sign reversal in the recovered contrast,
+because raising the density of a cone adds mass along a wedge reaching
+back to the centre of the body rather than in the head. Two checks would
+have caught it and neither was present: the vertex predicate of
+Section~\ref{sec:methods:verify}, which the cone fails outright with a
+violation of $0.5$ in units where the plane sits at $x = 0.5$; and the
+mass-balance audit, which would have found
+$\Dmass = \Ddens\,\VR$ and $\Dmass = (\densbulk-\densrest)\Vtot$
+disagreeing by the same factor $1.600$, since the volume passed to the
+mass constraint and the volume generating the potential were different
+solids.
+
+The general lesson is that a closure test comparing a mesh against its own
+tetrahedra tests self-consistency, not correctness. Only a test that
+appeals to the region's \emph{definition}---every vertex satisfying its
+defining inequality---distinguishes the two constructions.
+
+\subsection{Degenerate facets and total NaN}
+\label{sec:failures:nan}
+
+At $\xsplit = \SI{0.130}{\kilo\metre}$ on Itokawa a vertex of the source
+mesh lies on the cutting plane. Without the classification rule of
+Section~\ref{sec:methods:tol}, both edges incident on that vertex register
+as crossings, two coincident intersection points are created, and
+zero-area triangles appear on both the clipped surface and the cap.
+
+The failure mode is worth stating precisely because its scope is
+counter-intuitive. A single null-normal facet makes the Werner--Scheeres
+evaluation return NaN at \emph{every} field point on the body, not merely
+at points near the plane, because the facet's contribution enters the sum
+for all field points. The symptom is therefore total rather than local,
+and it cannot be mistaken for a numerical inaccuracy or worked around by
+discarding nearby points.
+
+The present implementation classifies vertices within $10^{-10}$ of the
+bounding-box diagonal as lying on the plane, snaps them onto it exactly,
+and never duplicates them; only strict sign changes generate an
+intersection. On Itokawa that tolerance is $\SI{64}{\nano\metre}$. The row
+reported at $\SI{0.1300}{\kilo\metre}$ in
+Table~\ref{tab:itokawasweep} comes from the fixed implementation and is
+not affected; the failure is recorded here because the plane at which it
+occurs is one the sweep uses, so a reader reproducing this work without
+the tolerance rule will meet it at the first plane. At the reference plane
+of $\SI{0.1608}{\kilo\metre}$ no degenerate facet arises with or without
+the rule.
+
+The rule does not remove slivers, only null-normal facets. Slivers remain
+and are harmless, which Section~\ref{sec:methods:tol} establishes by
+measurement rather than by assertion.
+
+\subsection{Regions and complements that are too small}
+\label{sec:failures:small}
+
+As the dividing plane advances the region shrinks, and the objective
+becomes progressively less able to determine its density. The curvature
+sensitivity interval on $\denshead$ widens from
+$\pm\SI{130}{\kilo\gram\per\cubic\metre}$ at $f = 16.43\%$, which is
+$4.6\%$ of the recovered value, to $\pm242$ at $f = 7.86\%$ ($6.2\%$) and
+to $\pm355$ at $f = 5.00\%$, or $7.1\%$ of the recovered value. Extracted
+from the scan grid rather than from a parabola, the intervals are
+$-125/+125$ at the reference plane, $-200/+225$ at $f = 7.86\%$ and
+$-350/+325$ at $f = 5.00\%$: asymmetric by one grid step at the two outer
+planes and symmetric at the reference plane to the resolution of the scan.
+% Resolved. The pair "-355/+1114" conflated two confidence levels rather
+% than describing an asymmetry: at f = 5.00 % the grid gives -350/+325 at the
+% 0.60 % level and -1125/+1100 at the 5.9 % level, and 1114 is the half-width
+% at the latter. The level sets are indeed the roots of a quadratic and are
+% asymmetric in general, but at these planes the asymmetry is one grid step.
+
+A second observation at $\xsplit = \SI{0.220}{\kilo\metre}$ makes the
+flatness concrete in an unexpected way. Head densities of $3700$ and
+$\SI{4125}{\kilo\gram\per\cubic\metre}$, differing by $425$, return
+dispersions differing by $4\times10^{-6}$. That is not by itself a
+demonstration that the minimum is flat: two points placed nearly
+symmetrically about a parabolic minimum return nearly equal values however
+sharp the minimum is. Read as such a pair, however, the observation
+locates the minimiser below the scan grid. With the local curvature fixed
+by the $\pm242$ interval, equality to $4\times10^{-6}$ requires the two
+displacements to differ by $\SI{1.4}{\kilo\gram\per\cubic\metre}$, placing
+the stationary point at $\densR^{\ast} \simeq
+\SI{3912}{\kilo\gram\per\cubic\metre}$. The grid reports $3900$, which is
+$\SI{12}{\kilo\gram\per\cubic\metre}$ away and so within the half-step
+bound claimed in Section~\ref{sec:methods:minimisation}---an inadvertent
+confirmation of that bound, and a further argument for solving the
+stationarity condition in closed form rather than scanning.
+
+The opposite failure is the more dangerous of the two, and it is the one
+this paper nearly reported. At $\xsplit = \SI{-10.76}{\kilo\metre}$ on
+Eros the region is not small: it holds $88.44\%$ of the volume, and it is
+the \emph{complement} that is small, at $11.56\%$. The mass constraint
+then forces the complement density across an enormous range as $\densR$ is
+scanned, from $\SI{19259}{\kilo\gram\per\cubic\metre}$ at
+$\densR = 500$ to $\SI{127}{\kilo\gram\per\cubic\metre}$ at
+$\densR = \SI{3000}{\kilo\gram\per\cubic\metre}$, so that most of the scan
+describes a body that cannot exist. The recovered minimum has a curvature
+interval of only $\pm\SI{15}{\kilo\gram\per\cubic\metre}$, three times
+narrower than at the true saddle, and that apparent precision is the
+symptom.
+
+It is a coordinate artefact. The interval is narrow in $\densR$ because
+the mass constraint makes $\densrest$ enormously sensitive to $\densR$:
+by Equation~\eqref{eq:massbalance},
+$\delta\densrest = [f/(1-f)]\,\delta\densR$, and at $f = 0.8844$ that
+factor is $7.65$. Expressed in the quantity
+Section~\ref{sec:constrains} concludes the method determines, the
+interval is
+$\delta\densrest = \SI{115}{\kilo\gram\per\cubic\metre}$, or $3.83\%$ of
+the recovered $\SI{2996}{\kilo\gram\per\cubic\metre}$---the worst
+determination anywhere in this study.
+
+Table~\ref{tab:propagated} sets the four cases side by side, and the
+ordering is the point of this subsection.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The curvature sensitivity interval propagated through the mass
+constraint. The interval on $\densR$ narrows as the region grows and
+widens as it shrinks; the propagation factor $f/(1-f)$ moves the opposite
+way and by more, so the interval on $\densrest$ is \emph{smallest} where
+the region is smallest. A region that is too small therefore damages only
+the quantity the method does not constrain, while a complement that is
+too small damages the one it does.}
+\label{tab:propagated}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{llrrrr}
+\toprule
+Body & Plane (km) & $f$ (\%) & $\delta\densR$ & $f/(1-f)$
+ & $\delta\densrest/\densrest$ \\
+\midrule
+Itokawa & $+0.1608$  & $16.43$ & $\pm130$        & $0.197$ & $1.38\%$ \\
+Itokawa & $+0.2200$  & $7.86$  & $\pm242$        & $0.085$ & $1.11\%$ \\
+Itokawa & $+0.2400$  & $5.00$  & $-355/+1114$    & $0.053$ & $-3.16\%/+1.01\%$ \\
+Eros    & $-10.7619$ & $88.44$ & $\pm15$         & $7.654$ & $\pm3.83\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The practical rule that follows is stated in
+Section~\ref{sec:guidelines}: where a body admits a choice, place the
+\emph{smaller} of the two pieces in the region. It costs precision in a
+quantity the method does not determine and buys it in the quantity it
+does.
+
+\subsection{Minima at a scan edge}
+\label{sec:failures:edge}
+
+A minimisation reports the smallest value it finds, and if the smallest
+value is at the edge of the interval searched, it reports the edge. The
+guard of Section~\ref{sec:methods:minimisation} exists because this
+failure produces the most convincing-looking output in the catalogue.
+
+The clear case is the Arrokoth neck model. A slab enclosing $1.0\%$ of the
+volume drives $\densR$ to the scan floor of
+$\SI{25}{\kilo\gram\per\cubic\metre}$ and reports an improvement of
+$13.6\%$---four-fifths of the Itokawa figure, on a body that returns
+$1.272\%$ under the head model. The guard flagged it and the result is
+discarded. Widening the interval does not help here, because the limit is
+physical rather than numerical: with $f = 0.01$ the mass constraint gives
+$\densrest = \SI{403.8}{\kilo\gram\per\cubic\metre}$ and an excess mass of
+only $-0.947\%$ of the total, so an extreme contrast is being purchased
+with almost no mass.
+
+That last figure suggests a diagnostic, which we put forward as a
+candidate on the same footing as the mass-sensitivity test of
+Section~\ref{sec:constrains:mass}. The ratio of the improvement to the
+fractional excess mass---the dispersion reduction bought per unit of
+claimed anomaly---is $14.4$ for the Arrokoth neck against $2.20$ for the
+Itokawa head, $0.71$ for the Eros saddle, $0.66$ for the Itokawa neck,
+$0.45$ for the misplaced Eros plane, $0.31$ for 67P and $0.26$ for the
+Arrokoth head. The edge minimum exceeds the next highest value by a factor
+of $6.5$ and is the only case that does. The diagnostic costs nothing, but
+its limitation should be stated with it: it does not flag the misplaced
+plane of Section~\ref{sec:failures:plane}, whose ratio is unremarkable.
+
+The second case is the one this paper resolved rather than discarded. At
+$\xsplit = \SI{0.220}{\kilo\metre}$ on Itokawa an early run used an upper
+scan limit of $\SI{3900}{\kilo\gram\per\cubic\metre}$ and returned a
+minimum at that limit. Widening the interval to
+$\SI{8000}{\kilo\gram\per\cubic\metre}$ returned an interior minimum at
+the same tabulated value. Two things should be said about that agreement.
+The run with the lower ceiling predates the archived configuration, in
+which the limit at that plane is $8000$, so it cannot be reproduced from
+the released driver scripts and is described here only because the
+diagnostic it illustrates is the point. And the agreement is one of grid
+rather than of arithmetic: with no sub-grid refinement the minimiser is
+reported to the nearest $\SI{25}{\kilo\gram\per\cubic\metre}$, and
+Section~\ref{sec:failures:small} places the true stationary point near
+$\SI{3912}{\kilo\gram\per\cubic\metre}$, which happens to round onto the
+old boundary. A boundary minimum is a warning that the interval may be too
+narrow; it is not a demonstration that it is.
+
+A third consequence of the ceiling belongs here rather than in
+Section~\ref{sec:plane}. Holding $\Dmass$ near its sweep mean, the ceiling
+of $8000$ admits no region smaller than $f_{\min} = 2.56\%$
+(Equation~\eqref{eq:capbinds}), which the sweep would reach at
+$\xsplit \approx \SI{0.257}{\kilo\metre}$. Planes beyond that point are
+not merely inadmissible on compositional grounds; they are outside what
+the present scan configuration can resolve at all, and no statement about
+the behaviour of $\potvarn$ there is supported.
+
+\subsection{A misplaced plane}
+\label{sec:failures:plane}
+
+The plane is the one ingredient neither measured nor derived
+(Section~\ref{sec:plane}), and misplacing it is the failure that produces
+the most plausible output. On Eros the rejected selection rule of
+Section~\ref{sec:methods:neck}---smallest interior half-width rather than
+saddle---returns $\xsplit = \SI{-10.7619}{\kilo\metre}$, on a shoulder.
+
+The output at that plane is worth setting out in full, because every
+individual figure is unremarkable and the combination is wrong:
+%
+\begin{equation}
+C = 0.876 \pm 0.039, \qquad
+\improve = 5.526\%, \qquad
+\Dmass/\Mtot = -12.32\%, \qquad
+\dCOM = \SI{-214.8}{\metre} .
+\label{eq:misplaced}
+\end{equation}
+%
+The contrast excludes unity by $3.2$ of its own intervals. The excess mass
+is larger in magnitude than the $7.7\%$ recovered on Itokawa. The
+centre-of-mass offset is nearly four times that at the true saddle and of
+the opposite sign. Nothing in the numbers marks them as spurious.
+
+Four diagnostics were available and they do not agree, which is why this
+subsection exists.
+
+\emph{The envelope comparison catches it, narrowly.} At $5.526\%$ the
+improvement lies inside the $0.9$--$5.9\%$ envelope of Paper~IV, but only
+$6\%$ below its upper edge, and that edge is attained on a different body.
+The comparison that matters is against the value the envelope takes on
+Eros itself, which is $6.03\%$ over the ladder from $2{,}000$ to $42{,}000$
+facets with quadric decimation. The misplaced plane reaches $0.92$ times that
+value, so the envelope test rejects it, but with vertex clustering, which
+Paper~IV used, the Eros envelope is $5.40\%$ and the same result would be
+$1.02$ times it and would not be rejected: the margin is smaller than the
+difference between two defensible ways of computing the envelope.
+
+Two things should be said about the figure of $6.03\%$ itself. It exceeds
+the upper edge of the $0.9$--$5.9\%$ range quoted throughout this paper, and
+there is no contradiction in that: the published range was measured under
+vertex clustering, whereas $6.03\%$ is measured under the quadric edge
+collapse used here, and Appendix~\ref{app:envelope} gives both. Where a
+body-specific value is available it supersedes the cross-body range, which is
+attained on a different body in any case. The corresponding Itokawa value
+under quadric collapse is $1.35\%$, so the $16.9\%$ improvement reported
+there is $12.5$ times its own body's envelope, and the two comparisons are
+made on the same footing.
+% Resolved from paper4_recheck.json: the Eros-specific envelope is 6.03 %
+% with quadric decimation and 5.40 % with vertex clustering. The misplaced
+% plane reaches 5.526 %, so the diagnostic catches it under the first and
+% not under the second; both values are now stated in the text.
+
+\emph{Plane provenance catches it.} The plane was selected by a rule the
+paper had already rejected on geometric grounds before any density was
+computed, and the saddle prominences of Section~\ref{sec:methods:neck}
+separate cleanly from $0.490$ on Arrokoth to $0.0004$ on Bennu. This is a
+strong argument and it is not available to a reader handed only the
+output.
+
+\emph{The displacement statistic ranks it correctly, but weakly.} With
+$\densrest = \SI{2996}{\kilo\gram\per\cubic\metre}$ and the propagated
+interval of Table~\ref{tab:propagated},
+%
+\begin{equation}
+\Sstat = \frac{\lvert\densbulk-\densrest\rvert}{\sigma(\densrest)}
+       = \frac{328.6}{114.8} = 2.86 ,
+\label{eq:smisplaced}
+\end{equation}
+%
+against $5.8$ for the Itokawa reference solution. The artefact therefore
+scores below the result, which is the right ordering; but it also scores
+above all four genuine nulls, whose values run from $0.02$ on Bennu to
+$0.68$ at the Eros saddle, so $\Sstat$ places it between the two classes
+rather than with the nulls. It is a necessary condition and not a
+sufficient one.
+
+\emph{The amplification factor fails outright.} At this plane
+$\ampfac = \densrest/(\densbulk-\densrest) = -9.12$, so
+$\lvert\ampfac\rvert = 9.1$ against $12.0$ for Itokawa. By the ordering
+established over five bodies in Section~\ref{sec:nulls:amplification}, in
+which a smaller $\lvert\ampfac\rvert$ accompanies a stronger response,
+this plane ranks as the strongest signal in the study. It is the one case
+we have found that breaks that ordering, and it bounds what the
+correlation reported there can be used for: $\ampfac$ orders bodies
+evaluated at properly placed planes, and says nothing about whether the
+plane is properly placed.
+
+A fifth diagnostic was used during development and should be defined
+before it is relied on. The fraction of the scan interval over which the
+implied $\densrest$ remains within physically plausible bounds is
+%
+\begin{equation}
+W = \frac{1}{\Delta\densR}\,\frac{1-f}{f}\,
+    \left(\densrest^{\max}-\densrest^{\min}\right) ,
+\label{eq:window}
+\end{equation}
+%
+clipped to unity, where $\Delta\densR$ is the width of the scan. It is
+computable from the mass constraint alone, before any gravity evaluation,
+and it collapses as $f \to 1$, which is exactly the small-complement
+regime of Section~\ref{sec:failures:small}. Evaluated with one rule for both bodies---each density confined to
+$0$--$\SI{3540}{\kilo\gram\per\cubic\metre}$, the grain density of the
+ordinary-chondrite analogue, and to the scan---it is $87.6\%$ for the
+Itokawa reference plane, where the constraint binds only through
+$\densR \le 3540$, and $10.3\%$ for the misplaced Eros plane, where the
+small complement confines $\densR$ to $2554$--$\SI{3017}{\kilo\gram\per\cubic\metre}$
+out of a scan of $500$--$5000$. The earlier figure of $90.0\%$ for Itokawa
+was quoted against a slightly different upper bound and is superseded.
+% Resolved: 10.3 % is reproduced exactly by applying the bounds to BOTH
+% densities, which is what the working notes did; the ratio quoted in the
+% query assumed the bounds act on rho_rest alone. Recomputed under the single
+% rule stated in the text, Itokawa gives 87.6 % rather than 90.0 %.
+
+\subsection{Facets that are not on the surface}
+\label{sec:failures:buried}
+
+The Arrokoth model of \citet{porter2024} is supplied as two unjoined
+shells, geometrically in contact and topologically separate, with
+$\chi = 4$ over two connected components. Four hundred and fifty-five
+facets, carrying $0.943\%$ of the total area, have their centroids inside
+the opposite shell, and the shells interpenetrate over $0.044\%$ of the
+volume.
+
+Those facets are not on the body's surface, and the relaxation argument of
+\citet{richardson2014} does not apply to them: no regolith flows there and
+no geopotential is levelled there. Including them in
+Equation~\eqref{eq:dispersion} is a violation of the geometry, not an
+approximation within it.
+
+The consequence is larger than the area warrants. At an assumed bulk
+density of $\SI{250}{\kilo\gram\per\cubic\metre}$, retaining the buried
+facets returns a contrast of $1.062$ and excluding them returns $0.9999$:
+under one per cent of the area moves the answer by $6.2\%$ and creates an
+apparent density excess where there is none. Across the assumed-density
+range the same decision moves the crossover---the assumed bulk density at
+which the contrast passes through unity---from between $235$ and
+$\SI{250}{\kilo\gram\per\cubic\metre}$, and within one kilogram per cubic
+metre of $250$ by interpolation between those two runs, to approximately
+$\SI{345}{\kilo\gram\per\cubic\metre}$
+(Section~\ref{sec:nulls:arrokoth}).
+
+
+All Arrokoth results reported in this paper exclude them, with $\Ubar$ and
+$\sum_i A_i$ recomputed over the retained set rather than terms merely
+dropped from the numerator. The check that finds them is a containment
+test of each facet centroid against the other components, and it is
+required only because the source model has more than one component---which
+the per-component Euler criterion of Section~\ref{sec:methods:verify}
+reports, and a single global $\chi = 2$ test would not.
+
+\subsection{What the catalogue implies}
+\label{sec:failures:summary}
+
+Three of the seven failures announce themselves: the degenerate facets
+produce NaN, the edge minima are caught by the boundary guard, and the
+region-too-small case declares itself through a curvature interval that
+reaches $22\%$ of the recovered value. Four do not.
+
+Of the four silent ones, the wrong solid and the buried facets are
+geometric and are caught by checks on the region's \emph{definition}
+rather than on its self-consistency---the vertex predicate, the
+per-component Euler criterion, the containment test, and the mass-balance
+audit. The small complement is caught only by propagating the curvature
+interval through the mass constraint before reading it, since in the
+scanned coordinate it presents as unusual precision. The misplaced plane
+is caught only by the provenance of the plane and, marginally, by
+comparison against the body's own resolution envelope; two of the four
+statistical diagnostics available rank it below the genuine result, and
+one ranks it above.
+
+The general shape of the catalogue is that no single number distinguishes
+a result from an artefact. This is why Section~\ref{sec:nulls:misplaced}
+states a three-part criterion rather than a threshold, why
+Section~\ref{sec:guidelines} asks for the plane, its provenance and the
+propagated interval to be reported alongside any density, and why the
+quantity we recommend reporting is $\densrest$ rather than $\densR$: of
+the seven failures, one degrades $\densrest$ and six leave it intact or
+destroy the calculation outright, whereas five of the seven corrupt
+$\densR$ while leaving the output superficially reasonable.

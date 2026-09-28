@@ -1,0 +1,408 @@
+%=======================================================================
+%  Paper V — Section 1 (Abstract + Introduction)   revised
+%  Lines marked  % VERIFY  contain values to confirm against your tables
+%=======================================================================
+%\documentclass[preprint,12pt]{elsarticle}
+
+%\usepackage[T1]{fontenc}
+%\usepackage[utf8]{inputenc}
+%\usepackage{amsmath,amssymb}
+%\usepackage{graphicx}
+%\usepackage{booktabs}
+%\usepackage{natbib}
+%\usepackage{siunitx}
+%\sisetup{per-mode=symbol, range-phrase={--}, range-units=single}
+%\usepackage[hidelinks]{hyperref}
+
+%------------------------- notation macros -----------------------------
+%\newcommand{\potvarn}{\tilde{\sigma}_{U}}
+%\newcommand{\denshead}{\varrho_{\mathrm{head}}}
+%\newcommand{\densrest}{\varrho_{\mathrm{rest}}}
+%\newcommand{\densR}{\varrho_{R}}
+%\newcommand{\densbulk}{\varrho_{\mathrm{bulk}}}
+%\newcommand{\Ddens}{\Delta\varrho}
+%\newcommand{\Dmass}{\Delta M}
+%\newcommand{\VR}{V_{R}}
+%\newcommand{\Vtot}{V_{\mathrm{tot}}}
+%\newcommand{\Mtot}{M_{\mathrm{tot}}}
+%\newcommand{\ampfac}{\mathcal{A}}
+%\newcommand{\Ufull}{U^{\mathrm{grav}}_{\mathrm{full}}}
+\newcommand{\Ureg}{U^{\mathrm{grav}}_{R}}
+\newcommand{\Urot}{U^{\mathrm{rot}}}
+
+%\journal{Icarus}
+
+%\begin{document}
+
+%\begin{frontmatter}
+
+%\title{What potential-dispersion minimization constrains in the interior of a small body}
+
+%\author{...}   % add author block
+
+%=======================================================================
+%  ABSTRACT  --  target 250--300 words (this version: 296)
+%=======================================================================
+{\noindent\large\bfseries Abstract}\\[0.4em]
+{\noindent
+\citet{richardson2014} argued that on a small body whose surface has
+relaxed under downslope regolith flow the bulk density can be estimated
+by minimizing the dispersion of the surface geopotential, and
+\citet{kanamaru2019} extended the argument from a single mean density to
+a two-region interior with the total mass held fixed. Paper~IV
+established the property that makes such a minimization meaningful: the
+normalized geopotential dispersion $\potvarn$ is far less sensitive to
+mesh resolution than the mean surface slope. We ask what the extension
+to interior structure actually constrains.
+
+Regions are built by exact plane clipping, verified against closed-form
+solids, a complement closure, a vertex predicate and a manifold criterion,
+with a fifth containment test where a shape model has more than one
+component, and externally against the published lobe volume of 67P. Of five bodies, only Itokawa gives a dispersion
+improvement above the $0.9$--$5.9\%$ mesh-resolution sensitivity
+envelope of Paper~IV: $16.9\%$ at the detected neck. Eros, Bennu, 67P
+and Arrokoth return $<10^{-3}\%$ to $1.3\%$, at or below that envelope.
+At the dividing plane $x=\SI{150}{\metre}$ of \citet{kanamaru2019} we
+recover $\denshead=2725$ and $\densrest=\SI{1858}{\kilo\gram\per\cubic\metre}$,
+a contrast of $1.47$ against their $1.46$, and a centre-of-mass offset of
+$16.5\pm\SI{2.9}{\metre}$, consistent with the $\SI{16}{\metre}$ from
+equipotential fitting and with the $21\pm\SI{12}{\metre}$ from YORP spin-up
+\citep{lowry2014}---though that determination is itself only $1.75$ standard
+deviations from zero, and its interval contains every plane of our sweep.
+
+The mass constraint makes the excess mass $\Dmass=\Ddens\VR$ identically
+$\Mtot-\densrest\Vtot$, so a statement about one is a statement about the
+other. Over the eleven planes of a thirteen-plane sweep on Itokawa that lie
+below the grain-density ceiling, $\denshead$ varies by $\pm13.2\%$ and
+$\densrest$ by $\pm0.43\%$. In coefficients of variation the ratio is $32$;
+the identity contributes $11.8$ of it and the subtraction that defines
+$\Ddens$ removes $2.8$, leaving a factor of $7.5$ that reflects genuine
+compensation between contrast and region volume. Including the curvature sensitivity interval
+gives $\densrest=1858\pm\SI{27}{\kilo\gram\per\cubic\metre}$.
+Eight uniform synthetic contact binaries show the invariance emerges
+only as the signal strengthens. Dispersion minimization does not
+constrain its own dividing plane, and Itokawa fails the first of the
+four relaxation conditions. Conservation of the mass dipole is excluded at twenty-one standard errors,
+so the agreement with YORP is an independent check and not a second reading
+of the same quantity. Dispersion minimization does not constrain its own
+dividing plane: left to itself it runs to a head density standing $11.2$
+standard deviations above the LL grain density. Itokawa fails the first of
+the four relaxation conditions, but that condition governs the conditioning
+of a variable-mass inversion and has no counterpart here, and a control run
+with the rotational term removed confirms that the fixed-mass objective
+retains an interior minimum. On Arrokoth, which has no measured mass, the
+sense of the recovered contrast reverses within the published range of bulk
+density, between $235$ and $\SI{250}{\kilo\gram\per\cubic\metre}$.
+%\end{abstract}
+
+
+%-----------------------------------------------------------------------
+
+}
+
+\medskip
+\noindent\textbf{Keywords:} 
+asteroids,
+interior structure,
+small bodies,
+surface geopotential,
+polyhedral gravity,
+inverse problems,
+identifiability,
+shape models,
+25143 Itokawa,
+486958 Arrokoth,
+67P/Churyumov-Gerasimenko,
+101955 Bennu,
+433 Eros
+
+%\end{frontmatter}
+
+%=======================================================================
+\section{Introduction}
+\label{sec:intro}
+
+The interior of a small body is not directly observable. Where a
+spacecraft has tracked the body, radio science fixes the total mass and,
+on the most favourable targets, the low-degree gravity field
+\citep{yeomans2000,patzold2016,scheeres2020}; but the mass alone is one
+number, and the gravity coefficients that would resolve internal
+structure are degenerate with the shape unless the spacecraft flies very
+close for a long time. Where no spacecraft has visited, even the mass is
+absent. Indirect routes are therefore of interest, and one of them uses
+the surface itself.
+
+%-----------------------------------------------------------------------
+\subsection{Relaxation as an inference tool}
+\label{sec:intro:relaxation}
+
+\citet{richardson2014} set out the argument in full. On a rotating
+irregular body covered by mobile regolith, downslope flow triggered by
+seismic shaking or volatile activity acts as a negative-feedback system,
+eroding local topography toward a flat equipotential surface. If that
+process has run to completion, the surface geopotential should be nearly
+uniform, and the bulk density can be estimated by finding the value that
+minimizes its dispersion. They state four conditions under which the
+argument holds: the mean rotational force must be a significant fraction
+of the mean gravitational force; a sufficiently thick, low-cohesion,
+mobile regolith layer must exist over most of the surface; a downslope
+flow disturbance source must be present; and sufficient time must have
+passed since the last major surface alteration. They are explicit that
+the result is neither a direct nor an indirect density measurement, but
+the density corresponding to the most eroded state of the body given its
+present shape, topography and spin. We return in
+Section~\ref{sec:discussion} to the standing of these four conditions on
+the bodies examined here, and note at the outset that the single body
+that responds to the inversion, Itokawa, does not satisfy the first of
+them.
+
+\citet{kanamaru2019} extended the argument from a single mean density to
+an interior distribution. Holding the total mass at its measured value
+and dividing Itokawa into a head and a body at $x=\SI{150}{\metre}$,
+they minimized the area-weighted potential variance over the global
+surface with respect to the one remaining free parameter, and recovered
+a head density of $2730$ and a body density of
+$\SI{1870}{\kilo\gram\per\cubic\metre}$, a contrast of $1.46$. A
+companion study using the smooth terrains rather than the whole surface
+\citep{kanamaru2019pss} obtained $2450$ and
+$\SI{1930}{\kilo\gram\per\cubic\metre}$, a contrast of $1.27$, and,
+importantly, found that a model in which the two lobes have comparable
+densities separated by a compressed neck fits marginally better than one
+in which the lobes differ, and that a three-region model treating head,
+neck and body separately is largely unconstrained; only when the
+independently estimated centre-of-mass offset from YORP spin-up is
+imposed do their models require the head to exceed the global average.
+\citet{motooka2012} had earlier attempted to fit the global shape of
+Itokawa to a single equipotential surface. An independent line of
+evidence comes from \citet{lowry2014}, whose measured YORP spin-up
+requires a centre-of-mass displacement of
+$\SI{21\pm12}{\metre}$ along the long axis. Because this is the only
+constraint on Itokawa's interior not derived from an equipotential
+argument, it is the only genuinely external check available to us, and
+we treat it as such in Section~\ref{sec:itokawa}.
+
+Paper~IV of this series supplied a property on which any such
+minimization depends. Comparing meshes of the same body decimated from
+roughly $42{,}000$ to $2{,}000$ facets, the area-weighted mean slope
+varied by $1.8\%$ to $25.6\%$ across the test set while the normalized
+geopotential dispersion varied by only $0.9\%$ to $5.9\%$, reaching a
+plateau between the two finest meshes. The endpoints of these two ranges
+are attained on different bodies and should not be divided against one
+another; the per-body ratios are given in Paper~IV. A quantity that
+changes with the arbitrary resolution of the mesh cannot support an
+inference; the dispersion, over the tested range, does not.
+
+Section~\ref{sec:discussion:ellipsoid} tests that comparison against an
+analytic reference and finds it, if anything, understated. We refer to
+the $0.9$--$5.9\%$ range throughout as the \emph{mesh-resolution
+sensitivity envelope}. It measures how far $\potvarn$ moves when the
+discretization changes; it is neither a statistical noise level nor a
+detection threshold, and we use it only as a scale against which an
+improvement may be judged large or small. Constructing a proper null
+distribution would require either a noise model for the shape data or a
+placebo ensemble of randomly placed dividing surfaces; neither is
+attempted here, and the absence is a limitation we state plainly rather
+than a gap we conceal.
+
+%-----------------------------------------------------------------------
+\subsection{The question this paper asks}
+\label{sec:intro:question}
+
+That the extension works on Itokawa has been reported. What it
+constrains has not been examined. The dividing plane is chosen by the
+investigator, and no published study varies it and reports how the
+recovered density responds. The question matters because the density of
+a region is not an observable in the way the total mass is: it is the
+ratio of an inferred excess mass to a volume that the investigator has
+defined.
+
+The point can be made before any computation. With $\Mtot$ and $\Vtot$
+held fixed, conservation of mass gives
+%
+\begin{equation}
+\Mtot \;=\; \densR\VR + \densrest\!\left(\Vtot-\VR\right)
+      \;=\; \densrest\Vtot + \Ddens\,\VR ,
+\label{eq:massbalance}
+\end{equation}
+%
+with $\Ddens\equiv\densR-\densrest$, so that the excess mass
+$\Dmass\equiv\Ddens\VR$ satisfies the exact identity
+%
+\begin{equation}
+\Dmass \;=\; \Mtot-\densrest\Vtot
+       \;=\; \left(\densbulk-\densrest\right)\Vtot ,
+\qquad \densbulk\equiv\Mtot/\Vtot .
+\label{eq:excessidentity}
+\end{equation}
+%
+Equation~\eqref{eq:excessidentity} involves no property of the objective
+function. It says that $\Dmass$ and $\densrest$ are related by a
+bijective affine map, that a two-region model with fixed total mass has
+exactly one free parameter, and that the pair $(\densR,\VR)$ is
+degenerate along the hyperbola $\Ddens\VR=\mathrm{const}$. Any claim
+that one of these quantities is ``more stable'' than another must
+therefore be accompanied by the amplification factor relating them,
+%
+\begin{equation}
+\ampfac \;\equiv\; \frac{\densrest\Vtot}{\Dmass}
+        \;=\; \frac{\densrest}{\densbulk-\densrest}
+        \;=\; \frac{1}{f\,(C-1)},
+\qquad f\equiv\VR/\Vtot,\quad C\equiv\densR/\densrest ,
+\label{eq:amplification}
+\end{equation}
+%
+which on Itokawa at the detected neck takes the value
+$\ampfac=12.0$.
+We show in Section~\ref{sec:constrains} that reporting the relative
+scatter of $\densrest$ without $\ampfac$ overstates the precision of the
+inversion by exactly this factor, and that $\ampfac$ itself is amplified
+by $\densbulk/(\densbulk-\densrest)\simeq13$ relative to errors in
+$\densrest$, so that a $0.13\%$ shift in the background density moves
+$\ampfac$ by $1.7\%$.
+
+We therefore treat the method as an object of study rather than a tool.
+Five bodies are analysed---Itokawa, Eros, Bennu, 67P and
+Arrokoth---together with eight synthetic contact binaries constructed so
+that the strength of the signal can be varied while everything else is
+controlled: uniform in density by construction, volumes within $7\%$ of
+one another, and every plane sweep spanning the same factor $1.90$ in
+region volume. The synthetic experiment is necessary because no further
+real body can settle the question: we cannot choose in advance whether
+it will carry a signal, and no body's true interior is known, so
+agreement would establish only that something had happened twice. We
+note the corresponding limitation: because the synthetic bodies are
+uniform, they bound the false-positive rate but do not measure recovery
+of a known contrast, and the detection limit of the method is therefore
+not established here.
+
+%-----------------------------------------------------------------------
+\subsection{A construction error and how it was found}
+\label{sec:intro:construction}
+
+One result of this work is negative and concerns the region construction
+itself, and we state it before the contributions because it conditions
+all of them.
+
+An earlier implementation closed each region by fanning its boundary
+edges to an interior point. That construction is watertight, has an
+exact tetrahedral volume, and passes a volume-closure test---and it
+encloses the wrong solid. Fanning to an interior point produces a radial
+cone over the surface patch, not the plane-cut lobe intended. On a unit
+sphere cut at $x=0.5$ the cone is a spherical sector of volume $1.0472$
+and centroid $0.5625$, against $0.6545$ and $0.6750$ for the spherical
+cap; on Itokawa the resulting error reversed the sign of the recovered
+contrast. The volume-closure test then in use compared the fan mesh
+against the same tetrahedra and could not detect the discrepancy. Only a
+\emph{predicate} test---requiring every vertex of the region to satisfy
+its defining inequality---distinguishes the two constructions.
+
+The present implementation builds regions by exact plane clipping and is
+verified in four independent geometric layers---against closed-form solids,
+by complement closure, by the vertex predicate and by a manifold
+criterion---with a fifth containment test where a shape model has more than
+one component, an arithmetic audit of the mass balance on every solution,
+and externally against the published lobe volume of 67P, where our head region holds $26.6\%$ of
+the body against the $27\%$ given by \citet{jorda2016}. We record in
+Section~\ref{sec:methods} that this external agreement is weaker than it
+appears, because a single plane assigns the entire neck to one side
+whereas the lobe fit of \citet{jorda2016} assigns $66\%$ and $27\%$ of
+the volume to the two lobes and leaves the remaining $7\%$, the neck, in
+neither; moving the plane across the neck changes our percentage by
+$10.7$ points, and we report that sensitivity so that the reader may
+judge it.
+
+%-----------------------------------------------------------------------
+\subsection{What is new here}
+\label{sec:intro:new}
+
+To be plain about the boundary: the relaxation argument and the
+potential-variance technique are \citet{richardson2014}; the extension
+to a two-region interior is \citet{kanamaru2019}; the polyhedron gravity
+is \citet{werner1996}; and the finding that Itokawa's head is the denser
+lobe is \citet{lowry2014} and \citet{kanamaru2019}, reproduced here but
+not discovered here. \citet{scheeres2020} describe that finding as
+tentative and not directly tested, which is part of what motivates an
+independent implementation.
+
+The contributions of this paper are the following.
+
+\begin{enumerate}
+\item An exact plane-clipping region construction with four verification
+layers, of which the predicate and manifold tests can each fail in ways
+the other three cannot, together with external validation against the
+published lobe volume of 67P and an explicit account of how the neck is
+apportioned (Section~\ref{sec:methods}).
+
+\item The demonstration that the density recovered by the inversion is
+resolution-stable over the meshes tested---a property distinct from, and
+not implied by, the stability of the dispersion established in
+Paper~IV---with no change across the three Itokawa meshes that share a
+dividing plane and none across the three Arrokoth meshes at a fixed plane.
+``No change'' means below the resolution of the scan, which bounds it at
+$\SI{12.5}{\kilo\gram\per\cubic\metre}$, or $0.45\%$, on Itokawa; on
+Arrokoth the recovered density is identical on all three meshes and the
+complementary density moves by $\SI{0.4}{\kilo\gram\per\cubic\metre}$, or
+$0.1\%$ (Sections~\ref{sec:itokawa} and~\ref{sec:nulls}).
+
+\item The decomposition of the apparent stability of the inversion into
+its algebraic and physical parts. Equation~\eqref{eq:excessidentity}
+fixes a factor of $11.8$ between the coefficients of variation of $\Dmass$
+and of $\densrest$, and the definition of $\Ddens$ as a difference inflates
+its coefficient of variation over that of $\denshead$ by a further factor of
+$2.8$; only the factor of $7.5$ by which $\Dmass$ is steadier than $\Ddens$
+reflects compensation between contrast and region volume and is a property
+of the objective function. The three combine exactly to the net factor of
+$32$ between $\denshead$ and $\densrest$ over the eleven planes below the
+grain-density ceiling (Section~\ref{sec:constrains}).
+
+\item The identification of the background density, and with it the mass
+anomaly to which \eqref{eq:excessidentity} ties it exactly, as the
+quantity the method constrains in the strong-signal regime, together
+with the demonstration by controlled synthetic experiment that this
+holds in that regime rather than of the method as such
+(Section~\ref{sec:constrains}).
+
+\item The exclusion of the competing hypothesis that the conserved
+quantity is the mass dipole $D=\Dmass\,(x_{R}-x_{cf})$. Dipole
+conservation requires $\mathrm{d}\log\Dmass/\mathrm{d}\log\VR>0$ and
+hence a scaling slope $s>-1$; quantitatively it requires $s=-0.756$ over
+the eleven Itokawa planes below the grain-density ceiling, and the measured
+$s=-1.141\pm0.018$ lies on the opposite side of $-1$, twenty-one standard
+errors away (Sections~\ref{sec:itokawa} and~\ref{sec:constrains}).
+
+\item The result that dispersion minimization does not constrain its own
+dividing plane---at the outermost plane of the sweep the head density it
+prefers stands $11.2$ standard deviations above the LL grain density---and
+that an external physical bound is therefore required
+(Section~\ref{sec:plane}).
+
+\item Four weak-signal cases, establishing that the method does not
+manufacture structure when the plane is correctly placed, and one worked
+case showing what a misplaced plane costs (Section~\ref{sec:nulls}).
+
+\item The finding that on a body without a measured mass the assumed
+bulk density places the inferred contrast at the threshold of a sign
+reversal, and the suggestion that sensitivity to that assumption may
+serve as a secondary diagnostic (Sections~\ref{sec:nulls}
+and~\ref{sec:constrains}).
+
+\item An independent test of the Paper~IV resolution result against a
+homogeneous ellipsoid, whose surface gravity has a closed form, removing
+the need to treat the finest mesh as the truth
+(Section~\ref{sec:discussion:ellipsoid}).
+\end{enumerate}
+
+Section~\ref{sec:methods} sets out the density model, the region
+construction and its verification. Section~\ref{sec:itokawa} presents
+the single strong signal and its stability properties.
+Section~\ref{sec:nulls} presents the four weak-signal cases.
+Section~\ref{sec:constrains} is the core of the paper: what the method
+constrains, and the synthetic experiment that establishes in which
+regime it does so. Section~\ref{sec:plane} shows that the dividing plane
+is not self-determined. Section~\ref{sec:failures} catalogues the
+failure modes. Section~\ref{sec:discussion} discusses the standing of
+the relaxation premise on these bodies, Section~\ref{sec:guidelines}
+sets out what the results imply for anyone applying the method, and
+Section~\ref{sec:conclusions} states the conclusions.
+
+%\end{document}

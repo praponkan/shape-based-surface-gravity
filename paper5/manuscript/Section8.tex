@@ -1,0 +1,843 @@
+%=======================================================================
+%  Paper V — Section 8 (Discussion)   FINAL
+%
+%  Requires the macros listed at the head of Section 2.
+%  NOTE: ver10 used \dens in Eq. (macmillan). That macro is not defined
+%  anywhere in this manuscript and would break the compile. It is
+%  written out as \varrho below.
+%
+%  PRINCIPAL ADDITION IN THIS REVISION -------------------------------
+%  Section 8.2 is new. It shows, from the mass constraint alone, that
+%  the first condition of Richardson and Bowling -- that the rotational
+%  term be a significant fraction of the gravitational one -- is the
+%  condition under which THEIR objective is not identically flat, and
+%  that it has no counterpart in a fixed-mass two-region inversion,
+%  where the mass constraint fixes the scale instead. This converts the
+%  discomfort acknowledged in Section 8.1 from an unresolved concern
+%  into a bounded one, and it costs nothing: the omega = 0 control run
+%  needs no new gravity evaluation.
+%
+%  Superseded values and statements:
+%      "2e-14 per cent" volume closure  -> 2.1e-14 in relative terms
+%      "2.2e-14 per cent" sphere limit  -> relative; and it is a check
+%                                          on the analytic quadrature,
+%                                          not on the polyhedral code
+%      "19 to 59 times more accurate"   -> quoted at the working
+%                                          resolution as well, ~16-20
+%      "our 16.5 m lies within it"      -> 16.5 +/- 2.9 m, and the
+%                                          Lowry interval contains the
+%                                          whole sweep, so the test does
+%                                          not discriminate
+%      head-neck as the fundamental ambiguity
+%                                       -> the method separates them by
+%                                          a factor 7.3 in I; the real
+%                                          degeneracy is elsewhere
+%      "no numerical diagnostic detects a misplaced plane"
+%                                       -> one of four fails outright,
+%                                          two rank it correctly
+%      "no change across the three Itokawa meshes"
+%                                       -> bounded at half a scan step
+%
+%  Resolved in this pass: the three missing dispersion pairs of Table 8.2
+%  (Itokawa does carry the largest residual, 83.1 % against 98.7 %); the
+%  seven rungs of the planted ladder; the Paper IV slope range, 1.8-25.6 %
+%  as published against 1.8-21.9 % recomputed with clustering here.
+%  Also resolved: the omega = 0 control and the equatorial column
+%  (v10_s8_tests.json), and the standard errors of Tables 8.3 and 8.4. The
+%  49,152-facet row was abandoned as disproportionately expensive; see the
+%  note at that table.
+%=======================================================================
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{The standing of the relaxation premise on these bodies}
+\label{sec:discussion:premise}
+
+Everything in this paper rests on a premise that is not established for any
+of the bodies examined. \citet{richardson2014} state four conditions under
+which a surface may be taken as relaxed toward an equipotential: the mean
+rotational force must be a significant fraction of the mean gravitational
+force; a sufficiently thick, low-cohesion, mobile regolith layer must cover
+most of the surface; a downslope flow disturbance source must be present;
+and sufficient time must have passed since the last major surface
+alteration. They are explicit that the result is not a density measurement
+but the density corresponding to the most eroded state of the body given its
+present shape, topography and spin.
+
+On Itokawa three of the four are supported and the first is not. Mobile
+regolith is present: the Muses Sea and the other smooth terrains cover about
+a fifth of the surface \citep{fujiwara2006,kanamaru2019pss}. A disturbance
+source is present: \citet{tatsumi2018} invoke impact-induced seismic shaking
+to explain the depletion of small quasi-circular depressions. Time is
+available: they place the crater retention age at $3$--$33$~Myr in the main
+belt, in agreement with the cosmic-ray exposure ages of the returned
+samples, and conclude that global resurfacing occurred long after the
+disruption of the parent body. The first condition, however, fails.
+\citet{richardson2014} tabulate the mean rotational potential on Itokawa as
+$2.4\%$ of the mean gravitational potential, the second lowest of the bodies
+they examine, and their global minimization returns a bulk density of
+$\SI{330}{\kilo\gram\per\cubic\metre}$ against a measured $1950$---an error
+of a factor of six, which they attribute directly to that first criterion.
+% Supporting evidence for "seven": the companion conference abstract
+% (Richardson, Graves & Bowling, ACM 2014) states that the study used 22
+% radar-derived shape models and SEVEN small-body shape models from
+% spacecraft observations. The seven quoted here are the spacecraft set, the
+% only ones with measured masses. Confirm against the Icarus paper itself
+% before submission; the abstract is a companion, not the paper.
+
+This is uncomfortable, and it should be stated rather than left for a reader
+to find. The single strong signal reported here is on the body where the
+premise is weakest, while Bennu, which rotates fast enough to satisfy the
+condition comfortably, returns a weak-signal result.
+Section~\ref{sec:discussion:conditioning} shows that the discomfort is
+narrower than it first appears, because the condition that fails is a
+condition on the conditioning of a different inverse problem; this
+subsection first sets out where the premise stands body by body.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The four conditions of \citet{richardson2014}, assessed body by
+body. The rotation parameter in the second column is
+$q = \omega^{2}R_{v}/(G\Mtot/R_{v}^{2})$, evaluated at the
+volume-equivalent radius $R_{v}=(3\Vtot/4\pi)^{1/3}$, which reduces
+identically to $q = 3\omega^{2}/(4\pi G\densbulk)$: it depends on the spin
+period and the bulk density alone and carries no information about the
+shape. It is therefore \emph{not} the ratio at the equator of an elongated
+body, which is larger by the ratio of the maximum distance from the spin
+axis to $R_{v}$---a factor of $1.89$ on Itokawa and $2.09$ on
+Eros---and it is not the quantity \citet{richardson2014} tabulate, which is
+a ratio of mean potentials. The three are listed or distinguished
+separately and must not be conflated. Arrokoth has no measured mass, so its
+$q$ is a function of the assumed bulk density and is quoted at all three
+values run.}
+\label{tab:conditions}
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabular}{lcccccc}
+\toprule
+& \multicolumn{3}{c}{(1) rotation} & (2) mobile & (3) disturbance & (4) time \\
+\cmidrule(lr){2-4}
+Body & $q$ at $R_{v}$ & $q$ at equator & potential
+ & regolith & source & since \\
+\midrule
+Itokawa  & $0.037$ & $0.070$ & $0.024$ & yes & yes & yes \\
+Eros     & $0.147$ & $0.308$ & $0.111$ & yes & yes & yes \\
+Bennu    & $0.496$ & $0.586$ & ---     & partly & yes & uncertain \\
+67P      & $0.132$ & $0.211$ & ---     & partly & yes & no \\
+Arrokoth & $0.173/0.108/0.086$ & $0.337/0.211/0.169$ & ---
+         & unknown & weak & yes \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+The Arrokoth entries correspond to assumed bulk densities of $250$, $400$
+and $\SI{500}{\kilo\gram\per\cubic\metre}$ respectively; at the central
+published estimate near $\SI{235}{\kilo\gram\per\cubic\metre}$ the value is
+$0.18$, which exceeds Eros's. The equatorial column is measured on the shape models used here, as
+$\omega^{2}R_{\rm eq}/(G\Mtot/R_{v}^{2})$ with $R_{\rm eq}$ the largest
+distance of any vertex from the spin axis: $306.1$ and $\SI{17.6}{\kilo\metre}$
+on Itokawa and Eros, against $R_{v}$ of $161.9$ and
+$\SI{8.43}{\kilo\metre}$, and ratios $R_{\rm eq}/R_{v}$ of $1.89$, $2.09$,
+$1.18$, $1.60$ and $1.96$ for the five bodies in order.
+\end{minipage}
+% Measured on the meshes (v10_s8_tests.json): R_eq = 306.1 m, 17628.6 m,
+% 289.4 m, 2633.5 m, 19482.7 m for Itokawa, Eros, Bennu, 67P and Arrokoth.
+% The earlier Itokawa entry used a semi-axis of 267.5 m; the mesh gives 306.1.
+\end{table}
+
+The premise is not equally plausible across the five, and the reader should
+be able to see where it is weak. Table~\ref{tab:conditions} sets the four
+conditions against each body; the paragraphs below give the reasoning. One
+caution applies throughout: \citet{richardson2014} do not state a numerical
+threshold for ``a significant fraction'', so no body is judged against a
+stated cut. The evidence that Itokawa falls below it is empirical---their own
+bulk-density inversion on that body errs by a factor of six---and the
+evidence that Eros lies above it is that the same inversion works there. The
+threshold in mean potential ratio is therefore bracketed between $0.024$ and
+$0.111$ and is not located.
+
+\emph{Itokawa} satisfies three and fails the first, as described above.
+
+\emph{Eros} is the most favourable case on the premise as a whole. Its
+rotation parameter is four times Itokawa's, its regolith is deep enough to
+have formed ponded deposits, impacts supply a disturbance source, and its
+surface is old. That the method returns no contrast on the body where the
+premise is strongest, and where the measured gravity field independently
+indicates near-uniformity \citep{yeomans2000}, is the cleanest control in
+the study.
+
+\emph{Bennu} satisfies the first condition most comfortably of all five, at
+a rotation parameter approaching one half. The other three are less clear.
+Its surface is boulder-rich rather than smoothly regolith-covered, though
+particles are observed to be ejected and to move, so material is mobile in
+some sense. And its surface may be young: \citet{scheeres2020} attribute the
+reported low-density equator to recent migration and redistribution of
+material, which is a statement that the surface has changed recently rather
+than settled. A surface still in motion is not a relaxed surface.
+
+\emph{67P} fails the fourth condition outright. A comet nucleus is
+resurfaced continuously by sublimation, and its shape is not the product of
+gravitational relaxation alone. Whatever mobile material exists is airfall
+dust redeposited between perihelion passages rather than a regolith that has
+flowed downslope to equilibrium. This is a further reason, independent of
+the model-class argument of \citet{jorda2016}, to expect no interpretable
+signal.
+
+\emph{Arrokoth} is the least constrained, and its entry in
+Table~\ref{tab:conditions} illustrates why. Its rotation parameter is not a
+measured quantity at all but a function of the assumed bulk density, running
+from $0.173$ to $0.086$ across the range tried; an earlier draft described
+it as comparable to Eros's, which is true only at the middle of that range,
+and at the central published estimate it exceeds Eros's. Beyond that,
+nothing is known of its regolith, no disturbance source is established for a
+primordial Kuiper Belt object, and its surface is thought to have been
+little modified since accretion \citep{mckinnon2020}---which satisfies the
+fourth condition in the sense of elapsed time while removing any reason to
+think relaxation ever operated. With no measured mass on top of this, its
+result carries the least weight of the five.
+
+The pattern is worth stating plainly. The premise is strongest on Eros,
+which returns no signal; it is weakest on Itokawa, which returns the only
+strong one. The four weak-signal cases are therefore not equally
+informative: Eros's is a result about Eros, while 67P's and Arrokoth's are
+as much about the premise as about the bodies.
+
+Two of the three considerations that bear on how much weight this should
+carry are empirical, and are taken up here; the third is structural and is
+the subject of Section~\ref{sec:discussion:conditioning}.
+
+The first empirical consideration is that the result does not stand alone,
+and the second is that this support is weaker than it first appears.
+\citet{lowry2014} derive a centre-of-mass offset of $\SI{21+-12}{\metre}$
+from an observed spin-up, an argument that makes no appeal to surface
+relaxation at all, and our $\SI{16.5+-2.9}{\metre}$ at the same dividing
+plane lies within it. Two inferences resting on different premises agree,
+and by Section~\ref{sec:constrains:dipole} they are genuinely independent
+rather than two readings of one quantity, since the objective function
+demonstrably does not hold the mass dipole fixed. But the agreement should
+not be asked to carry more than it can. The Lowry determination is itself
+only $1.75$ standard deviations from zero, so it does not exclude a
+homogeneous Itokawa at the two-sigma level; and its interval,
+$9$ to $\SI{33}{\metre}$, contains the centre-of-mass offset at
+\emph{every} plane of Table~\ref{tab:itokawasweep}, whose range is
+$14.89$ to $\SI{20.52}{\metre}$, together with the $\pm2.9$ interval on each.
+The external check therefore confirms the sign and the order of magnitude of
+the anomaly and discriminates neither the plane nor the value.
+
+The third empirical consideration cuts the other way, and is recorded here.
+Even after the best two-region fit, Itokawa's surface remains $7.2\%$ from
+an equipotential in the normalized dispersion, against $3.4\%$ for Eros with
+no contrast fitted at all. Three things should be said about that
+comparison before it is read as evidence that Itokawa is the less relaxed.
+It is not a resolution effect: a $5.9\%$ change in $\potvarn$, the top of
+the Paper~IV envelope, is $0.2$ percentage points on Eros's residual against
+the $3.8$ percentage points separating the two bodies. It is, however, not
+controlled for shape, since a more irregular body has a larger $\potvarn$
+whatever its state of relaxation, and Itokawa is a contact binary while Eros
+is not. And it is incomplete: the residuals for 67P, Bennu and Arrokoth are
+not reported anywhere in this paper, so the claim that Itokawa's is the
+largest of the five is not yet supported. The missing entries are the
+decisive ones, because 67P and Arrokoth are also bilobate: if their
+residuals are comparable to Itokawa's, the $7.2\%$ is shape, and if they are
+not, it is relaxation.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Normalized geopotential dispersion before and after the two-region
+fit, at the plane of Table~\ref{tab:planes} for each body. The final column
+is the fraction of the departure from an equipotential that the best
+two-region density model does \emph{not} remove, and it is large on every
+body: on Itokawa, where the fit is by far the most effective, five-sixths of
+the departure remains and is not of a form any model of this class can
+absorb.}
+\label{tab:residual}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{lrrrr}
+\toprule
+Body & $\potvarn$ (uniform) & $\potvarn$ (best fit) & $\improve$
+ & residual \\
+\midrule
+Itokawa  & $0.08663$ & $0.07200$ & $16.9\%$  & $83.1\%$ \\
+Eros     & $0.03413$ & $0.03399$ & $0.418\%$ & $99.6\%$ \\
+Bennu    & $0.06158$ & $0.06158$ & $<10^{-3}\%$ & $100.0\%$ \\
+67P      & $0.07615$ & $0.07571$ & $0.574\%$ & $99.4\%$ \\
+Arrokoth & $0.05679$ & $0.05607$ & $1.272\%$ & $98.7\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Filled from paperV_final.json; the Arrokoth pair is from the run with the
+% buried facets excluded (arrokoth_clean.json), matching the 1.272 % quoted
+% throughout. Itokawa does carry the largest residual: 83.1 % against 98.7 %
+% for the next body. The superseded note read:
+% overturn it.
+
+\subsection{Why the first condition does not transfer to this inversion}
+\label{sec:discussion:conditioning}
+
+The two inference problems are not the same, and the difference can be made
+exact rather than asserted. \citet{richardson2014} vary the total mass,
+which changes the balance between the gravitational and rotational terms;
+this work holds the measured mass fixed and varies only the internal
+distribution. That distinction is what the first condition turns on.
+
+Consider their problem first. With a single uniform density,
+Equation~\eqref{eq:geopotential} reads
+$\Upot_i = \varrho\,\Ufull_i + \Urot_i$, so
+%
+\begin{equation}
+\potvarn^{2}(\varrho)
+ = \frac{\varrho^{2}\operatorname{Var}(\Ufull)
+        + 2\varrho\operatorname{Cov}(\Ufull,\Urot)
+        + \operatorname{Var}(\Urot)}
+        {\left(\varrho\,\overline{\Ufull}+\overline{\Urot}\right)^{2}} ,
+\label{eq:uniformobjective}
+\end{equation}
+%
+where variances and covariances are area-weighted over the surface. If
+$\Urot \equiv 0$ this collapses to
+$\potvarn = \sqrt{\operatorname{Var}(\Ufull)}\big/\lvert\overline{\Ufull}\rvert$,
+which is independent of $\varrho$: the objective is identically flat and the
+bulk density is not determined at all. Their first condition is precisely
+the condition that Equation~\eqref{eq:uniformobjective} is not flat, and a
+rotational potential ratio of $0.024$, as on Itokawa, leaves a minimum too
+shallow to locate---which is why their inversion there returns $330$ against
+a measured $1950$.
+
+Now substitute the mass constraint~\eqref{eq:massbalance} into
+Equation~\eqref{eq:geopotential}. With
+$a \equiv \Mtot/(\Vtot-\VR)$ and $b \equiv \VR/(\Vtot-\VR)$, so that
+$\densrest = a - b\densR$, the surface geopotential is affine in the single
+remaining free parameter,
+%
+\begin{equation}
+\Upot_i = \alpha_i + \beta_i\,\densR ,
+\qquad
+\alpha_i = a\left(\Ufull_i - \UR_i\right) + \Urot_i ,
+\qquad
+\beta_i = (1+b)\,\UR_i - b\,\Ufull_i .
+\label{eq:affine}
+\end{equation}
+%
+Set $\Urot \equiv 0$, as the first condition's failure would in the limit
+require. Then $\alpha_i = a(\Ufull_i - \UR_i)$, and $\alpha$ and $\beta$ are
+proportional only if $a(1+b) = ab$, that is only if $a = 0$. Since
+$a = \Mtot/(\Vtot-\VR)$ is strictly positive for any region smaller than the
+body, they are never proportional, and $\potvarn(\densR)$ remains a
+non-constant ratio of quadratics with an interior stationary point. The
+degeneracy that the first condition protects against does not arise here,
+because the mass constraint fixes the scale of the density field that the
+rotational term fixes in their problem.
+
+This is a statement about conditioning and not about physics, and the
+distinction matters. It shows that a slow rotator does not make the
+fixed-mass two-region problem ill-posed; it does not show that the surface of
+a slow rotator has relaxed, which remains the premise and remains unverified.
+What it removes is the specific inference that because Richardson and
+Bowling's method fails on Itokawa by a factor of six, a method built on their
+premise must fail there too. The two failures would have different causes,
+and only one of the causes is present.
+
+Two empirical checks bear on the argument and we report the first. A
+fourfold change in the assumed total mass moves the recovered contrast on
+Itokawa by $11\%$ and never near unity
+(Section~\ref{sec:constrains:mass}), whereas the bulk-density inference on
+the same body lands at $330$ against $1950$: the fixed-mass problem is
+demonstrably better conditioned on this body than the variable-mass one, by
+a wide margin. The second check is direct, and we have now run it. It confirms the
+derivation in the form that matters and corrects the form in which an earlier
+draft anticipated it. With $\Urot$ set identically to zero the scan returns
+an interior minimum at
+$\denshead = \SI{2950}{\kilo\gram\per\cubic\metre}$ and
+$\densrest = \SI{1828.6}{\kilo\gram\per\cubic\metre}$, a contrast of
+$1.613$ and an improvement of $17.16\%$, against $2800$, $1858.1$, $1.507$
+and $16.89\%$ with the rotational term retained. The structural claim is
+therefore established in the output and not only in the derivation: the
+two-region objective does not collapse without rotation, whereas the
+single-density objective of \citet{richardson2014} becomes identically flat
+under the same substitution and determines nothing at all. What supplies the
+scale there is rotation; what supplies it here is the mass constraint.
+
+What the control does not show is that rotation is unimportant. The contrast
+moves by $7.1\%$, which exceeds its own error budget of $6.0\%$, and the
+background density by $\SI{29.5}{\kilo\gram\per\cubic\metre}$, which
+exceeds the $\pm\SI{27}{\kilo\gram\per\cubic\metre}$ quoted for it in
+Section~\ref{sec:itokawa}. A rotational potential that is $2.4\%$ of the
+gravitational one still carries a measurable share of the inference, and it
+is twice what the choice of spin axis contributes
+(Section~\ref{sec:methods}). One detail of the control is worth recording:
+the improvement is \emph{higher} without rotation, $17.16\%$ against
+$16.89\%$. The centrifugal term contributes dispersion that no two-region
+density model can remove, so its presence lowers the ceiling on what the fit
+can reach rather than raising the floor. The correct summary is that a slow
+rotator is not ill-conditioned for this inversion, not that rotation may be
+neglected in it.
+% Run (v10_s8_tests.json): omega = 0 gives rho_R 2950, rho_rest 1828.6,
+% contrast 1.6133, improvement 17.162 %, interior minimum. The conditioning
+% claim is confirmed; the 7.1 % shift in contrast is reported beside it.
+
+\subsection{What the method measures}
+\label{sec:discussion:measures}
+
+Section~\ref{sec:constrains} establishes that where this method responds
+strongly, the quantity determined is the background density of a body, and
+through the identity of Equation~\eqref{eq:excessidentity} the mass anomaly
+that accompanies it, rather than the density of the region. It is more
+accurate to describe the technique as bounding the mass asymmetry of a body,
+from which a density contrast follows only once a dividing surface has been
+fixed by other means.
+
+That reframing bears on a question that has stood since 2008, though it does
+not dissolve it, and an earlier draft of this subsection claimed more than
+the data support. \citet{scheeres2008} inferred a dense neck,
+\citet{lowry2014} a dense head, and \citet{kanamaru2019pss} found the neck
+model fitting marginally better on the smooth terrains while reporting that
+a three-region model is largely unconstrained. The reframing explains why
+such a disagreement is possible: a mass anomaly does not specify the region
+carrying it, and two structures placing comparable excess mass at comparable
+distance from the centre of figure produce comparable centre-of-mass offsets
+and comparable dispersion reductions. The degeneracy is the one already
+identified in Section~\ref{sec:constrains}: the pair $(\densR,\VR)$ is free
+along $\Ddens\VR = \mathrm{const}$ at fixed first moment, and no surface
+measurement resolves it.
+
+What must be said, however, is that the head and neck models of
+Section~\ref{sec:itokawa:ambiguity} are \emph{not} an instance of that
+degeneracy, and citing them as one would misdescribe our own result. They do
+not place comparable excess mass: the head model returns
+$\Dmass/\Mtot = 7.69\%$ and the neck model $3.47\%$, a factor of $2.2$, and
+the slab's centroid lies much closer to the centre of figure, so the two
+mass dipoles differ by more still. The objective distinguishes them
+decisively, by $16.9\%$ against $2.3\%$ in improvement---a factor of
+$7.3$---and by $5.8$ against $2.0$ on the displacement statistic
+$\Sstat$. On the global surface the head model is preferred and the neck
+model does not clear the resolution envelope at all. The genuine ambiguity
+is between structures the method cannot separate; head and neck on Itokawa
+are structures it can.
+
+\subsection{An analytic test of the Paper~IV resolution result}
+\label{sec:discussion:ellipsoid}
+
+Paper~IV compared the sensitivity of two surface quantities to mesh
+resolution, and concluded that the normalized geopotential dispersion is far
+the more stable. That comparison, like every comparison of its kind, took the
+finest available mesh as the reference. The premise is reasonable but it is
+not proof: if both quantities were biased in the same direction, or if the
+decimation were introducing a systematic of its own, mesh-to-mesh variation
+would not reveal it.
+
+A homogeneous ellipsoid removes the assumption. Its interior gravity, and
+hence its surface gravity as the limit from within, has an exact closed form
+\citep{macmillan1930}:
+%
+\begin{equation}
+g_i = -2\pi G \varrho\, abc\, A_i x_i , \qquad
+A_i = \int_0^\infty \frac{\mathrm{d}u}
+     {(a_i^2+u)\sqrt{(a^2+u)(b^2+u)(c^2+u)}} ,
+\label{eq:macmillan}
+\end{equation}
+%
+which reduces to $GM/R^{2}$ in the sphere limit. Our evaluation of
+Equation~\eqref{eq:macmillan} reproduces that limit to $2.2\times10^{-14}$
+in relative terms. That figure is a check on the numerical quadrature of
+$A_i$ and on nothing else; it is not a statement about the polyhedral code,
+which cannot reproduce a sphere to any such precision, since an inscribed
+icosphere of the facet counts used here falls short of $4\pi/3$ in volume by
+$0.05\%$ (Section~\ref{sec:methods:verify}). Because the field points of
+Section~\ref{sec:methods:model} are displaced inward from the facet
+centroids, the interior form of Equation~\eqref{eq:macmillan} is the
+appropriate reference at every point compared, and no exterior continuation
+is required. The slope at any surface point follows from the analytic gravity
+and the analytic normal of the ellipsoid, and the area-weighted means follow
+by quadrature on the exact surface. Nothing in the reference depends on a
+mesh, on the polyhedral code, or on any decimation.
+
+We tested three ellipsoids, three spin states and five facet counts, ninety
+configurations in all. The mean absolute error against the analytic value is
+given in Table~\ref{tab:ellipsoid}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Mean absolute error against the analytic ellipsoid, averaged over
+three shapes, three spin states and both decimators at each facet count. The
+two decimators are separated in Table~\ref{tab:decimator}; the entries here
+are their mean, which is why the column means reproduce the decimator
+figures quoted below. The final two columns give the error as a fraction of
+the effect this paper measures: the dispersion error is between three and
+four orders of magnitude smaller than the $16.9\%$ improvement recovered on
+Itokawa, which is the figure of merit that matters for the inversion, as
+distinct from the accuracy of either quantity in its own right.}
+\label{tab:ellipsoid}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{rrrrr}
+\toprule
+Facets & Mean slope & Dispersion & Ratio
+ & dispersion error $/\improve$ \\
+\midrule
+$2{,}000$  & $11.62\pm3.33\%$ & $0.196\pm0.023\%$ & $59\pm18$ & $1.2\times10^{-2}$ \\
+$4{,}000$  & $4.74\pm1.35\%$  & $0.117\pm0.014\%$ & $40\pm13$ & $6.9\times10^{-3}$ \\
+$8{,}000$  & $2.30\pm0.63\%$  & $0.049\pm0.004\%$ & $47\pm14$ & $2.9\times10^{-3}$ \\
+$16{,}000$ & $0.93\pm0.25\%$  & $0.028\pm0.003\%$ & $33\pm9$  & $1.7\times10^{-3}$ \\
+$32{,}000$ & $0.33\pm0.07\%$  & $0.017\pm0.002\%$ & $19\pm4$  & $1.0\times10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% The 49,152-facet row was attempted and abandoned. It needs a source mesh
+% finer than the target, and the next subdivision gives 327,680 facets, at
+% which a single configuration costs some 256 times the work of one at
+% 20,480; nine configurations would have run for about a week. One
+% configuration completed before the run was stopped, the triaxial ellipsoid
+% without spin: slope errors of +0.15 % (quadric) and +0.19 % (clustering)
+% against dispersion errors of -0.02 %, a ratio near 8. It is one shape and
+% one spin state and is not comparable with the pooled rows above, so it is
+% reported in the text as an indication and not added to the table.
+
+The dispersion is the more accurate at every facet count, by a factor that
+runs from $59$ at the coarsest mesh to $19$ at the finest, and the trend
+continues beyond the table. At $49{,}152$ facets, the resolution at which the
+Itokawa and Eros results are computed, a single configuration gives slope
+errors of $+0.15\%$ for quadric collapse and $+0.19\%$ for clustering
+against dispersion errors of $-0.02\%$: a ratio near $8$. That is the figure
+a summary of this paper should quote, since it is the resolution the results
+use, and it carries two qualifications. It is one shape and one spin state
+rather than the average of nine, so it has none of the averaging the rows
+above have; and the dispersion error it is formed against is quoted to one
+significant figure, so the ratio is determined only to within roughly $6$ to
+$12$. The direction is what matters:
+the advantage of the dispersion narrows as the mesh refines, and the figures
+that should be carried into any judgement about the meshes used in this
+paper are the smaller ones at the foot of the table, not the $59$ at its
+head. Three qualifications belong with those figures.
+
+The advantage narrows with resolution, and the direction is systematic
+rather than accidental. Fitting each column against facet count in
+logarithms gives $E_{\mathrm{slope}} \propto N^{-1.26}$ and
+$E_{\mathrm{disp}} \propto N^{-0.91}$, so the ratio falls as $N^{-0.35}$:
+the slope converges faster. Extrapolated to the $49{,}152$-facet meshes on
+which the Itokawa and Eros results are computed, the advantage is of order
+$16$ to $20$ rather than $59$, and the figure quoted in an abstract should be
+the one at the working resolution. The ratio column is noisy, and quantifiably so. With eighteen
+configurations per row the standard errors of the mean are large: the ratio
+is $59.3\pm18.4$ at $2{,}000$ facets, $46.8\pm13.5$ at $8{,}000$ and
+$19.3\pm4.4$ at $32{,}000$. The departure from the monotone trend at
+$8{,}000$ facets is under half a standard error and is not a feature. The
+spread arises because three ellipsoid shapes and three spin states are
+pooled in each row, and the error of a coarse mesh depends strongly on
+both. ``$19$ to $59$'' therefore describes the range of the row means, not a
+determination of how the ratio varies: only the two endpoints differ by more
+than their errors, and the ordering in between is not resolved.
+% Computed (n = 18 per row, both decimators pooled):
+%   2000  slope 11.62+-3.33  disp 0.1958+-0.0233  ratio 59.3+-18.4
+%   4000  slope  4.74+-1.35  disp 0.1175+-0.0139  ratio 40.4+-12.5
+%   8000  slope  2.30+-0.63  disp 0.0492+-0.0044  ratio 46.8+-13.5
+%  16000  slope  0.93+-0.25  disp 0.0281+-0.0026  ratio 33.2+- 9.4
+%  32000  slope  0.33+-0.07  disp 0.0172+-0.0019  ratio 19.3+- 4.4
+% The 8,000-facet ratio departs from the trend by less than half a standard
+% error and is not a genuine feature.
+
+Paper~IV inferred a factor of roughly $3$ to $14$ from mesh-to-mesh
+variation, and the two numbers should not be read as measurements of the
+same thing. Mesh-to-mesh variation measures \emph{stability}---how much a
+quantity moves when the discretization changes---while
+Table~\ref{tab:ellipsoid} measures \emph{accuracy} against a reference
+computed independently of the code. A quantity can be stable and biased, or
+unstable and unbiased. What the ellipsoid establishes is that Paper~IV's
+ordering of the two quantities is not an artefact of taking the finest mesh
+as truth, which is the assumption it could not test; it does not establish
+that Paper~IV's factor was conservative, and an earlier draft that said so
+was comparing across the two meanings.
+
+The ellipsoid also bounds what it can be used for. Decimating from
+$32{,}000$ to $2{,}000$ facets moves the dispersion by about $0.18$
+percentage points on these smooth bodies, against the $0.9$ to $5.9\%$
+Paper~IV measured over a comparable range on real ones---a factor of five to
+thirty. Surface roughness, which an ellipsoid does not have, is the
+difference. The mesh-resolution envelope used throughout this paper is
+therefore a property of rough bodies that the analytic test cannot
+reproduce, and the test validates the envelope's ordering and not its
+magnitude.
+
+The same experiment answers a related question about the choice of
+decimator. Papers~III and~IV reduced their meshes by vertex clustering; this
+paper uses quadric edge collapse, because clustering does not preserve
+topology and cannot reach small facet targets
+(Section~\ref{sec:methods:shapes}). Against the analytic reference the two
+are equivalent in accuracy: the paired differences over the ninety
+configurations are $+0.12\pm0.20\%$ on the slope and
+$+0.019\pm0.012\%$ on the dispersion, neither of them significant, so the
+apparent lead of clustering on the dispersion is not established
+(Table~\ref{tab:decimator}). The numbers reported in Papers~III and~IV are
+therefore not in question, and the change of decimator in this paper is made
+for topology rather than accuracy.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The two decimators against the analytic ellipsoid, averaged over
+all ninety configurations. The differences are $3\%$ on the slope and $29\%$
+on the dispersion, both in favour of clustering; whether either is
+resolved requires the standard errors, which are not yet reported.}
+\label{tab:decimator}
+\setlength{\tabcolsep}{12pt}
+\begin{tabular}{lrr}
+\toprule
+Decimator & Mean slope error & Dispersion error \\
+\midrule
+Vertex clustering     & $3.93 \pm 1.22\%$ & $0.072 \pm 0.009\%$ \\
+Quadric edge collapse & $4.05 \pm 1.16\%$ & $0.091 \pm 0.016\%$ \\
+\midrule
+Paired difference     & $+0.12 \pm 0.20\%$ & $+0.019 \pm 0.012\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+% Computed (n = 45 each): clustering slope 3.925+-1.223, dispersion
+% 0.0722+-0.0088; quadric slope 4.049+-1.156, dispersion 0.0909+-0.0155.
+% The configurations pair exactly, so the paired differences are the sharper
+% test: quadric minus clustering is +0.0187+-0.0115 on the dispersion, 1.6
+% standard errors, and +0.124+-0.200 on the slope, 0.6. Neither is
+% significant, which is what makes "equivalent" defensible.
+
+One observation from the same comparison is not explained. On the four real
+bodies of the Paper~IV resolution study, the mean slope under clustering
+rises monotonically with facet count on every one, by $+21.9\%$, $+14.2\%$,
+$+5.8\%$ and $+1.8\%$, while under quadric collapse there is no monotonic
+trend. On the smooth ellipsoid neither method drifts: both overestimate the
+slope on coarse meshes by the same amount and converge smoothly. Surface
+roughness is the natural explanation, but no analytic reference exists for a
+rough body and we make no claim about which decimation is closer to the
+truth there.
+% Reconciled: 1.8-25.6 % is what Paper IV published, from its own mesh
+% ladder. Recomputing the same four bodies for this paper gives 1.8-21.9 %
+% with vertex clustering and 3.1-6.2 % with quadric collapse. The lower ends
+% agree because Gaspra sets both; the upper end differs because the ladders
+% differ. The text below now quotes the recomputed range and attributes the
+% published one to Paper IV.
+
+\subsection{Relation to Paper~IV}
+\label{sec:discussion:paper4}
+
+Paper~IV showed that the normalized geopotential dispersion is far less
+sensitive to mesh resolution than the area-weighted mean slope. That is a
+necessary condition for the present inference but not a sufficient one: the
+minimum of a stable function need not itself be stable.
+Sections~\ref{sec:itokawa:mesh} and~\ref{sec:nulls:arrokoth} supply the
+missing step, and the form in which they supply it should be stated
+precisely, because it is weaker than the bare phrase ``no change'' suggests.
+
+Across the three Itokawa meshes that share a dividing plane the recovered
+$\denshead$ is unchanged, which---since no sub-grid refinement is
+applied---bounds the variation at half a scan step,
+$\SI{12.5}{\kilo\gram\per\cubic\metre}$ or $0.45\%$, rather than resolving
+it. On the coarsest mesh the recovered density is not the informative
+quantity at all: the detector moves the plane by $\SI{9.4}{\metre}$, which
+at the local gradient displaces $\denshead$ by about $3.4\%$ and $\densrest$
+by $0.14\%$. Resolution sensitivity enters this calculation through the
+plane detector rather than through the objective function, and it enters
+asymmetrically, mattering for the quantity the method does not constrain and
+not for the one it does. On Arrokoth the recovered density is displaced by no
+more than one scan step across three meshes. The two claims---that the
+objective is stable, and that its minimizer is---are separate, and both now
+have evidence, of different strengths.
+
+One correction to Paper~IV should be recorded here. It attributes the
+relaxation reasoning to \citet{kanamaru2019}, who in fact cite
+\citet{richardson2014} for it in their own introduction. The argument, the
+technique of minimizing potential variance, and the quantity Paper~IV calls
+the normalized geopotential dispersion are all due to Richardson and
+Bowling; Kanamaru and Sasaki extended the technique from a single mean
+density to an interior distribution. Paper~IV's reference list contains no
+citation to \citet{richardson2014}, and it should have.
+
+\subsection{One strong signal in five bodies}
+\label{sec:discussion:rate}
+
+Whether one strong signal in five bodies reflects the rarity of large
+interior contrasts or the sensitivity floor of the method is not settled by
+this work, and we do not claim to settle it. The four weak-signal cases are
+individually explicable. Eros is measured to be nearly uniform
+\citep{yeomans2000,scheeres2020}. Bennu is heterogeneous but radially so
+\citep{scheeres2020}, in a geometry a plane cut cannot see.
+\citet{jorda2016} state that 67P's centre-of-mass position cannot be
+explained by different but individually homogeneous lobe densities, which is
+precisely the model class fitted here. Arrokoth has no measured mass, and
+its answer sits at the threshold of a sign reversal across the plausible
+range of assumptions.
+
+What is missing is a calibrated detection limit: the contrast a body of
+given size and spin must carry before this method would see it above the
+mesh-resolution sensitivity envelope. The synthetic experiment of
+Section~\ref{sec:constrains:synthetic} was designed for a different purpose
+and does not supply one, since it varies geometry rather than injecting a
+contrast of known size.
+
+Establishing that limit is harder than it appears. Planting a contrast in a
+body and leaving its shape alone tests nothing, because the objective
+function is built from the shape and the trial density and never reads a
+field computed beforehand: the inversion would return whatever the shape
+alone would have given. The premise asserts that the surface has relaxed
+onto an equipotential of the true interior, so a body with a genuine
+contrast is not the same shape as a uniform one, and a ground-truth test
+must build the shape the premise describes before inverting it.
+
+We attempted this and do not report the outcome, because the construction did
+not converge. Relaxing a synthetic surface toward an equipotential of a
+planted two-region interior, by displacing vertices in proportion to the
+local departure of the geopotential from its area-weighted mean, reduces the
+dispersion but does not settle: on a planted contrast of $1.5$ the residual
+fell from $0.066$ to $0.030$ over $140$ iterations and then rose again, and
+the relaxed body was no longer a contact binary, the plane holding a given
+volume fraction having moved by six times its original offset. Recovered
+contrasts from a surface that has not relaxed are not a test of the premise,
+and their correlation with the residual---$-0.84$ across the seven rungs of the
+planted ladder, at contrasts of $1.00$, $1.05$, $1.10$, $1.25$, $1.50$,
+$1.75$ and $2.00$---indicates that the numbers measure the failure of the
+relaxation rather than the behaviour of the inversion.
+% Seven rungs, listed in the text; the correlation is over n = 7.
+
+The mode of failure is itself informative and points to what a working
+scheme would have to do. The plane holding a fixed volume fraction moved as
+the surface relaxed, so the region and the shape co-evolve: relaxing toward
+an equipotential of a \emph{fixed} interior is not a well-posed target once
+the interior is defined by a surface that is itself moving. A fixed point
+requires solving for the shape and the dividing surface together, which is
+the same coupling that Section~\ref{sec:plane} reports from the other
+direction---the objective does not determine its own plane. A stable scheme,
+displacing along surface normals with a step controlled to reduce the
+dispersion monotonically and with the volume distribution constrained, is a
+piece of work in its own right. We regard it as the most useful extension of
+the present study, and as a paper rather than an appendix.
+
+A second extension needs no new machinery at all. Every body examined here
+was chosen because its mass is already known, or, in Arrokoth's case,
+because the consequences of not knowing it are instructive. The reverse case
+is available: a body with a resolved shape model and a spin state but no
+mass, which a spacecraft will visit and weigh. For such a target the
+inversion can be run now as a function of the assumed bulk density, giving
+a curve of contrast against assumed bulk density, as in
+Section~\ref{sec:nulls:arrokoth}, rather than a number, together with
+the amplification factor and the saddle prominence that say how sharply the
+answer depends on the assumption. When the mass arrives it selects a point
+on a curve published beforehand. That is the one form of external test this
+method has not had: the comparisons with \citet{lowry2014} and
+\citet{kanamaru2019} in Section~\ref{sec:itokawa} were made against
+measurements that already existed when we made them.
+
+\subsection{On verification practice}
+\label{sec:discussion:verification}
+
+This series has returned repeatedly to the question of how numerical results
+in this area should be checked, and this paper adds the sharpest instance.
+The cone construction of Section~\ref{sec:methods:cone} passed a
+volume-closure test at $2.1\times10^{-14}$ in relative terms while enclosing
+a solid wrong by a factor of $1.6$, because the test compared the mesh
+against the same tetrahedra that built it. The test is not vacuous---it would
+catch an orientation error or a gross failure of the tetrahedral sum---but it
+is blind by construction to the one property that was wrong, which is which
+solid the mesh encloses. The predicate test that does distinguish the two
+solids costs three lines of code.
+
+The other failures of Section~\ref{sec:failures} share a property: each was
+invisible in the configuration that mattered and appeared only when a
+parameter was varied that the analysis did not require. The NaN failure was
+total at one plane position and absent at another $\SI{30}{\metre}$ away.
+The edge minima appeared only when a scan was widened. The misplaced
+dividing plane was found by comparing two selection rules on the same
+cross-sectional profile---the saddle criterion of
+Equation~\eqref{eq:prominence} against the absolute interior minimum---and
+noticing that they disagreed by $\SI{15}{\kilo\metre}$; a study committed to
+either rule alone would not have discovered it. A study reporting one run at
+one plane on one mesh would have met none of these and would have reported
+plausible numbers throughout. In this method, parameter sweeps are not
+supplementary material; they are the only way the failure modes become
+visible.
+
+The buried facets of Section~\ref{sec:failures:buried} make a sharper
+version of the same point. The manifold criterion was added precisely to
+catch what a volume comparison cannot, and it passes them without complaint,
+because a mesh in two closed pieces is topologically sound whatever their
+spatial arrangement. Each new check inspects the property its author had in
+mind and no other, and on this occasion the omission would have carried a
+qualitative conclusion: a sign reversal that is not there.
+
+The analytic ellipsoid of Section~\ref{sec:discussion:ellipsoid} illustrates
+the complementary point. A reference computed independently of the code under
+test can settle in one experiment what mesh-to-mesh comparison can only
+suggest, and it can overturn a conclusion drawn from such comparison: the
+provisional reading of the decimator evidence, that quadric collapse is the
+more accurate, did not survive contact with it.
+
+\subsection{Limitations}
+\label{sec:discussion:limits}
+
+The model admits two uniform regions divided by a plane perpendicular to a
+principal axis. Real interiors need not take that form, and for two of the
+bodies here it is known that they do not: \citet{jorda2016} exclude it for
+67P, and \citet{scheeres2020} report a radial structure on Bennu that the
+parameterisation cannot represent. \citet{kanamaru2019pss} show that
+relaxing the model to three regions on Itokawa leaves it largely
+unconstrained, so enrichment is not a straightforward remedy.
+
+The relaxation premise itself is unverified on every body examined, and
+fails its first stated condition on the one that yields a strong signal
+(Section~\ref{sec:discussion:premise}). Section~\ref{sec:discussion:conditioning}
+argues that this condition governs the conditioning of a different inverse
+problem and does not transfer to a fixed-mass two-region inversion, but that
+argument is structural: it removes a reason to expect failure and does not
+establish that the surface has relaxed.
+
+The dividing plane rests on judgement informed by two external criteria
+rather than on anything measured within the method
+(Section~\ref{sec:plane:external}), and the numerical diagnostics respond to
+a misplaced one unevenly (Section~\ref{sec:failures:plane}). Of the four
+tested, the amplification factor fails outright, ranking the misplaced plane
+as the strongest signal in the study; the displacement statistic ranks it
+correctly at $\Sstat = 2.86$ against $5.8$ but places it above all four
+genuine nulls; the envelope comparison rejects it by a margin of $6\%$, and
+only if the body-specific envelope value is above the $5.526\%$ improvement
+it returns; and the decisive argument is the provenance of the plane, which
+is not available from the output.
+
+The recovered densities are quantized at the $\SI{25}{\kilo\gram\per
+\cubic\metre}$ scan step, with no sub-grid refinement
+(Section~\ref{sec:methods:minimisation}). The consequences are visible
+throughout---two planes $\SI{0.8}{\metre}$ apart returning the same
+$\denshead$, two non-monotone entries in the $\dCOM$ column, and an
+improvement that can come out marginally negative where the grid does not
+contain the uniform solution---and one of them, reported in
+Section~\ref{sec:failures:small}, locates the true minimizer at a plane where
+the grid reports a value $\SI{12}{\kilo\gram\per\cubic\metre}$ away. Solving
+the stationarity condition of Equation~\eqref{eq:affine} in closed form would
+remove the grid from the error budget entirely, since $\potvarn^{2}$ is a
+ratio of quadratics in $\densR$ and its stationarity condition is linear with
+a single root. We have not done so, and it is the clearest improvement
+available to a future implementation.
+
+The synthetic calibration of the background-density invariance rests on four
+bodies carrying a measurable exponent, three of them clustered in signal
+strength, so the direction of the effect is supported while its functional
+form is not determined; and because those bodies are uniform, the
+identification of a strong inversion response with a physical mass anomaly
+remains an interpretation (Section~\ref{sec:constrains:limits}).
+
+One shape model required a correction that others did not. The Arrokoth
+model is supplied as two unjoined shells with $0.943\%$ of the surface area
+lying inside the opposite shell, and excluding those facets changes the
+recovered contrast at the detected plane, under the head model, from
+$1.062$ to $0.9999$ at the lowest assumed bulk density
+(Section~\ref{sec:nulls:arrokoth}). No other model in the study required
+this, but it is not a defect peculiar to Arrokoth: any shape model delivered
+as more than one component may have the same property, and the test costs one
+ray-casting pass.
+
+Finally, we have not obtained \citet{motooka2012}, which
+\citet{kanamaru2019} describe as an earlier attempt to fit the global shape
+of Itokawa to a single equipotential surface, and which may therefore be
+closer to the approach taken here than any other prior work. It is cited as
+described by Kanamaru and Sasaki, and no claim is made about its contents.
+
+Section~\ref{sec:guidelines} sets out what these limitations imply for
+anyone applying the method.

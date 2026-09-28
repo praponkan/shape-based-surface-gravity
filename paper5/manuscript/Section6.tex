@@ -1,0 +1,316 @@
+%=======================================================================
+%  Paper V — Section 6 (The dividing plane is not self-determined) FINAL
+%
+%  Requires the macros listed at the head of Section 2.
+%
+%  PRINCIPAL CHANGE IN THIS REVISION ---------------------------------
+%  The argument no longer rests on the extrapolated turning point. The
+%  turning point quoted in ver10 (0.253-0.255 km from cubic and quartic
+%  fits) falls within a few metres of the plane at which the 8000 kg/m3
+%  scan ceiling of Section 2.9 begins to truncate the recovered
+%  contrast (x ~ 0.257 km), and local extrapolation of the gradient
+%  puts it at 0.262-0.278 km instead. It is therefore demoted to a
+%  remark with its caveats stated. The argument is instead closed on
+%  observed data alone: the improvement is monotone across all thirteen
+%  planes, and the outermost plane exceeds the grain-density ceiling by
+%  11.2 sigma, so the maximum over the admissible set is attained at a
+%  boundary fixed by composition rather than by the objective.
+%
+%  Superseded values:
+%      sigma quoted to 6 dp      -> 5 dp (grid floor is 3.5e-6)
+%      I quoted to 3 dp          -> 2 dp
+%      "a turning point must exist" -> not proved; limit at the tip is
+%                                   finite and the minimum may be at the
+%                                   endpoint
+%      "genuine convergence"     -> consistency with a one-sided bound
+%      "7.5 kg/m3 per metre"     -> 10.0 at the reference plane; and the
+%                                   sensitivity of rho_rest, 0.28, is
+%                                   the one that matters
+%      eq:massconstraint         -> eq:massbalance
+%
+%  All values confirmed against paperV_final.json. The rate-of-fall list
+%  is reconciled below: twelve gradients, not thirteen.
+%=======================================================================
+
+\section{The dividing plane is not self-determined}
+\label{sec:plane}
+
+The dividing plane is the one ingredient of the method that is neither
+measured nor derived. The mass comes from radio science, the shape from a
+spacecraft, the spin from lightcurves and imaging; the plane is placed by
+the investigator. Section~\ref{sec:itokawa:sweep} showed that the recovered
+region density depends strongly on where it is placed. This section asks
+whether the objective function can place it, and finds that it cannot---not
+in the weak sense that the optimum is shallow, but in the strong sense that
+within the range the composition permits there is no interior optimum at
+all, and the objective's preferred plane is one the meteorite collection
+forbids.
+
+\subsection{The improvement rises monotonically to the end of the sweep}
+\label{sec:plane:monotonic}
+
+Across the whole Itokawa sweep the dispersion at the minimum falls
+monotonically, from $0.07549$ at $\xsplit = \SI{0.130}{\kilo\metre}$ to
+$0.06373$ at $\SI{0.240}{\kilo\metre}$, against a uniform-body value of
+$0.08663$: an improvement rising from $12.86\%$ to $26.44\%$ without a
+single reversal in thirteen planes (Table~\ref{tab:itokawasweep},
+Figure~\ref{fig:plane}).
+
+We quote the dispersion to five decimal places and the improvement to two,
+and not further, although the computation is deterministic and returns more
+digits. The reason is the scan grid of
+Section~\ref{sec:methods:minimisation}. Near its minimum the objective is
+quadratic, $\potvarn(\densR) \simeq \potvarn^{\ast} +
+\tfrac{1}{2}k(\densR-\densR^{\ast})^{2}$, and the curvature sensitivity
+interval---a rise of $0.60\%$ over
+$\pm\SI{130}{\kilo\gram\per\cubic\metre}$---fixes
+$k = 7.1\times10^{-7}\,\potvarn^{\ast}$ per $(\mathrm{kg\,m^{-3}})^{2}$.
+A half-step of $\SI{12.5}{\kilo\gram\per\cubic\metre}$ therefore inflates
+the reported minimum by at most $5.5\times10^{-5}$ in relative terms, or
+$3.5\times10^{-6}$ absolute. That is below the step-to-step change along the
+sweep, roughly $1.1\times10^{-4}$ per ten metres, so the monotonicity is
+safe; but it is above the sixth decimal place, so the sixth decimal place is
+grid noise and we do not print it.
+
+The rate of fall is not uniform. It steepens from about
+$-1.11\times10^{-3}$ per ten metres at the start of the sweep to a maximum
+near $\SI{0.185}{\kilo\metre}$, then slackens to $-1.06\times10^{-3}$
+between $0.200$ and $\SI{0.220}{\kilo\metre}$ and to
+$-6.9\times10^{-4}$ between $0.220$ and $\SI{0.240}{\kilo\metre}$. The
+slackening is the first sign that the fall is not indefinite, and
+Section~\ref{sec:plane:impossible} takes it up.
+% Resolved: there is no fourteenth plane. The thirteen-entry list came from
+% a run record in which x = 0.1608 km appears twice, the reference run and
+% the sweep run at the same detected plane, differing only in the sixth
+% digit of the excess mass. De-duplicated, the thirteen planes give twelve
+% gradients, in units of 1e-6 per ten metres:
+%   -1107 -1130 -1163 -1178 -1196 -1222 -1237 -1230 -1223 -1194 -1061 -692
+% The same duplicate explains the two earlier discrepancies noted in the
+% working file; the sweep driver emitted the plane set Table 3.1 prints.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{fig08_improvement_vs_plane.pdf}
+\caption{Dispersion improvement against dividing-plane position on
+Itokawa. The improvement rises monotonically across all thirteen planes
+with no interior turning point. The vertical bands mark the two external
+bounds of Section~\ref{sec:itokawa:ceiling}: the empirical block-density
+bound at $\SI{194+-11}{\metre}$ and the LL-chondrite grain-density ceiling
+at $\SI{207+-5}{\metre}$. The plane returned by the neck detector, at
+$\SI{160.8}{\metre}$, is marked; the objective prefers the block-density
+boundary to it by $4.6$ percentage points of improvement. The shaded
+horizontal band is the $0.9$--$5.9\%$ mesh-resolution envelope of
+Paper~IV, shown on the same scale to indicate that the objective's
+preference among admissible planes is of the same order as its own
+resolution sensitivity.}
+\label{fig:plane}
+\end{figure}
+
+\subsection{Why this settles the question without extrapolation}
+\label{sec:plane:impossible}
+
+The monotonicity by itself does not show that the objective cannot choose a
+plane; a function rising to the edge of the range examined might turn just
+beyond it. What settles the question is that the planes the objective
+prefers are excluded on grounds that have nothing to do with the objective.
+
+At $\xsplit = \SI{0.240}{\kilo\metre}$ the recovered head density is
+$\SI{5000}{\kilo\gram\per\cubic\metre}$. The LL-chondrite grain density is
+$3540 \pm \SI{130}{\kilo\gram\per\cubic\metre}$
+(Section~\ref{sec:itokawa:ceiling}), so the objective's best available plane
+sits $11.2$ standard deviations above the density of solid LL material with
+no pore space at all. It is not a marginal exclusion and it does not depend
+on which of the two bounds is adopted: the same plane exceeds the empirical
+block-density bound of $3220 \pm 220$ by $8.1$ standard deviations.
+
+The argument then closes on observed data alone. The improvement is strictly
+increasing over every plane in the sweep; the admissible set is the interval
+below $\xsplit = \SI{194+-11}{\metre}$; therefore the improvement attains its
+maximum over the admissible set at the upper boundary of that set, and the
+boundary is fixed by the meteorite collection rather than by the
+minimization. No statement about the behaviour of $\potvarn$ beyond the
+sweep is required.
+
+It is worth putting a number on what the objective's preference costs.
+Interpolating Table~\ref{tab:itokawasweep} to the block-density boundary
+gives $\improve \simeq 21.5\%$ there, against $16.89\%$ at the neck the
+detector returns: the objective prefers the boundary by $4.6$ percentage
+points, or $27\%$ in relative terms. That difference is real, but it lies
+inside the $0.9$--$5.9\%$ mesh-resolution envelope of Paper~IV, so it is not
+a discrimination the method can defend on its own terms. Over the full
+admissible range the improvement varies by $8.6$ percentage points, which
+does exceed the envelope; the objective discriminates among admissible
+planes, but only in the direction of the boundary.
+
+\paragraph{The turning point, and why we do not use it.}
+A cubic fit to $\potvarn(\xsplit)$ over the sweep places a minimum at
+$\SI{0.253}{\kilo\metre}$ and a quartic fit at $\SI{0.255}{\kilo\metre}$.
+Earlier drafts of this section reported those figures as the location of the
+turning point. We now report them only as a remark, for three reasons, and
+the argument above is constructed so as not to depend on them.
+
+First, they are extrapolations of $13$~m to $15$~m beyond the last plane
+computed, and the agreement between the two fit orders is not evidence of
+accuracy: two adjacent polynomial orders extrapolate similarly by
+construction. Extrapolating the measured gradient instead places the zero at
+$\SI{0.262}{\kilo\metre}$ on a quadratic through the last three planes and
+$\SI{0.278}{\kilo\metre}$ on a straight line through the last two, which is
+$8$ to $25$~m further out.
+
+Second, the extrapolated position coincides with the plane at which the scan
+ceiling begins to bind. Holding $\Dmass$ at $2.80\times10^{9}$~kg and
+$\densrest$ near $\SI{1855}{\kilo\gram\per\cubic\metre}$, the ceiling of
+$\SI{8000}{\kilo\gram\per\cubic\metre}$ used at the outer planes
+(Section~\ref{sec:itokawa:sweep}) permits a region no smaller than
+%
+\begin{equation}
+f_{\min} = \frac{\Dmass}{(\densR^{\max}-\densrest)\,\Vtot}
+         = \frac{2.80\times10^{9}}
+                {6145 \times 1.77856\times10^{7}}
+         = 2.56\% ,
+\label{eq:capbinds}
+\end{equation}
+%
+which the sweep reaches at $\xsplit \approx \SI{0.257}{\kilo\metre}$. A
+turning point predicted at $0.253$ to $\SI{0.255}{\kilo\metre}$ therefore
+lies within a few metres of the plane beyond which the recovered contrast
+would be truncated by the scan rather than determined by the data, and the
+two cannot be separated in the present configuration. Re-running the outer
+planes with the ceiling raised to, say,
+$\SI{20000}{\kilo\gram\per\cubic\metre}$ would separate them; we have not
+done so, because the result would lie far outside the compositional bounds
+either way.
+
+Third, we do not assert that a turning point must exist at all. As the plane
+advances toward the tip, $\VR \to 0$ while the excess mass need not: the
+region approaches a point mass of free magnitude $\Dmass$ located at the
+tip, and the dispersion approaches the finite value obtained by optimizing
+over that magnitude. The objective is therefore continuous on a closed
+interval with a finite limit at its right endpoint, and its minimum may be
+attained at that endpoint rather than at an interior stationary point.
+Whether it is attained interior or at the limit is a question the present
+data do not answer and the argument of this section does not need answered.
+
+\subsection{Why this happens}
+\label{sec:plane:why}
+
+The explanation is Section~\ref{sec:constrains}. What the minimization
+determines in the strong-signal regime is the background density, and with
+it, through Equation~\eqref{eq:excessidentity}, the excess mass. Write the
+region density as the background density plus the excess mass spread over
+the region,
+%
+\begin{equation}
+\densR = \densrest + \frac{\Dmass}{\VR} ,
+\label{eq:plane:decompose}
+\end{equation}
+%
+which is Equation~\eqref{eq:excessidentity} rearranged. As the plane
+advances, $\VR$ falls, the mass constraint~\eqref{eq:massbalance} carries
+$\densrest$ toward $\Mtot/\Vtot$, and the objective compensates by raising
+$\densR$. Because the perturbation to the surface potential enters
+Equation~\eqref{eq:superposition} through the product
+$(\densR-\densrest)\UR$, and $\UR$ scales with $\VR$ for a small region, the
+objective can hold that product nearly fixed while $\VR$ shrinks. It has no
+reason to stop, and within the range examined it does not.
+
+This is also the reconciliation between this section and
+Section~\ref{sec:constrains}, which at first reading point in opposite
+directions: one says the plane is unconstrained, the other that the answer
+is stable under moving it. Both are true, and they are compatible precisely
+because the stable quantity is not the one being optimized. Moving the plane
+from the detected neck to the block-density boundary---a displacement of
+$\SI{32.7}{\metre}$, a fifth of the plane's own position---changes the
+recovered quantities as follows:
+%
+\begin{multline}
+\denshead:\ 2800 \to 3220\ (+15.0\%),
+\qquad
+\Dmass:\ 2.753 \to 2.881\ (+4.65\%),
+\qquad \\
+\densrest:\ 1858.1 \to 1850.9\ (-0.387\%).
+\label{eq:plane:move}
+\end{multline}
+%
+The ratio of the last two is $4.65/0.387 = 12.0$, which is the amplification
+factor $\ampfac$ at the reference plane, recovered here from a finite
+displacement rather than from the differential
+Equation~\eqref{eq:excessamplify}; the ratio of the first and last is
+$38.8$, or $\ampfac$ times the residual factor of $3.2$ that measures
+compensation between contrast and region volume. A plane displacement large
+enough to move the region density by fifteen per cent moves the quantity the
+method constrains by four parts in a thousand.
+
+\subsection{What must supply the plane instead}
+\label{sec:plane:external}
+
+Two external criteria are available, and on Itokawa they do not contradict
+one another. We put it that way deliberately, because an earlier draft of
+this section described their relation as a convergence, and that is more
+than the evidence supports.
+
+The first is geomorphological. The neck detector of
+Section~\ref{sec:methods:neck} returns
+$\xsplit = \SI{160.8}{\metre}$ at a prominence of $0.170$, using only the
+cross-sectional profile of the shape model and no density information
+whatever. The second is compositional: the block-density bound of
+Section~\ref{sec:itokawa:ceiling} excludes planes beyond
+$\SI{194+-11}{\metre}$, and the grain-density ceiling those beyond
+$\SI{207+-5}{\metre}$, using meteorite measurements and no shape information
+beyond the gradient used to convert a density into a plane position.
+
+The two are genuinely independent in their inputs, and the detected neck
+falls $\SI{33}{\metre}$ inside the tighter of the two bounds, about three
+times that bound's own uncertainty. But the compositional criterion is
+one-sided: it excludes planes that are too far out and says nothing about
+planes that are too far in. Every plane in the sweep below
+$\SI{194}{\metre}$ satisfies it, which is $63.5$ of the $110$~m swept, so
+under a uniform null a plane chosen at random would have satisfied it $58\%$
+of the time. The correct statement is that an independently chosen plane
+turns out not to be excluded, which is reassurance rather than corroboration,
+and not that two methods have selected the same plane. We adopt the detected
+neck because it has geometric warrant, and we use the compositional bound to
+truncate the sweep, not to locate it.
+
+One apparent inconsistency should be disposed of. The neck slab of
+Section~\ref{sec:itokawa:ambiguity} has its upper edge at
+$\SI{202.9}{\metre}$, beyond the block-density bound of
+$\SI{194}{\metre}$. There is no conflict: the bound is a bound on the
+recovered \emph{density}, converted into a plane position by
+$\mathrm{d}\denshead/\mathrm{d}\xsplit$ for the \emph{head} model, and the
+conversion does not transfer to a different region shape. The neck model
+returns $\densneck = \SI{2525}{\kilo\gram\per\cubic\metre}$, comfortably
+below both bounds, so it violates neither.
+
+The geomorphological criterion carries its own resolution dependence, and it
+propagates asymmetrically. Section~\ref{sec:itokawa:mesh} found that
+decimating to $20{,}000$ facets displaces the detected plane by
+$\SI{9.4}{\metre}$. At the local gradients of
+Table~\ref{tab:itokawasweep}---$\SI{10.0}{\kilo\gram\per\cubic\metre\per
+\metre}$ for $\denshead$ and
+$-\SI{0.28}{\kilo\gram\per\cubic\metre\per\metre}$ for $\densrest$---that
+displacement moves the region density by $\SI{94}{\kilo\gram\per
+\cubic\metre}$, or $3.4\%$, which is comparable to the curvature sensitivity
+interval of $4.6\%$; and the background density by
+$\SI{2.6}{\kilo\gram\per\cubic\metre}$, or $0.14\%$, against a combined
+budget of $1.45\%$, where it adds nothing in quadrature. The plane detector
+is a significant error source for the quantity the method does not constrain
+and a negligible one for the quantity it does.
+
+We note that this is a weaker footing than the rest of the method. The
+resolution stability of the inferred density
+(Section~\ref{sec:itokawa:mesh}) and the invariance of the background
+density in the strong-signal regime (Section~\ref{sec:constrains}) are
+properties measured within the method. The placement of the plane is not,
+and rests on judgement informed by two independent lines of evidence, only
+one of which is two-sided. Any result reported from this method should state
+the plane used, the criterion by which it was chosen, and the sensitivity of
+the answer to moving it---and should state that sensitivity for the quantity
+being reported. On Itokawa at the reference plane the three sensitivities
+are $\SI{10.0}{\kilo\gram\per\cubic\metre\per\metre}$ for $\denshead$
+(rising to $\SI{55}{\kilo\gram\per\cubic\metre\per\metre}$ at the outer
+planes and falling to $7.5$ over the first four),
+$\SI{0.28}{\kilo\gram\per\cubic\metre\per\metre}$ for $\densrest$, and
+$0.18\%$ per metre for $\Dmass$. Quoting the first alone, as earlier drafts
+did, states the sensitivity of the quantity
+Section~\ref{sec:constrains} concludes the method does not determine.

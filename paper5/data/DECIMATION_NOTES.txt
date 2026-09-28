@@ -1,0 +1,174 @@
+DECIMATION NOTES
+Shape-based surface gravity series, Paper IV supplementary note
+Prapon Kanjanatarayont, August 2026
+
+This note was written after Paper IV was published. It documents two
+limitations of the mesh decimation used there, states what they do and do not
+affect, and records the measurements that establish this. Nothing in Paper IV
+is retracted or corrected by it.
+
+
+1. WHAT PAPER IV USED
+
+Meshes were reduced by vertex clustering, implemented as decimate_cluster in
+surface_slope_lib.py. The method snaps every vertex to a grid, replaces each
+occupied cell by the centroid of the vertices in it, rebuilds the faces from
+the snapped indices, and discards faces that have collapsed onto two vertices
+or that duplicate another face. The grid resolution is taken from a fixed
+ladder and the first value that yields enough distinct cells is used.
+
+That function is unchanged in this release. A script that ran against the
+published version will produce the same numbers.
+
+
+2. LIMITATION ONE: TOPOLOGY IS NOT PRESERVED
+
+Two pieces of a surface that lie close together in space, such as the two
+sides of a thin neck, can fall into the same grid cell and be merged. The
+reduced mesh then has edges shared by more than two faces, and is no longer a
+closed two-manifold.
+
+Measured on a synthetic contact binary with a deep neck, 9,408 faces:
+
+    reduction    faces    Euler chi    repeated directed edges
+        25%       7,074        2                0
+        43%       5,368       20               96
+        66%       3,168       18               44
+        77%       2,159       12               30
+
+A closed, oriented two-manifold has every directed edge appearing exactly once
+with its reverse present, and an Euler characteristic of 2 for a single
+component. The onset is between a quarter and a half reduction, and the damage
+does not diminish beyond it.
+
+On the real bodies used in this series:
+
+    body      native      reduced    repeated edges    chi
+    Itokawa   49,152      41,369            21           8
+    Itokawa   49,152      21,196            69          25
+    Bennu    196,608      62,876            94          32
+    67P    1,309,996      57,607         1,449         613
+
+Undecimated meshes are unaffected: Itokawa at 49,152 and Eros at 49,152 both
+have chi = 2 with no repeated or unmatched edges.
+
+
+3. LIMITATION TWO: SMALL TARGETS ARE NOT REACHED
+
+Because the grid resolution comes from a fixed ladder rather than being solved
+for, the requested face count is a lower bound that is often not approached.
+On the same synthetic body, requests for 1200, 800, 500 and 300 faces all
+return the identical 2,159-face mesh. Any study quoting a target face count
+should quote the count actually obtained; Paper IV does.
+
+
+4. WHAT THIS DOES NOT AFFECT
+
+A polyhedral volume is a sum of signed tetrahedra. A polyhedral potential and
+its gradient, in the Werner-Scheeres formulation, are sums over oriented
+facets. None of these consults connectivity: they need the facets to tile the
+boundary with correct orientation, not to be stitched together. A mesh with
+repeated edges therefore yields the same volume, potential, gravity and slope
+as it would if the same facets were properly joined.
+
+This was verified rather than assumed. Recomputing the reference Itokawa
+inversion with a clipper that shares intersection points between adjacent
+facets, rather than duplicating them, changed the recovered densities not at
+all, the contrast by 8e-5 per cent and the excess mass by 1e-5 per cent.
+
+Accuracy was checked independently against a homogeneous ellipsoid, whose
+surface gravity has a closed form (MacMillan 1930), so that neither mesh nor
+code enters the reference. Three ellipsoids, three spin states and five facet
+counts, ninety configurations, gave the mean absolute error against the
+analytic value:
+
+                       mean slope    normalised dispersion
+    vertex clustering      3.92%             0.07%
+    quadric collapse       4.05%             0.09%
+
+The two methods are equivalent in accuracy, with clustering marginally ahead.
+The fields Paper IV reports are not in question.
+
+The same test bears on Paper IV's central claim, that the normalised
+geopotential dispersion is far less sensitive to mesh resolution than the mean
+surface slope. Measured against the analytic ellipsoid rather than against a
+finer mesh:
+
+    faces     slope error    dispersion error    ratio
+     2,000       11.62%           0.196%          59
+     4,000        4.74%           0.117%          40
+     8,000        2.30%           0.049%          47
+    16,000        0.93%           0.028%          33
+    32,000        0.33%           0.017%          19
+
+The dispersion is 19 to 59 times the more accurate. Paper IV inferred a factor
+of roughly 3 to 14 from mesh-to-mesh variation, so its conclusion holds and is
+conservative.
+
+
+5. WHAT THIS DOES AFFECT
+
+Anything that needs to know which faces meet at a vertex:
+
+  - vertex normals, which are averaged over the faces around a vertex;
+  - inward offsetting, used to build a core-and-shell interior model;
+  - surface flow or diffusion on the mesh;
+  - any finite-element treatment;
+  - a manifold test applied by a downstream tool, which will fail.
+
+Work of that kind should not use a clustered mesh.
+
+
+6. WHAT IS PROVIDED HERE
+
+  decimate_qem.py
+      Quadric edge collapse with the link condition enforced on every
+      collapse, so the result is a closed two-manifold by construction. It
+      also returns the requested face count exactly. Run
+      "python decimate_qem.py --selftest" to verify it in place.
+
+  surface_slope_lib.py
+      decimate_cluster is unchanged. Two functions are added:
+      decimate(V, F, target, method) dispatches to either method, defaulting
+      to "cluster"; mesh_topology(F) reports the directed-edge audit and the
+      Euler characteristic. The command line accepts --decimator qem.
+
+Cost: quadric collapse takes about eight minutes to reduce a 1.3-million-facet
+mesh to 50,000 faces, against under a second for clustering, and needs the
+decimated mesh to be cached if it will be used more than once.
+
+
+7. RECOMMENDATION
+
+  - To reproduce Paper IV, change nothing. The default is the published
+    behaviour.
+  - For fields only, either method is suitable; clustering is much faster.
+  - Where the mesh will be used for anything requiring connectivity, use
+    --decimator qem, and check with mesh_topology that the result has
+    chi = 2 and no repeated or unmatched edges.
+  - Report which decimation was used and the face count obtained, not the one
+    requested. The numerical value of a slope statistic depends on both.
+
+
+8. AN OPEN QUESTION
+
+On the four real bodies of the Paper IV resolution study, the mean slope under
+clustering rises monotonically with facet count on every one of them, by
++21.9%, +14.2%, +5.8% and +1.8%. Under quadric collapse there is no monotonic
+trend. On the smooth ellipsoid neither method shows such a drift: both
+overestimate the slope on coarse meshes by the same amount and converge
+smoothly.
+
+The natural explanation is surface roughness, which an ellipsoid does not
+have. That is a hypothesis. No analytic reference exists for a rough body, so
+which decimation is closer to the truth on a real asteroid cannot presently be
+established, and no claim is made here that either is.
+
+
+REFERENCES
+
+  Garland, M. & Heckbert, P. S. (1997). Surface simplification using quadric
+      error metrics. SIGGRAPH '97, 209-216.
+  MacMillan, W. D. (1930). The Theory of the Potential. McGraw-Hill.
+  Werner, R. A. & Scheeres, D. J. (1996). Exterior gravitation of a
+      polyhedron. Celestial Mechanics and Dynamical Astronomy 65, 313-344.

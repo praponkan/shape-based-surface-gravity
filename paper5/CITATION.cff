@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software or data, please cite it as below."
+title: "What potential-dispersion minimization constrains in small-body interiors — manuscript, data and code"
+authors:
+  - family-names: Kanjanatarayont
+    given-names: Prapon
+    orcid: "https://orcid.org/0009-0009-4081-7422"
+version: "1.0.0"
+date-released: "2026-09-28"
+license: CC-BY-4.0
+doi: "10.5281/zenodo.23003040"
+repository-code: "https://github.com/praponkan/shape-based-surface-gravity"
+keywords:
+  - asteroids
+  - interior structure
+  - small bodies
+  - surface geopotential
+  - polyhedral gravity
+  - inverse problems
+  - identifiability

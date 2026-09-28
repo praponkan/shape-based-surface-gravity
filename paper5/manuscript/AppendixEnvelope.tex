@@ -1,0 +1,129 @@
+\section{The mesh-resolution sensitivity envelope}
+\label{app:envelope}
+
+The envelope quoted throughout this paper as $0.9$--$5.9\%$ is the range over
+which the normalized geopotential dispersion $\potvarn$ moves when the same
+body is meshed at different resolutions. It is used as a scale against which
+an improvement may be judged large or small, and it is not a statistical
+threshold: nothing about it licenses a significance statement. Because
+several sections compare an improvement against the value the envelope takes
+on one particular body, this appendix records those values, how they were
+obtained, and how far they depend on choices that are not forced.
+
+\subsection{Definition and provenance}
+\label{app:envelope:def}
+
+Paper~IV decimated four shape models---Eros, Itokawa, Gaspra and Ida---over a
+ladder from roughly $2{,}000$ to $42{,}000$ facets and recorded $\potvarn$ and
+the area-weighted mean slope at each rung. For each body the envelope is the
+full range of $\potvarn$ across its ladder, as a fraction of the smallest
+value:
+\begin{equation}
+E \;=\; \frac{\max_i \potvarn^{(i)} - \min_i \potvarn^{(i)}}
+             {\min_i \potvarn^{(i)}} ,
+\label{eq:envelope}
+\end{equation}
+the index running over the rungs. The published figures are $0.9\%$ at one
+extreme and $5.9\%$ at the other, and the paper quotes that pair as a range
+across the test set rather than as a property of any one body.
+
+Two things follow that matter here. The envelope is a property of a body and
+its ladder, not of the method, so comparing an improvement on Itokawa against
+the largest value in a four-body set is the weaker of the two available
+comparisons; and the ladder itself is a choice, so the envelope moves when the
+decimator does.
+
+\subsection{Recomputed values}
+\label{app:envelope:values}
+
+Table~\ref{tab:envelope} gives Eq.~\eqref{eq:envelope} recomputed for this
+paper on the same four bodies, with both decimators, on ladders of six rungs
+each. The dispersion column is the envelope; the slope column is the same
+quantity for the mean surface slope, included because the comparison between
+the two is the result of Paper~IV; and the plateau column is the change in
+$\potvarn$ between the two finest meshes alone.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\caption{The envelope of Eq.~\eqref{eq:envelope} recomputed on the four
+Paper~IV resolution bodies, six rungs each. The slope column is the same
+range for the area-weighted mean slope. The plateau is the change in
+$\potvarn$ between the two finest meshes, which is the quantity Paper~IV used
+to argue that the dispersion has settled. Values in bold are those quoted
+elsewhere in this paper: the Itokawa envelope in
+Sections~\ref{sec:itokawa} and~\ref{sec:conclusions}, and the Eros envelope
+in Sections~\ref{sec:nulls} and~\ref{sec:failures}.}
+\label{tab:envelope}
+\begin{tabular}{llrrrr}
+\toprule
+Decimator & Body & Facets & Dispersion $E$ & Slope range & Plateau \\
+\midrule
+Vertex clustering & Eros    & $2{,}097$--$42{,}907$ & $5.40\%$ & $21.91\%$ & $0.083\%$ \\
+                  & Itokawa & $2{,}183$--$48{,}785$ & $0.95\%$ & $14.24\%$ & $0.019\%$ \\
+                  & Gaspra  & $2{,}821$--$32{,}040$ & $1.48\%$ & $1.84\%$  & $0.000\%$ \\
+                  & Ida     & $2{,}141$--$32{,}040$ & $4.40\%$ & $5.79\%$  & $0.009\%$ \\
+\addlinespace
+Quadric collapse  & Eros    & $2{,}000$--$42{,}000$ & $\mathbf{6.03\%}$ & $3.50\%$ & $0.098\%$ \\
+                  & Itokawa & $2{,}000$--$42{,}000$ & $\mathbf{1.35\%}$ & $4.50\%$ & $0.008\%$ \\
+                  & Gaspra  & $2{,}000$--$32{,}040$ & $2.92\%$ & $3.15\%$  & $0.000\%$ \\
+                  & Ida     & $2{,}000$--$32{,}040$ & $1.91\%$ & $6.19\%$  & $0.000\%$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{What the table shows}
+\label{app:envelope:reading}
+
+\emph{The published range is reproduced at its lower end and not at its
+upper.} With vertex clustering, which Paper~IV used, the four dispersion
+envelopes run from $0.95\%$ to $5.40\%$ against the published
+$0.9$--$5.9\%$. The lower end agrees; the upper is $0.5$ percentage points
+short, and the difference is the ladder, whose rungs are set by the
+decimator's own grid and do not fall at the same facet counts as Paper~IV's.
+We quote $0.9$--$5.9\%$ throughout because it is the published figure, and
+note here that the recomputed range is slightly narrower.
+
+\emph{The envelope depends on the decimator, and not weakly.} On Eros it is
+$5.40\%$ with clustering and $6.03\%$ with quadric collapse; on Itokawa,
+$0.95\%$ and $1.35\%$. That dependence is the reason
+Sections~\ref{sec:nulls:misplaced} and~\ref{sec:failures:plane} state both
+values when the envelope is used as a test: the misplaced Eros plane returns
+an improvement of $5.526\%$, which is $0.92$ times the quadric envelope and
+rejected by it, and $1.02$ times the clustering envelope and not rejected.
+A diagnostic whose verdict turns on a choice of decimation is worth less than
+its arithmetic suggests, and we rely on plane provenance instead.
+
+\emph{The slope column behaves differently under the two decimations.} With
+clustering the mean slope varies by $1.8\%$ to $21.9\%$ across the four
+bodies and rises monotonically with facet count on every one; with quadric
+collapse it varies by $3.1\%$ to $6.2\%$ and shows no monotone trend. The
+analytic ellipsoid of Section~\ref{sec:discussion:ellipsoid} finds the two
+decimations equally accurate on a smooth surface, so the monotone drift under
+clustering is a property of rough surfaces that the ellipsoid cannot
+reproduce, and we make no claim about which decimation is closer to the truth
+on a real body. What survives either way is the comparison Paper~IV drew: the
+dispersion moves by a few per cent across a ladder that moves the slope by
+several times as much, and the ellipsoid puts that ratio at $19\pm4$ to
+$59\pm18$ depending on resolution.
+
+\emph{The plateau is tighter than the figure the paper uses.} Between the two
+finest meshes the dispersion moves by $0.008\%$ on Itokawa and by at most
+$0.098\%$ on any of the four bodies, with either decimator. Paper~IV reports
+$0.60\%$ for this quantity, and the curvature sensitivity intervals of
+Section~\ref{sec:itokawa} are evaluated at that level. Retaining the
+published figure makes those intervals conservative by roughly a factor of
+six, which is the direction in which an interval should err.
+
+\subsection{Scope}
+\label{app:envelope:scope}
+
+Four bodies, six rungs, two decimators. The envelope is not known for Bennu,
+67P or Arrokoth, whose meshes were decimated once each rather than laddered,
+so the comparisons in Section~\ref{sec:nulls} for those three bodies use the
+cross-body range and not a body-specific value. Extending the ladder to them
+would cost one batch of runs and would sharpen three of the four
+weak-signal cases; we did not do it, and a reader who wants a body-specific
+envelope for those bodies should treat its absence as a gap rather than as
+evidence that the cross-body range applies.

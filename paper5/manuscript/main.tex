@@ -1,0 +1,355 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{authblk}
+\usepackage{siunitx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage[numbers,sort&compress]{natbib}
+
+% ---- float placement (same rationale as Paper IV) ----
+\usepackage[section]{placeins}
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.70}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.72}
+\setcounter{topnumber}{3}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{5}
+
+\allowdisplaybreaks
+\setlength{\parindent}{15pt}
+\setlength{\parskip}{0.3em}
+\linespread{1.03}
+
+\captionsetup{font=small,labelfont=bf}
+
+\graphicspath{{.}{./figures/}{./fig/}{./images/}}
+
+% ---- shared macros (consistent with Papers I--IV) ----
+\newcommand{\gmean}{\langle g\rangle}
+\newcommand{\RA}{R_{A}}
+\newcommand{\RV}{R_{V}}
+\newcommand{\Ptwo}{P_{2}}
+\newcommand{\Pthree}{P_{3}}
+\newcommand{\geff}{\mathbf{g}_{\mathrm{eff}}}
+\newcommand{\nhat}{\hat{\mathbf{n}}}
+\newcommand{\Upot}{U}
+\newcommand{\Ubar}{\bar{U}}
+\newcommand{\potvar}{\sigma_{U}}
+\newcommand{\potvarn}{\tilde{\sigma}_{U}}
+\newcommand{\omegarot}{\omega}
+\newcommand{\dens}{\varrho}
+\newcommand{\Nf}{N_{f}}
+
+% ---- Paper V macros: two-region density model ----
+\newcommand{\densR}{\dens_{R}}          % density of the region
+\newcommand{\densrest}{\dens_{\mathrm{rest}}}
+\newcommand{\denshead}{\dens_{\mathrm{head}}}
+\newcommand{\densbody}{\dens_{\mathrm{body}}}
+\newcommand{\Ddens}{\Delta\dens}        % density difference
+\newcommand{\Dmass}{\Delta M}           % excess mass
+\newcommand{\VR}{V_{R}}
+\newcommand{\Vrest}{V_{\mathrm{rest}}}
+\newcommand{\Vtot}{V_{\mathrm{tot}}}
+\newcommand{\Mtot}{M_{\mathrm{tot}}}
+\newcommand{\xsplit}{x_{\mathrm{split}}}
+\newcommand{\Ufull}{U_{\mathrm{full}}}
+\newcommand{\UR}{U_{R}}
+\newcommand{\dCOM}{\Delta x_{\mathrm{COM}}}
+\newcommand{\improve}{\mathcal{I}}       % improvement over uniform
+% ---- added for ver10: statistics and derived quantities ----
+\newcommand{\ampfac}{\mathcal{A}}        % rho_rest V_tot / Delta M
+\newcommand{\Sstat}{\mathcal{S}}         % displacement statistic
+\newcommand{\CV}{\mathrm{CV}}            % coefficient of variation
+\newcommand{\densbulk}{\dens_{\mathrm{bulk}}}
+\newcommand{\densneck}{\dens_{\mathrm{neck}}}
+\newcommand{\geomslope}{g_{\mathrm{geom}}}
+
+\begin{document}
+\emergencystretch=2em
+
+% ==================== TITLE BLOCK ====================
+\begin{center}
+{\LARGE\bfseries What potential-dispersion minimization constrains in
+small-body interiors\par}
+\vspace{0.8em}
+{\itshape Prapon Kanjanatarayont\par}
+\vspace{0.2em}
+{\small\color{gray} Independent Researcher \textperiodcentered\ Thailand\par}
+\vspace{0.1em}
+{\small\color{gray} \texttt{prapon.kanjana@gmail.com}\par}
+\end{center}
+\vspace{1.0em}
+
+\input{Section1}
+\input{Section2}
+\input{Section3}
+\input{Section4}
+\input{Section5}
+\input{Section6}
+\input{Section7}
+\input{Section8}
+\input{Section8b}
+\input{Section9}
+
+\appendix
+\input{AppendixA}
+\input{AppendixB}
+\input{AppendixC}
+\input{AppendixEnvelope}
+
+\begin{thebibliography}{99}
+
+% ---- companion papers in this series ----
+\bibitem[Kanjanatarayont(2026a)]{paper1}
+Kanjanatarayont, P., 2026. Surface gravity of small bodies from the
+area-equivalent radius: an $e^{2}$-cancellation theorem and an
+{$\eta \approx 1.05$} domain of validity. Companion paper, Paper I.
+doi:10.5281/zenodo.21327611.
+
+\bibitem[Kanjanatarayont(2026b)]{paper2}
+Kanjanatarayont, P., 2026. The optimal area--volume radius blend for the
+mean surface gravity of small bodies: a non-analytic $\Pthree/\Ptwo$ law.
+Companion paper, Paper II. doi:10.5281/zenodo.21328178.
+
+\bibitem[Kanjanatarayont(2026c)]{paper3}
+Kanjanatarayont, P., 2026. Shape-based estimation of mean surface gravity
+for small bodies: the accuracy of the blended radius and the limits of
+convex models. Companion paper, Paper III. doi:10.5281/zenodo.21622962.
+
+\bibitem[Kanjanatarayont(2026d)]{paper4}
+Kanjanatarayont, P., 2026. Spatial surface gravity of small bodies from
+polyhedral shape models: slope, geopotential, and the resolution
+robustness of geopotential dispersion. Companion paper, Paper IV.
+doi:10.5281/zenodo.21793575.
+
+% ---- origin of the relaxation argument and of the technique ----
+\bibitem[Richardson \& Bowling(2014)]{richardson2014}
+Richardson, J.~E., Bowling, T.~J., 2014. Investigating the combined
+effects of shape, density, and rotation on small body surface slopes and
+erosion rates. \emph{Icarus} 234, 53--65.
+doi:10.1016/j.icarus.2014.02.015.
+
+\bibitem[Richardson et~al.(2019)]{richardson2019}
+Richardson, J.~E., Graves, K.~J., Harris, A.~W., Bowling, T.~J., 2019.
+Small body shapes and spins reveal a prevailing state of maximum
+topographic stability. \emph{Icarus} 329, 207--221.
+doi:10.1016/j.icarus.2019.03.027.
+
+% ---- extension to interior density distribution ----
+\bibitem[Kanamaru \& Sasaki(2019)]{kanamaru2019}
+Kanamaru, M., Sasaki, S., 2019. Estimation of interior density
+distribution for small bodies: the case of asteroid Itokawa.
+\emph{Transactions of the Japan Society for Aeronautical and Space
+Sciences, Aerospace Technology Japan} 17, 270--275.
+doi:10.2322/tastj.17.270.
+
+\bibitem[Kanamaru et~al.(2019)]{kanamaru2019pss}
+Kanamaru, M., Sasaki, S., Wieczorek, M., 2019. Density distribution of
+asteroid 25143 Itokawa based on smooth terrain shape. \emph{Planetary and
+Space Science} 174, 32--42. doi:10.1016/j.pss.2019.05.002.
+
+\bibitem[Motooka \& Kawaguchi(2012)]{motooka2012}
+Motooka, N., Kawaguchi, J., 2012. Study on the gravity field on the
+surface of Itokawa. Proceedings of the Japan Society for Aeronautical and
+Space Sciences. Full text not available to the present author; described
+here only as reported by \citet{kanamaru2019}.
+
+% ---- polyhedral gravity method ----
+\bibitem[Werner \& Scheeres(1996)]{werner1996}
+Werner, R.~A., Scheeres, D.~J., 1996. Exterior gravitation of a
+polyhedron derived and compared with harmonic and mascon gravitation
+representations of asteroid 4769 Castalia. \emph{Celestial Mechanics
+and Dynamical Astronomy} 65, 313--344. doi:10.1007/BF00053511.
+
+\bibitem[Tsoulis(2012)]{tsoulis2012}
+Tsoulis, D., 2012. Analytical computation of the full gravity tensor
+of a homogeneous arbitrarily shaped polyhedral source. \emph{Geophysics}
+77, F1--F11. doi:10.1190/geo2010-0334.1.
+
+\bibitem[Schuhmacher et~al.(2024)]{gravitylib}
+Schuhmacher, J., Blazquez, E., Gratl, F., Izzo, D., G\'omez, P., 2024.
+Efficient polyhedral gravity modeling in modern C++ and Python.
+\emph{Journal of Open Source Software} 9(98), 6384.
+doi:10.21105/joss.06384. Software: \texttt{polyhedral-gravity}, version~3.3.1.
+
+\bibitem[Sutherland \& Hodgman(1974)]{sutherland1974}
+Sutherland, I.~E., Hodgman, G.~W., 1974. Reentrant polygon clipping.
+\emph{Communications of the ACM} 17, 32--42. doi:10.1145/360767.360802.
+
+\bibitem[Gaskell et~al.(2008)]{gaskell2008}
+Gaskell, R.~W., Barnouin-Jha, O.~S., Scheeres, D.~J., et~al., 2008.
+Characterizing and navigating small bodies with imaging data.
+\emph{Meteoritics \& Planetary Science} 43, 1049--1061.
+doi:10.1111/j.1945-5100.2008.tb00692.x.
+
+\bibitem[Hergenrother et~al.(2019)]{hergenrother2019}
+Hergenrother, C.~W., Maleszewski, C.~K., Nolan, M.~C., et~al., 2019. The
+operational environment and rotational acceleration of asteroid (101955)
+Bennu from OSIRIS-REx observations. \emph{Nature Communications} 10, 1291.
+doi:10.1038/s41467-019-09213-x.
+
+\bibitem[Kaasalainen et~al.(2003)]{kaasalainen2003}
+Kaasalainen, M., Kwiatkowski, T., Abe, M., et~al., 2003. CCD photometry and
+model of MUSES-C target (25143) 1998~SF36. \emph{Astronomy \& Astrophysics}
+405, L29--L32. doi:10.1051/0004-6361:20030844.
+
+\bibitem[Miller et~al.(2002)]{miller2002}
+Miller, J.~K., Konopliv, A.~S., Antreasian, P.~G., et~al., 2002.
+Determination of shape, gravity, and rotational state of asteroid 433 Eros.
+\emph{Icarus} 155, 3--17. doi:10.1006/icar.2001.6753.
+
+\bibitem[Nishihara et~al.(2019)]{nishihara2019}
+Nishihara, S., Abe, M., Hasegawa, S., et~al., 2019. Ground-based lightcurve
+observation campaign of (25143) Itokawa between 2001 and 2004.
+arXiv:1802.02742.
+
+\bibitem[Nolan et~al.(2013)]{nolan2013}
+Nolan, M.~C., Magri, C., Howell, E.~S., et~al., 2013. Shape model and surface
+properties of the OSIRIS-REx target asteroid (101955) Bennu from radar and
+lightcurve observations. \emph{Icarus} 226, 629--640.
+doi:10.1016/j.icarus.2013.05.028.
+
+\bibitem[Keane et~al.(2022)]{keane2022}
+Keane, J.~T., Porter, S.~B., Beyer, R.~A., et~al., 2022. The geophysical
+environment of (486958) Arrokoth---a small Kuiper Belt object explored by
+New Horizons. \emph{Journal of Geophysical Research: Planets} 127,
+e2021JE007068. doi:10.1029/2021JE007068.
+
+\bibitem[Scheeres et~al.(2019)]{scheeres2019}
+Scheeres, D.~J., McMahon, J.~W., French, A.~S., et~al., 2019. The dynamic
+geophysical environment of (101955) Bennu based on OSIRIS-REx measurements.
+\emph{Nature Astronomy} 3, 352--361. doi:10.1038/s41550-019-0721-3.
+
+\bibitem[Nakamura et~al.(2011)]{nakamura2011}
+Nakamura, T., Noguchi, T., Tanaka, M., et~al., 2011. Itokawa dust particles:
+a direct link between S-type asteroids and ordinary chondrites.
+\emph{Science} 333, 1113--1116. doi:10.1126/science.1207758.
+
+\bibitem[MacMillan(1930)]{macmillan1930}
+MacMillan, W.~D., 1930. \emph{The Theory of the Potential}.
+McGraw-Hill, New York.
+
+% ---- Itokawa ----
+\bibitem[Fujiwara et~al.(2006)]{fujiwara2006}
+Fujiwara, A., et al., 2006. The rubble-pile asteroid Itokawa as observed
+by Hayabusa. \emph{Science} 312, 1330--1334. doi:10.1126/science.1125841.
+
+\bibitem[Abe et~al.(2006)]{abe2006}
+Abe, S., et al., 2006. Mass and local topography measurements of Itokawa
+by Hayabusa. \emph{Science} 312, 1344--1349. doi:10.1126/science.1126272.
+
+\bibitem[Gaskell et~al.(2008)]{gaskell2008}
+Gaskell, R.~W., et al., 2008. Characterizing and navigating small bodies
+with imaging data. \emph{Meteoritics \& Planetary Science} 43, 1049--1061.
+doi:10.1111/j.1945-5100.2008.tb00692.x.
+
+\bibitem[Lowry et~al.(2014)]{lowry2014}
+Lowry, S.~C., et al., 2014. The internal structure of asteroid (25143)
+Itokawa as revealed by detection of YORP spin-up. \emph{Astronomy \&
+Astrophysics} 562, A48. doi:10.1051/0004-6361/201322602.
+
+\bibitem[Scheeres \& Gaskell(2008)]{scheeres2008}
+Scheeres, D.~J., Gaskell, R.~W., 2008. Effect of density inhomogeneity on YORP: The case of Itokawa. \emph{Icarus} 198, 125--129.
+doi:10.1016/j.icarus.2008.07.010.
+
+\bibitem[Tatsumi \& Sugita(2018)]{tatsumi2018}
+Tatsumi, E., Sugita, S., 2018. Cratering efficiency on coarse-grain
+targets: implications for the dynamical evolution of asteroid 25143
+Itokawa. \emph{Icarus} 300, 227--248. doi:10.1016/j.icarus.2017.09.004.
+
+% ---- Eros ----
+\bibitem[Yeomans et~al.(2000)]{yeomans2000}
+Yeomans, D.~K., et al., 2000. Radio science results during the
+NEAR-Shoemaker spacecraft rendezvous with Eros. \emph{Science}
+289, 2085--2088. doi:10.1126/science.289.5487.2085.
+
+\bibitem[Zuber et~al.(2000)]{zuber2000}
+Zuber, M.~T., et al., 2000. The shape of 433 Eros from the NEAR-Shoemaker
+laser rangefinder. \emph{Science} 289, 2097--2101.
+doi:10.1126/science.289.5487.2097.
+
+% ---- Bennu ----
+\bibitem[Scheeres et~al.(2020)]{scheeres2020}
+Scheeres, D.~J., et al., 2020. Heterogeneous mass distribution of the
+rubble-pile asteroid (101955) Bennu. \emph{Science Advances} 6,
+eabc3350. doi:10.1126/sciadv.abc3350.
+
+\bibitem[Barnouin et~al.(2019)]{barnouin2019}
+Barnouin, O.~S., et al., 2019. Shape of (101955) Bennu indicative of a
+rubble pile with internal stiffness. \emph{Nature Geoscience} 12,
+247--252. doi:10.1038/s41561-019-0330-x.
+
+% ---- 67P ----
+\bibitem[P\"atzold et~al.(2016)]{patzold2016}
+P\"atzold, M., et al., 2016. A homogeneous nucleus for comet
+67P/Churyumov--Gerasimenko from its gravity field. \emph{Nature} 530,
+63--65. doi:10.1038/nature16535.
+
+\bibitem[Preusker et~al.(2017)]{preusker2017}
+Preusker, F., et al., 2017. The global meter-level shape model of comet
+67P/Churyumov--Gerasimenko. \emph{Astronomy \& Astrophysics} 607, L1.
+doi:10.1051/0004-6361/201731798.
+
+\bibitem[Jorda et~al.(2016)]{jorda2016}
+Jorda, L., et al., 2016. The global shape, density and rotation of comet
+67P/Churyumov--Gerasimenko from preperihelion Rosetta/OSIRIS observations.
+\emph{Icarus} 277, 257--278. doi:10.1016/j.icarus.2016.05.002.
+
+% ---- Arrokoth ----
+\bibitem[Porter et~al.(2024)]{porter2024}
+Porter, S.~B., et al., 2024. The shape and pole of (486958) Arrokoth.
+\emph{The Planetary Science Journal} 5, 260. doi:10.3847/PSJ/ad7de6.
+
+\bibitem[Spencer et~al.(2020)]{spencer2020}
+Spencer, J.~R., et al., 2020. The geology and geophysics of Kuiper Belt
+object (486958) Arrokoth. \emph{Science} 367, eaay3999.
+doi:10.1126/science.aay3999.
+
+\bibitem[McKinnon et~al.(2020)]{mckinnon2020}
+McKinnon, W.~B., et al., 2020. The solar nebula origin of (486958)
+Arrokoth, a primordial contact binary in the Kuiper Belt. \emph{Science}
+367, eaay6620. doi:10.1126/science.aay6620.
+
+% ---- meteorite densities ----
+\bibitem[Consolmagno et~al.(2008)]{consolmagno2008}
+Consolmagno, G.~J., Britt, D.~T., Macke, R.~J., 2008. The significance of
+meteorite density and porosity. \emph{Chemie der Erde} 68, 1--29.
+doi:10.1016/j.chemer.2008.01.003.
+
+% ---- alternative approaches to interior structure ----
+\bibitem[Izzo \& G\'omez(2022)]{izzo2022}
+Izzo, D., G\'omez, P., 2022. Geodesy of irregular small bodies via neural
+density fields. \emph{Communications Engineering} 1, 48.
+doi:10.1038/s44172-022-00050-3.
+
+\bibitem[Takahashi \& Scheeres(2014)]{takahashi2014}
+Takahashi, Y., Scheeres, D.~J., 2014. Morphology driven density
+distribution estimation for small bodies. \emph{Icarus} 233, 179--193.
+doi:10.1016/j.icarus.2014.02.004.
+
+% ---- rubble piles / general ----
+\bibitem[Walsh(2018)]{walsh2018}
+Walsh, K.~J., 2018. Rubble pile asteroids. \emph{Annual Review of
+Astronomy and Astrophysics} 56, 593--624.
+doi:10.1146/annurev-astro-081817-052013.
+
+\bibitem[Dobrovolskis(2019)]{dobrovolskis2019}
+Dobrovolskis, A.~R., 2019. Classification of ellipsoids by shape
+and surface gravity. \emph{Icarus} 321, 891--928.
+doi:10.1016/j.icarus.2018.11.023.
+
+\end{thebibliography}
+
+\end{document}
+
+

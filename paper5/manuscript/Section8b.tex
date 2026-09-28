@@ -1,0 +1,437 @@
+%=======================================================================
+%  Paper V — Section 8b / 9 (Practical guidelines)   FINAL
+%
+%  Requires the macros listed at the head of Section 2.
+%
+%  PRINCIPAL ADDITIONS IN THIS REVISION ------------------------------
+%  (a) S is shown to equal Delta M / delta(Delta M) identically, so it
+%      is the signal-to-noise ratio of the excess mass and is invariant
+%      under exchanging the labels "region" and "complement". A and the
+%      raw curvature interval are not. This resolves the concern raised
+%      in Section 7.5 that S might be a coordinate artefact, and
+%      explains why A fails there: A is label-dependent.
+%  (b) The reporting rule is restated in terms of the LARGER piece.
+%      From the mass constraint, |d rho_rest| / |d rho_R| = f/(1-f), so
+%      the better-determined density is always that of the larger
+%      piece, with the threshold exactly at f = 1/2. On Arrokoth the
+%      region holds 66.3 %, so "report rho_rest" as previously worded
+%      points at the worse-determined of the two by a factor 1.83.
+%  (c) The three-part detection criterion of Section 4.4 and the
+%      diagnostic-versus-failure table are brought in, since no single
+%      number separates a result from an artefact.
+%
+%  Superseded statements:
+%      "independent parameters of the same fit"
+%              -> affinely related; one free parameter (Sections 2.2, 5.1)
+%      "a fractional range in Delta M is SMALLER than in rho_rest by
+%       rho_rest V_tot / Delta M"
+%              -> LARGER, by that factor; Eq. (excessamplify)
+%      "7.5 kg/m3 per metre in the linear regime"
+%              -> 10.0 at the reference plane, 55.0 at the outer planes;
+%                 and the quantity to quote is rho_rest, at 0.28
+%      "place the smaller of the two pieces in the region" (Section 7.3)
+%              -> relabelling buys no precision; it determines which
+%                 density the reporting rule names
+%      "the case for a real anomaly rests on Lowry et al."
+%              -> that determination is 1.75 sigma from zero and its
+%                 interval contains every plane of the sweep
+%      "0.94 % of the surface area"  -> 0.943 %
+%
+%  All values confirmed. Resolved in this pass: the 1.35 span threshold is
+%  replaced by reporting span and standard error, consistently with Section
+%  5.2; the envelope row now carries the Eros-specific value, 6.03 % with
+%  quadric decimation and 5.40 % with clustering, and the note records that
+%  the entry turns into a cross under the second.
+%=======================================================================
+
+\section{Practical guidelines}
+\label{sec:guidelines}
+
+The results above are mostly negative or qualified, which makes them
+awkward to act on. This section states what they imply for anyone applying
+the method to a new body. Nothing here is new evidence with one exception,
+noted where it arises: the relation between the displacement statistic and
+the excess mass in Section~\ref{sec:guidelines:report} is an identity we
+had not previously drawn out, and it changes which quantity we recommend
+reporting. The rest is the preceding sections read as instructions.
+
+\subsection{When the method is worth applying}
+\label{sec:guidelines:when}
+
+Four conditions should hold before the result will mean much.
+
+\emph{The mass must be measured.} On a body without one, the assumed bulk
+density can carry the recovered contrast to the threshold of a sign
+reversal, as it does on Arrokoth within the plausible range
+(Section~\ref{sec:nulls:arrokoth}), where the recovered contrast runs from
+$0.9999$ at $\SI{250}{\kilo\gram\per\cubic\metre}$ to $0.9159$ at $500$ and
+the plane sweep at fixed assumed mass carries $\Dmass$ from $+2.5\%$ to
+$-11.6\%$ of the total. A result that depends on an assumption in that way
+is not a measurement. Where no mass exists the method may still be run, but
+the honest report is a range that includes both senses.
+
+\emph{The body should have a dividing surface that something other than the
+objective function can locate.} The dispersion does not constrain the plane
+(Section~\ref{sec:plane}), so a saddle in the cross-sectional profile, or
+some comparable geomorphological feature, has to supply it. Bennu, which has
+no saddle, is the case where this fails: a plane can be imposed, but nothing
+justifies its position.
+
+\emph{The relaxation premise should be plausible for the particular body.}
+Section~\ref{sec:discussion:premise} assesses it for the five studied here,
+and finds it strong on Eros, weak on 67P and Arrokoth, uncertain on Bennu,
+whose surface may still be in motion, and failing its first stated condition
+on Itokawa. One qualification belongs with that last item, because it is
+easily over-read. Section~\ref{sec:discussion:conditioning} shows that the
+first condition---that the rotational term be a significant fraction of the
+gravitational one---is the condition under which the \emph{bulk-density}
+inversion of \citet{richardson2014} is not identically flat, and that it has
+no counterpart in a fixed-mass two-region inversion, where the mass
+constraint fixes the scale instead. A slow rotator is therefore not
+ill-conditioned for the problem solved here. What remains true, and is the
+reason the condition still appears in this list, is that the premise itself
+is a statement about whether the surface has relaxed, and the empirical
+evidence that it has is weakest where the rotation is slowest. A body
+resurfaced by activity, or one whose surface is still in motion, is not a
+good candidate whatever its spin.
+
+\emph{The anticipated structure must be one a plane can represent.} A radial
+or axisymmetric arrangement, of the kind \citet{scheeres2020} report for
+Bennu, is invisible to this model however well the other conditions hold.
+
+\subsection{What to run}
+\label{sec:guidelines:what}
+
+A single inversion at a single plane on a single mesh is not enough to know
+whether its output means anything. The following are cheap, and each answers
+a question the others cannot.
+
+\emph{Vary the mesh resolution, and report both the density and the plane.}
+Two or three meshes establish whether the recovered density is stable, which
+the stability of the dispersion does not by itself guarantee
+(Section~\ref{sec:itokawa:mesh}). Run this twice. Holding the plane fixed
+isolates the sensitivity of the objective function; letting the detector
+choose it on each mesh measures the sensitivity of the plane, and on Itokawa
+the second is much the larger of the two---the detected plane moves by
+$\SI{9.4}{\metre}$ between the finest and coarsest meshes, displacing
+$\denshead$ by about $3.4\%$ against the $0.45\%$ to which the fixed-plane
+comparison bounds it. Report the detected plane on every mesh, not the
+density alone; a study that fixed the plane externally would not see this
+error source at all.
+
+\emph{Sweep the dividing plane, selecting by volume fraction.} Select planes
+by volume fraction rather than by position, so that the sweep spans a
+comparable range of region volume on bodies of different shape, and report
+the scaling exponent of Eq.~\eqref{eq:slope} together with the fractional
+ranges of $\densR$, $\densrest$ and $\Dmass$ and the subset of planes over
+which each was computed. Three conditions govern whether the exponent means
+anything. The density difference must keep its sign across the sweep, since
+a quantity passing through zero has no fractional range and no logarithmic
+slope; the sweep must span an adequate range in $\VR$, which we judge by
+reporting the span and the standard error of the fit with every exponent
+rather than by imposing a threshold---the spans used here are $1.907$ on
+Itokawa, $1.504$ on 67P and $1.90$ on every synthetic body, all far above
+the factor of about $1.35$ below which the logarithmic fit ceases to be
+constrained; and the exponent should not be presented as
+independent evidence about $\densrest$, since Eq.~\eqref{eq:steepidentity}
+makes $s+1$ identically the logarithmic drift of $\densbulk-\densrest$. What
+the exponent adds is the distinction between a systematic drift and scatter
+about a fixed value, which a coefficient of variation cannot make, and a
+well-defined quantity where fractional ranges diverge. Report the
+centre-of-mass offset across the same sweep as well: comparing its scaling
+against the purely geometric slope of Eq.~\eqref{eq:geomslope} is what
+excludes conservation of the mass dipole
+(Section~\ref{sec:constrains:dipole}), and it costs nothing, the offset
+being a by-product of the same solutions.
+% Resolved consistently with Section 5.2: the threshold does no work, since
+% no sweep reported here comes near it, and the standard error is now quoted
+% with every exponent (Itokawa -1.141 +/- 0.018, 67P -2.80 +/- 0.27, and the
+% four synthetic exponents in Table 5.2).
+
+\emph{Vary the assumed mass.} Three or four runs over a factor of a few show
+whether the answer is driven by the data or by the assumption
+(Section~\ref{sec:constrains:mass}). Read the outcome as the position of the
+resulting contrast interval relative to unity and not as its width: on the
+raw change in contrast Itokawa is the \emph{more} sensitive of the two
+bodies tested, and it is only per e-fold of assumed mass, and in whether the
+interval reaches unity, that the two separate. We put this forward as a
+candidate diagnostic rather than an established one, since it rests on two
+bodies here, and note the awkwardness that it is of use precisely where the
+mass is unknown and there is nothing to calibrate it against.
+
+\emph{Check that no minimum sits on a scan boundary, and widen the interval
+until none does.} A minimisation reports the smallest value it finds, and a
+minimum at the edge of the interval searched is the edge, not a result. This
+guard fired twice in the present study: on the Arrokoth neck model, where a
+slab of $1.0\%$ of the volume drove the density to the scan floor and
+returned an improvement of $13.6\%$ that had to be discarded, and at one
+Itokawa plane, where widening the interval returned an interior minimum
+(Section~\ref{sec:failures:edge}). Record the interval used at every plane,
+since it may have to change along a sweep, and check separately that the
+upper limit is not implicitly restricting the region size: holding $\Dmass$
+fixed, a ceiling $\densR^{\max}$ admits no region smaller than
+$\Dmass/[(\densR^{\max}-\densrest)\Vtot]$, which on Itokawa is $2.56\%$ and
+bounds the range of planes the configuration can resolve at all.
+
+\emph{Check the geometry every time, in five layers.} The region must agree
+with a closed-form solid where one exists, satisfy its defining inequality
+at every vertex, close against its complement, form a closed surface with
+the Euler characteristic its component count implies, and satisfy the mass
+identity $\Dmass=(\densbulk-\densrest)\Vtot=\Ddens\VR$ on every solution.
+The last of these is the one that operates on the output rather than on the
+geometry, and it is the layer that would have caught the construction error
+of Section~\ref{sec:methods:cone}, which passed a volume-closure test while
+enclosing a solid wrong by a factor of $1.6$. Where the shape model has more
+than one component, test facet centroids for containment in the others as
+well: none of the other checks detects a facet that lies inside the body
+(Sections~\ref{sec:methods:verify} and~\ref{sec:failures:buried}).
+
+\emph{Where the signal is weak, test the field-point offset.} The inward
+displacement of field points from the facet centroids shifts the surface
+potential by of order $0.04\%$ of $\lvert\Ubar\rvert$ on the bodies here
+(Section~\ref{sec:methods:model}), which is comparable to the dispersion
+improvements returned by all four weak-signal bodies. Repeating the
+inversion with the offset scaled by ten and by a tenth establishes whether a
+sub-per-cent improvement is a property of the body or of the discretisation.
+
+\subsection{What to report}
+\label{sec:guidelines:report}
+
+\emph{Report the density of the larger of the two pieces, and the excess
+mass, not the region density as such.} This is a correction to the rule
+stated in earlier drafts, which was to report the background density
+$\densrest$, and the correction matters on one of the five bodies here.
+Differentiating the mass constraint~\eqref{eq:massbalance} at fixed total
+mass gives
+%
+\begin{equation}
+\frac{\lvert\delta\densrest\rvert}{\lvert\delta\densR\rvert}
+ = \frac{\VR}{\Vtot-\VR} = \frac{f}{1-f} ,
+\label{eq:whichpiece}
+\end{equation}
+%
+so the density of the larger piece is always the better determined, in
+absolute terms, and the threshold is exactly $f = \tfrac{1}{2}$. On Itokawa,
+Eros and 67P the region is the smaller piece and $\densrest$ is accordingly
+the constrained quantity, which is the case the earlier wording had in mind.
+On Arrokoth the detector places $66.3\%$ of the volume in the region, so
+$\densrest$ is the density of the \emph{smaller} piece and is the worse
+determined of the two by a factor of $1.83$ in fractional terms. Reporting
+it there, as Table~\ref{tab:nulls} does, points at the wrong number. Which
+piece is called the region is a labelling choice and carries no physics: it
+does not change the uncertainty on either density, only which of them the
+reporting rule names.
+
+Report $\Dmass$ alongside, since Eq.~\eqref{eq:excessidentity} makes it the
+same statement and it is the quantity that survives the relabelling. The
+region density is a derived quantity depending on a dividing surface the
+investigator chose (Section~\ref{sec:constrains:claim}), and a region
+density quoted without its plane is not reproducible.
+
+\emph{Quote the amplification factor with any stability claim, and the plane
+at which it was evaluated.} A fractional range in $\densrest$ corresponds to
+a fractional range in $\Dmass$ that is \emph{larger} by
+$\ampfac = \densrest\Vtot/\Dmass$, not smaller---on Itokawa,
+$\CV(\Dmass)=2.95\%$ against $\CV(\densrest)=0.251\%$, a ratio of $11.76$
+which reproduces the mean $\ampfac$ of $11.77$ over the same planes. Any
+comparison of how well two quantities are determined must divide by it
+first. When comparing $\densR$ against $\densrest$, note that the two are
+comparable because they are densities of the same model in the same units,
+and \emph{not} because they are independent: the mass constraint leaves
+exactly one free parameter and relates them affinely as
+$\densrest = a - b\,\densR$ (Section~\ref{sec:methods:identity}). Quote
+$\ampfac$ with its plane, since Eq.~\eqref{eq:ampsensitivity} makes it move
+by $\pm5.6\%$ across a sweep over which $\densrest$ moves by $\pm0.434\%$,
+and note that a large $\ampfac$ is a warning rather than a precision: a body
+returning $\ampfac\simeq1200$, as Bennu does, is one on which the model has
+found essentially no excess mass.
+
+\emph{State the component count of the shape model, and whether any facets
+were excluded.} A model delivered as several unjoined shells may have part
+of one inside another; on Arrokoth this affected $0.943\%$ of the surface
+area and changed a qualitative conclusion
+(Section~\ref{sec:nulls:arrokoth}).
+
+\emph{State the plane, the criterion that placed it, and the sensitivity of
+the reported quantity to moving it.} The sensitivity must be quoted for the
+quantity being reported, and the three differ by two orders of magnitude. At
+the Itokawa reference plane they are
+$\SI{10.0}{\kilo\gram\per\cubic\metre\per\metre}$ for $\denshead$---rising
+to $\SI{55}{\kilo\gram\per\cubic\metre\per\metre}$ at the outer planes and
+falling to $7.5$ over the first four, so no single figure describes the
+sweep---$\SI{0.28}{\kilo\gram\per\cubic\metre\per\metre}$ for $\densrest$,
+and $0.18\%$ per metre for $\Dmass$. Earlier drafts quoted the first alone,
+which states the sensitivity of the quantity
+Section~\ref{sec:constrains} concludes the method does not determine.
+
+\emph{State the saddle prominence, and do not read it as a figure of merit.}
+It lets a reader judge the provenance of the plane, and the values here
+separate the accepted from the refused by more than two orders of magnitude,
+from $0.091$ on 67P down to $0.0004$ on Bennu. Among the accepted bodies it
+carries no information about the strength of the result: Arrokoth has the
+highest prominence in the study, $0.490$, and returns an improvement of
+$1.272\%$, while Itokawa has the third, $0.170$, and returns $16.9\%$.
+
+\emph{Give the facet count used, not the one requested, and the decimation
+method.} A slope or dispersion statistic depends on both
+(Section~\ref{sec:discussion:ellipsoid}).
+
+\emph{Bound the answer by the material, and state that the bound is
+one-sided.} A recovered density above the grain density of the meteorite
+analogue is not a result but a signal that the plane has advanced too far:
+on Itokawa the outermost plane of the sweep exceeds the LL-chondrite grain
+density by $11.2$ standard deviations
+(Sections~\ref{sec:itokawa:ceiling} and~\ref{sec:plane:impossible}). Convert
+the bound into a plane position through the measured gradient and carry its
+uncertainty: on Itokawa the block-density bound of
+$3220\pm\SI{220}{\kilo\gram\per\cubic\metre}$ becomes
+$\xsplit \le \SI{194+-11}{\metre}$, and quoting it to the tenth of a metre
+would overstate it. The bound excludes planes that are too far out and says
+nothing about planes that are too far in, so it truncates a sweep and does
+not locate one.
+
+\subsection{How to read the outcome}
+\label{sec:guidelines:read}
+
+\emph{Require three things before calling a result a detection.} No single
+number separates a result from an artefact, which is the lesson of
+Section~\ref{sec:failures} and the reason for stating a criterion rather
+than a threshold. The improvement must exceed the value the mesh-resolution
+envelope takes on that body, not the upper edge of a range attained on some
+other body; the displacement statistic $\Sstat$ must be large; and the
+dividing plane must carry geometric warrant, meaning a saddle returned by a
+detector at a prominence above threshold rather than a plane chosen by the
+investigator. The misplaced plane of Section~\ref{sec:failures:plane}
+satisfies the second and fails the first and third. Itokawa satisfies all
+three.
+
+\emph{Use $\Sstat$ rather than a curvature interval, because it is the only
+one of the available diagnostics that does not depend on which piece was
+called the region.} Its definition in Eq.~\eqref{eq:sstat} is a displacement
+measured in units of an uncertainty, but multiplying numerator and
+denominator by $\Vtot$ turns it into something more directly meaningful:
+%
+\begin{equation}
+\Sstat = \frac{\lvert\densbulk-\densrest\rvert}{\sigma(\densrest)}
+       = \frac{\lvert\densbulk-\densrest\rvert\,\Vtot}
+              {\sigma(\densrest)\,\Vtot}
+       = \frac{\lvert\Dmass\rvert}{\delta(\Dmass)} ,
+\label{eq:ssnr}
+\end{equation}
+%
+which is exact. $\Sstat$ is the signal-to-noise ratio of the excess mass,
+and since $\Dmass$ merely changes sign when the labels ``region'' and
+``complement'' are exchanged, $\Sstat$ is invariant under that exchange. The
+raw curvature interval is not, and neither is $\ampfac$: at the misplaced
+Eros plane the interval is $\pm15$ under one labelling and $\pm115$ under
+the other, and $\ampfac$ is $-9.12$ under one and $+61.0$ under the other.
+That is why $\ampfac$ ranks the misplaced plane as the strongest signal in
+the study, and it is a limitation of the quantity rather than a statistical
+accident: $\ampfac$ is a cheap first check on bodies whose planes are
+properly placed (Section~\ref{sec:nulls:amplification}) and says nothing
+about whether a plane is properly placed. Read the other way,
+Eq.~\eqref{eq:ssnr} says that $\Sstat = 5.8$ on Itokawa is a statement that
+the excess mass is determined to $1/5.8 = 17\%$, which is the figure the
+error budget of Eq.~\eqref{eq:budget} arrives at independently.
+
+\emph{A strong response is not by itself evidence of a physical anomaly.}
+The synthetic bodies of Section~\ref{sec:constrains:synthetic} are uniform
+by construction and still produce strong responses and a pinned background
+density when their shape is sufficiently asymmetric. What that pinning
+identifies is a regime of the objective function. On Itokawa the case for a
+real anomaly rests on the independent YORP determination of
+\citet{lowry2014}, not on the inversion alone---but that support should not
+be asked to carry more than it can. The Lowry offset of
+$\SI{21+-12}{\metre}$ is itself only $1.75$ standard deviations from zero,
+so it does not exclude a homogeneous Itokawa at two sigma, and its interval
+contains the centre-of-mass offset returned at \emph{every} plane of
+Table~\ref{tab:itokawasweep}. It corroborates the sign and the order of
+magnitude of the anomaly and discriminates neither the plane nor the value.
+
+\emph{A weak response is not evidence of homogeneity.} It is consistent with
+a uniform interior, with a structure the planar model cannot see, and with
+the relaxation premise failing on that body. These are not distinguishable
+from within the method (Section~\ref{sec:nulls}).
+
+\emph{A sharp minimum is not a precise answer; propagate the interval before
+reading it.} The tightest curvature bound in this study,
+$\pm\SI{15}{\kilo\gram\per\cubic\metre}$, belongs to the one run known to be
+wrong: a plane placed on a flank of Eros, where the complement holds only
+$11.56\%$ of the volume and the mass constraint amplifies the objective on
+both sides of the minimum. Carried through Eq.~\eqref{eq:whichpiece} that
+interval becomes $\SI{115}{\kilo\gram\per\cubic\metre}$ on the complement
+density, or $3.83\%$---the worst determination anywhere in this study, and
+correspondingly $\Sstat = 2.86$ against $5.8$ on Itokawa. The apparent
+precision is a property of the coordinate in which the scan was performed.
+
+\emph{Watch for an improvement bought with almost no mass.} The ratio of the
+dispersion improvement to the fractional excess mass is $14.4$ for the
+Arrokoth neck model, which the boundary guard discarded, against $2.20$ for
+the Itokawa head and below unity for every other case in the study
+(Section~\ref{sec:failures:edge}). It separates an edge minimum from a
+genuine result by a factor of $6.5$ and costs nothing to compute. Its
+limitation should be stated with it: it does not flag a misplaced plane,
+whose ratio is unremarkable.
+
+\emph{Corroboration should be sought outside the method.} Itokawa is
+interpretable here because a YORP measurement, resting on different
+premises, gives a compatible centre-of-mass offset, and because
+Section~\ref{sec:constrains:dipole} establishes that the objective function
+demonstrably does not hold the mass dipole fixed, so the two lines of
+evidence are independent rather than two readings of one. Where no such
+check exists, the result should be reported as what the objective function
+prefers, not as what the interior is.
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Which diagnostic responds to which failure, from the cases in
+Section~\ref{sec:failures}. A tick marks a diagnostic that identifies the
+failure, a cross one that is silent or actively misleading, and a dash one
+that does not bear on it. The table is the argument for a three-part
+criterion rather than a threshold: no row catches everything, and two
+diagnostics rank the misplaced plane \emph{above} the genuine result. The
+last two columns are the two silent failures that no statistical diagnostic
+reaches, and that only geometric checks or the provenance of the plane will
+find.}
+\label{tab:diagnostics}
+\setlength{\tabcolsep}{0.2pt}
+\begin{tabular}{lccccc}
+\toprule
+Diagnostic & Region too small & Complement too small & Edge minimum
+ & Misplaced plane & Wrong solid \\
+\midrule
+Curvature interval in $\densR$
+ & \checkmark\ $+22.3\%$ & $\times$\ $0.57\%$ & --- & $\times$\ $0.57\%$ & --- \\
+Interval propagated to the larger piece
+ & $\times$\ $1.01\%$ & \checkmark\ $3.83\%$ & --- & \checkmark\ $3.83\%$ & --- \\
+Boundary-minimum guard
+ & --- & --- & \checkmark & --- & --- \\
+$\improve$ per unit $\lvert\Dmass\rvert/\Mtot$
+ & --- & --- & \checkmark\ $14.4$ & $\times$\ $0.45$ & --- \\
+$\Sstat$
+ & --- & \checkmark & --- & partly, $2.86$ & --- \\
+$\ampfac$
+ & --- & --- & --- & $\times$\ $9.12$ & --- \\
+Envelope comparison$^{a}$
+ & --- & --- & --- & narrowly, $5.53\%$ & --- \\
+Plane provenance
+ & --- & --- & --- & \checkmark & --- \\
+Vertex predicate; mass-balance audit
+ & --- & --- & --- & --- & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+\vspace{2pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+\textsuperscript{a}\,The Eros-specific envelope is $6.03\%$ with quadric
+decimation, so the $5.53\%$ returned at the misplaced plane is $0.92$ times
+it and the comparison rejects the case. With vertex clustering the envelope
+is $5.40\%$, the same result is $1.02$ times it, and the entry becomes a
+cross. The margin is therefore smaller than the difference between two
+defensible ways of computing the envelope, which is why the row reads
+``narrowly'' and why plane provenance, the row below it, is the check we
+recommend relying on.
+\end{minipage}

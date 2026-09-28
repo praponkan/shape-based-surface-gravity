@@ -1,0 +1,15 @@
+# Figure regeneration (make_figs.py, make_figs2.py) needs only these two:
+numpy>=1.24
+matplotlib>=3.7
+
+# The analytic ellipsoid test (test_ellipsoid.py) also needs:
+scipy>=1.10
+
+# The region solver and everything that calls it (density_estimate.py,
+# surface_slope_lib.py, run_profiles.py, run_all_paperV.py, planted_anomaly.py,
+# diagnose_planted.py, rerun_arrokoth_clean.py) needs a Werner-Scheeres
+# polyhedron gravity binding:
+polyhedral-gravity>=3.0
+
+# check_key_results.py, check_arrokoth.py and set_doi.py need nothing beyond
+# the standard library and numpy.

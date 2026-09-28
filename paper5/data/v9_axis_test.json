@@ -1,0 +1,21 @@
+{
+ "tilt_deg": 1.8693685735264414,
+ "reference": {
+  "rho_R": 2800.0,
+  "rho_rest": 1858.0932184753865,
+  "contrast": 1.5069211663650937,
+  "dispersion": 0.07200655685257129,
+  "improvement": 16.88706449758193,
+  "interior": true
+ },
+ "tilted": {
+  "rho_R": 2875.0,
+  "rho_rest": 1843.3463026236043,
+  "contrast": 1.5596635292609209,
+  "dispersion": 0.0707628410113549,
+  "improvement": 19.247381175424028,
+  "interior": true
+ },
+ "contrast_change_pct": 3.5000081008251582,
+ "dispersion_change_pct": -1.7272258188415046
+}

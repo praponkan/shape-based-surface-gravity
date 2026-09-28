@@ -1,0 +1,617 @@
+%=======================================================================
+%  Paper V — Section 4 (The four weak-signal bodies)   FINAL
+%
+%  Requires the macros listed at the head of Section 2.
+%  Additional macro used here:
+%      \newcommand{\densregion}{\varrho_{R}}   % already defined as \densR
+%
+%  This version supersedes all earlier drafts of Section 4. Principal
+%  changes against ver10:
+%      contrast intervals    -> now include the induced change in
+%                               rho_rest, as in Eq. (itokawaref)
+%      Eros "1.000 +/- 0.017"-> 1.018 +/- 0.026 (central value corrected)
+%      Bennu I = 0.000 %     -> I < 10^-3 %, with the floor stated
+%      negative I values     -> identified as a grid artefact and bounded
+%      amplification factor  -> tabulated; ranks the bodies identically
+%                               to I (Spearman rho = -1 over five bodies)
+%      S statistic           -> shown to FAIL on the Eros misplaced plane,
+%                               and demoted to a necessary-not-sufficient
+%                               condition within a three-part criterion
+%
+%  All values confirmed against paperV_final.json, paper4_recheck.json,
+%  v9_section2_tests.json and arro_235/250/500.json, arrokoth_clean.json.
+%  Corrections in this pass: S at the misplaced Eros plane 19 -> 2.8
+%  (the region holds 88 per cent of the volume, not 5-20); Arrokoth run at
+%  235 kg/m3 added, reversing the sign; Arrokoth table column count fixed.
+%=======================================================================
+
+\section{The four weak-signal bodies}
+\label{sec:nulls}
+
+Itokawa is one body out of five. This section reports the other four, and
+its purpose is not to add results but to bound a failure rate: if the
+inversion manufactured structure wherever it was pointed, the method would
+be worthless whatever it returned on Itokawa. It does not. All four return
+improvements at or below the mesh-resolution sensitivity envelope of
+Paper~IV, and all four return contrasts consistent with unity once the
+curvature sensitivity interval is propagated through the mass constraint.
+
+Three further things are established here, and they matter more than the
+null results themselves. The amplification factor $\ampfac$ of
+Equation~\eqref{eq:amplification}, computed from densities alone and
+without reference to the objective function, ranks all five bodies in
+exactly the order of their dispersion improvements
+(Section~\ref{sec:nulls:amplification}). A deliberately misplaced plane on
+Eros produces a displacement statistic $\Sstat$ three times larger than
+Itokawa's, which shows that $\Sstat$ cannot be used on its own
+(Section~\ref{sec:nulls:misplaced}). And on Arrokoth the recovered
+contrast reverses sign along two independent axes---the assumed bulk
+density and the position of the dividing plane---which is the concrete
+form of the statement that nothing is invariant when the signal is weak
+(Section~\ref{sec:nulls:arrokoth}).
+
+\subsection{The four results}
+\label{sec:nulls:table}
+
+Table~\ref{tab:nulls} collects them. Two columns require comment before
+the bodies are taken individually.
+
+The contrast intervals are computed as in
+Equation~\eqref{eq:itokawaref}: the curvature sensitivity interval on
+$\densR$ and the change it induces in $\densrest$ through the mass
+constraint move the ratio in the same direction, so their fractional
+contributions add rather than combining in quadrature,
+%
+\begin{equation}
+\frac{\delta C}{C}
+ = \frac{\delta\densR}{\densR}
+ + \frac{f}{1-f}\,\frac{\delta\densR}{\densrest} .
+\label{eq:contrastinterval}
+\end{equation}
+%
+On Bennu, where the region is half the body, the second term is as large
+as the first and the interval is twice what the first term alone would
+give. Reporting only the first term, as earlier drafts of this section
+did, understates every interval in the table.
+
+The improvement for Bennu is quoted as a bound rather than as a value.
+Because no sub-grid refinement is applied
+(Section~\ref{sec:methods:minimisation}), the scan need not contain the
+density at which $\potvarn$ is stationary, and the reported minimum can
+therefore lie marginally \emph{above} the uniform solution, giving a
+negative $\improve$. This is an arithmetic impossibility for the
+underlying problem---the uniform body is the special case
+$\densR = \densrest$ of the two-region model, so the minimum over
+$\densR$ can never exceed it---and its appearance is a measure of the
+grid rather than of the physics. It is observed on Arrokoth
+(Section~\ref{sec:nulls:arrokoth}), where it reaches
+$\improve = -0.006\%$, and that figure is the empirical floor of the
+calculation. We therefore report improvements below $10^{-3}\%$ as
+bounds and do not distinguish among them.
+
+\begin{table}[htbp]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{The four weak-signal bodies. Planes are those of
+Table~\ref{tab:planes}; ``imposed'' marks the one plane not returned by
+the detector. $f = \VR/\Vtot$. Contrast intervals follow
+Equation~\eqref{eq:contrastinterval} and are therefore wider than the
+curvature interval on $\densR$ alone. $\ampfac$ is the amplification
+factor of Equation~\eqref{eq:amplification}, computed from the densities
+without reference to the objective; its sign follows that of
+$\densbulk - \densrest$ and is negative where the region is the less
+dense of the two. $\Sstat$ is the displacement statistic of
+Equation~\eqref{eq:sstat}. Itokawa is repeated from
+Section~\ref{sec:itokawa} for comparison and is not part of this section's
+argument.}
+\label{tab:nulls}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{llrrrrrr}
+\toprule
+Body & Plane & $f$ & $\densR$ & $\densrest$ & $C = \densR/\densrest$
+ & $\improve$ & $\dCOM$ \\
+ & (km) & (\%) & \multicolumn{2}{c}{(kg\,m$^{-3}$)} & & (\%) & (m) \\
+\midrule
+Bennu    & $0$ (imposed)   & $50.2$ & $1190$ & $1192$   & $0.999\pm0.071$ & $<10^{-3}$ & $-0.07$ \\
+Eros     & $+4.4698$       & $34.6$ & $2700$ & $2652$   & $1.018\pm0.026$ & $0.418$    & $+56.4$ \\
+67P      & $+0.9517$       & $26.6$ & $565$  & $527$    & $1.073\pm0.075$ & $0.574$ & $+29.1$ \\
+Arrokoth & $-4.7863$       & $66.3$ & $390$  & $419.7$  & $0.929\pm0.038$ & $1.272$ & $-141$ \\
+\midrule
+\itshape Itokawa & \itshape $+0.1608$ & \itshape $16.4$ & \itshape $2800$
+ & \itshape $1858$ & \itshape $1.51\pm0.09$ & \itshape $16.9$ & \itshape $+16.9$ \\
+\bottomrule
+\end{tabular}
+
+\vspace{4pt}
+\begin{minipage}{\textwidth}
+\footnotesize
+Arrokoth is quoted at an assumed bulk density of
+$\SI{400}{\kilo\gram\per\cubic\metre}$; the dependence on that assumption
+is the subject of Section~\ref{sec:nulls:arrokoth}. Its contrast interval
+uses the curvature interval of the run with the buried facets retained,
+$\pm\SI{5.6}{\kilo\gram\per\cubic\metre}$, the rerun that excludes them
+having been made without it; the two runs differ by one scan step in
+$\densR$. The 67P curvature interval is $\pm\SI{28}{\kilo\gram\per\cubic\metre}$.
+\end{minipage}
+\end{table}
+
+\subsection{The amplification factor ranks the bodies}
+\label{sec:nulls:amplification}
+
+A result emerges from Table~\ref{tab:nulls} that we did not anticipate
+and that costs nothing to obtain. The amplification factor
+$\ampfac = \densrest/(\densbulk-\densrest)$ is computed from two
+densities. It involves no surface average, no facet areas, no rotation
+rate, and no evaluation of $\potvarn$; given a shape model, a mass and a
+dividing plane, it is available before the objective function is ever
+called. Yet it orders the five bodies exactly as the dispersion
+improvement does.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{The amplification factor against the dispersion improvement. The
+two orderings are identical, with $\ampfac$ increasing as $\improve$
+decreases; over the five bodies, each at the plane its
+detector returned, the Spearman rank correlation is $-1.000$ exactly
+($p = 0.017$, two-tailed); the ordering does not survive the inclusion of a
+misplaced plane, as the text below records. $\ampfac$ diverges as the
+signal vanishes, because its denominator $\densbulk - \densrest$ is
+proportional to the excess mass and the excess mass goes to zero.}
+\label{tab:amplification}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{lrrr}
+\toprule
+Body & $\densbulk-\densrest$ (kg\,m$^{-3}$) & $\lvert\ampfac\rvert$
+ & $\improve$ (\%) \\
+\midrule
+Itokawa  & $+154.8$ & $12.0$   & $16.9$ \\
+Arrokoth & $-19.7$  & $21.3$   & $1.272$ \\
+67P      & $+10.1$  & $52.2$   & $0.574$ \\
+Eros     & $+15.8$  & $168$    & $0.418$ \\
+Bennu    & $-1.0$   & $1187$   & $<10^{-3}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The reason is not mysterious once
+Equation~\eqref{eq:excessidentity} is in view. Both quantities are
+monotone functions of the excess mass: $\improve$ measures how much
+dispersion the excess mass removes, and $\ampfac^{-1}$ measures how large
+the excess mass is relative to the body. What is useful is that the
+second can be computed without the first, so that $\ampfac$ serves as a
+diagnostic on any body for which a mass and a plane are available---and
+that a large $\ampfac$ is a warning, not a precision. A body returning
+$\ampfac = 1187$, as Bennu does, is one on which the two-region model has
+found essentially no excess mass, and on which any fractional stability
+quoted for $\densrest$ corresponds to a fractional instability in
+$\Dmass$ three orders of magnitude larger.
+
+We report this as a correlation over five bodies and not as a law. Five
+points, four of them nulls, cannot establish a functional form, and the
+ordering could be coincidental at the $1.7\%$ level. It is offered as a
+cheap first check, and Section~\ref{sec:guidelines} recommends it as one.
+
+One limit on that check is already visible in this paper and should be
+stated here rather than left to be discovered. The five bodies of
+Table~\ref{tab:amplification} are evaluated at planes chosen by the rule of
+Section~\ref{sec:methods:neck}. At the misplaced Eros plane of
+Section~\ref{sec:nulls:misplaced} the same formula gives
+$\densrest = \SI{2996.9}{\kilo\gram\per\cubic\metre}$ against a bulk
+density of $2667.8$, so $\ampfac = -9.11$: in absolute value smaller than
+Itokawa's $12.0$, which on the ordering above would rank a spurious result
+as the strongest signal in the study. The excess mass it implies,
+$-12.3\%$ of the total, is larger than Itokawa's $+7.7\%$ for the same
+reason. $\ampfac$ therefore orders bodies whose planes are properly placed,
+and says nothing about whether a plane is properly placed; used without the
+provenance checks of Section~\ref{sec:failures:plane} it will rank a
+misplaced plane above a real signal. The displacement statistic behaves
+better on this case, returning $2.86$ against Itokawa's $5.8$
+(Section~\ref{sec:failures:plane}), but it does not reject it either.
+
+\subsection{Eros at the detected saddle}
+\label{sec:nulls:eros}
+
+The detector returns the Himeros saddle at $x = \SI{+4.4698}{\kilo\metre}$
+with a prominence of $0.216$, the second highest in the study, placing
+$34.6\%$ of the volume in the region. The inversion returns
+$\densR = 2700$ against $\densrest = \SI{2652}{\kilo\gram\per\cubic\metre}$,
+a contrast of $1.018$, and the dispersion falls from $0.03413$ to
+$0.03399$, an improvement of $0.418\%$.
+
+The curvature sensitivity interval is
+$\pm\SI{44}{\kilo\gram\per\cubic\metre}$ on $\densR$, which through
+Equation~\eqref{eq:contrastinterval} gives $C = 1.018 \pm 0.026$: the
+contrast is $0.7$ standard intervals from unity and consistent with a
+homogeneous body. We state the central value as $1.018$ rather than as
+unity, because the two are not the same statement and the first is what
+the inversion returned.
+
+Three figures place the result. The improvement of $0.418\%$ lies below
+the whole of the $0.9$--$5.9\%$ envelope, so no comparison with the
+envelope's edges is needed. The amplification factor is $\ampfac = 168$,
+fourteen times the Itokawa value. And the displacement statistic is
+$\Sstat = 0.68$: the background density sits less than one curvature
+interval from the bulk density, which is what a uniform body does.
+
+One caution attaches to the improvement. The absolute change in
+$\potvarn$ is $1.4\times10^{-4}$, and the field-point offset of
+Section~\ref{sec:methods:model} perturbs the surface potential on Eros by
+of order $0.04\%$ of $\lvert\Ubar\rvert$. Whether that perturbation
+propagates into $\potvarn$ at the $10^{-4}$ level is exactly what the
+offset-sensitivity test of that section measures, and the Eros null
+should be read together with its outcome rather than before it. That
+test returns $0.426\%$ with the offset scaled by $10$ and $0.418\%$ with it
+scaled by $0.1$, against $0.419\%$ at the nominal offset: the improvement
+moves by $0.007$ percentage points, and the recovered contrast not at all,
+so the Eros null does not depend on where the field points sit.
+
+\subsection{Eros with the plane misplaced, and the limits of \texorpdfstring{$\Sstat$}{S}}
+\label{sec:nulls:misplaced}
+
+Section~\ref{sec:methods:neck} rejected the rule that selects the
+smallest interior half-width, on the grounds that on a body tapering at
+both ends it lands on a flank. Eros is such a body, and the rejected rule
+selects $x = \SI{-10.7619}{\kilo\metre}$. Running the inversion there is
+the one worked failure case of this paper, and it is more instructive
+than we expected.
+
+At that plane the inversion returns a contrast of $0.876$---a density
+deficit of over twelve per cent, of the opposite sign to the Itokawa
+result and larger in magnitude than three of the four nulls---with an
+improvement of $\improve = 5.526\%$ and a centre-of-mass offset of
+$\SI{-214.8}{\metre}$, nearly four times the offset at the true saddle.
+Nothing in the output marks it as spurious. It would be reported as a
+detection by any criterion based on the size of the recovered contrast.
+
+The improvement is the first thing that catches it, and it does so by a
+narrow margin that we state rather than round away. At $5.526\%$ it falls
+inside the $0.9$--$5.9\%$ envelope, but only $6\%$ below the upper edge,
+and that upper edge is attained on a different body. The comparison that
+matters is against the value the envelope takes on Eros itself, which is
+$6.03\%$ over the ladder from $2{,}000$ to $42{,}000$ facets with quadric
+decimation; the misplaced plane is $0.92$ times that value, and the test
+rejects it with a margin of eight per cent. The margin depends on the
+decimator. With vertex clustering, which Paper~IV used, the Eros envelope is
+$5.40\%$, the misplaced plane is $1.02$ times it, and the test would
+\emph{not} reject the case. We use the quadric value because it is the one
+consistent with the meshes of this paper, but a reader should know that the
+envelope test catches this artefact by a margin smaller than the difference
+between two defensible ways of computing the envelope.
+
+The second thing that catches it is provenance: the plane was selected by
+a rule the paper had already rejected on geometric grounds, before any
+density was computed. That is a strong argument, but it is not available
+to a reader who is handed only the output.
+
+The displacement statistic ranks it correctly but does not reject it. The
+curvature sensitivity interval at the misplaced plane is
+$\pm\SI{15}{\kilo\gram\per\cubic\metre}$, three times \emph{narrower}
+than at the true saddle: the objective is more sharply curved about the
+spurious minimum than about the real one. Propagating it through the mass
+constraint,
+%
+\begin{equation}
+\Sstat = \frac{\lvert\densbulk-\densrest\rvert}{\sigma(\densrest)}
+       = \frac{\densbulk\,(1-C)f/[1-(1-C)f]}
+              {[f/(1-f)]\,\delta\densR}
+       = \frac{329}{116} = 2.8 ,
+\label{eq:sfail}
+\end{equation}
+%
+evaluated with the region holding $f = 0.884$ of the volume, $C = 0.876$
+and $\densbulk = \SI{2668}{\kilo\gram\per\cubic\metre}$. The misplaced
+plane leaves the region on the large side of the cut, so the small
+complement makes $\sigma(\densrest)$ some eight times $\delta\densR$, and
+that factor, not the sharpness of the minimum, sets the value. $\Sstat = 2.8$
+is half the $5.8$ returned by the Itokawa reference solution, so the
+statistic does rank the artefact below the genuine result. It does not
+reject it: a displacement of nearly three curvature intervals is not one a
+reader handed only this number would dismiss.
+
+We draw the conclusion rather than leave it implicit. $\Sstat$ measures
+displacement in units of curvature, and a sharply curved objective makes
+a small displacement look significant; sharpness of the minimum is not
+evidence that the minimum is in the right place. $\Sstat$ is therefore a
+necessary condition and not a sufficient one, and
+Sections~\ref{sec:methods:minimisation} and~\ref{sec:itokawa:ambiguity},
+which use it, should be read with that qualification. We report a result
+as a detection only where all three of the following hold:
+%
+\begin{enumerate}
+\item the improvement exceeds the value the mesh-resolution envelope
+takes on that body;
+\item the displacement statistic $\Sstat$ is large, in the sense of
+Equation~\eqref{eq:sstat}; and
+\item the dividing plane carries geometric warrant---a saddle returned by
+the detector of Section~\ref{sec:methods:neck} at a prominence above
+threshold, rather than a plane chosen by the investigator.
+\end{enumerate}
+%
+The misplaced Eros plane passes the second and fails the first and third.
+Itokawa passes all three. No other combination arises in this study, and
+we do not claim the criterion is complete; it is the weakest set of
+conditions that rejects every case we have shown to be spurious.
+
+\subsection{Bennu: a structure the model cannot represent}
+\label{sec:nulls:bennu}
+
+Bennu is the one body whose plane we imposed. The detector refuses it at
+a prominence of $0.0004$, more than two orders of magnitude below the
+lowest accepted value, and correctly: Bennu is an oblate spheroid with no
+constriction. We placed a plane through the centre of figure, which
+divides the volume $50.2$ to $49.8$, precisely to see what the objective
+returns when the model has no geometric warrant at all.
+
+It returns nothing. The recovered densities are $\densR = 1190$ and
+$\densrest = \SI{1192}{\kilo\gram\per\cubic\metre}$, a contrast of
+$0.999$; the curvature interval of
+$\pm\SI{42}{\kilo\gram\per\cubic\metre}$ gives $C = 0.999 \pm 0.071$
+through Equation~\eqref{eq:contrastinterval}, the widest interval in the
+study because the region is half the body and the second term of that
+equation is as large as the first. The improvement is below the
+$10^{-3}\%$ floor established in Section~\ref{sec:nulls:table}. The
+centre of mass moves by $\SI{7}{\centi\metre}$ on a body of mean radius
+$\SI{245}{\metre}$. The amplification factor is $1187$ and the
+displacement statistic is $\Sstat = 0.02$.
+
+This is the cleanest null in the study, and it is worth being precise
+about what it does and does not show. It does not show that Bennu is
+homogeneous. Radio science and the OSIRIS-REx gravity field indicate the
+opposite: an underdense equatorial bulge and an underdense core
+\citep{scheeres2020}. A plane-bounded two-region model is blind to both,
+because a radial or axisymmetric density variation contributes almost
+nothing to the difference between the two half-spaces on either side of a
+plane through the centre---the deficit is distributed symmetrically about
+it. The return of unity is the correct response of a model to a structure
+it cannot express, not a measurement of the structure.
+
+Read the other way, this is the strongest available bound on the
+false-positive rate of the method on a real body: given a real shape
+model, a real mass, a real spin state, and a plane with no geometric
+justification whatever, the inversion declined to invent a contrast. The
+eight synthetic bodies of Section~\ref{sec:constrains} extend that bound;
+Bennu anchors it.
+
+\subsection{67P: a signal below every systematic}
+\label{sec:nulls:67p}
+
+The detector returns the neck at $x = \SI{+0.9517}{\kilo\metre}$ with a
+prominence of $0.091$, the lowest accepted in the study, placing $26.6\%$
+of the volume in the small lobe---the figure validated against
+\citet{jorda2016} in Section~\ref{sec:methods:external}. The inversion
+returns $\densR = 565$ against $\densrest = \SI{527}{\kilo\gram\per
+\cubic\metre}$, a contrast of $1.073$, with $\improve = 0.574\%$.
+
+The number is inside the envelope, and that alone would settle it. But on
+67P a stronger statement is available, because the systematic
+uncertainties on this body are all larger than the signal. Repeating the
+inversion at the same plane on the second of the two acceptable shape
+models returns $\densrest = \SI{521}{\kilo\gram\per\cubic\metre}$ and
+$\improve = 0.725\%$: the same $\densR$, but an improvement $26\%$ larger
+in relative terms. The decimation from $1.3$ million facets to $50{,}000$
+moves the recovered contrast by $-3.9\%$
+(Section~\ref{sec:methods:shapes}), a figure some seven times the
+improvement itself. And the choice of shape model changes $\Vtot$ by
+$1.1\%$ between SPG and SPC products. A signal smaller than the
+model-to-model scatter, smaller than the decimation error, and smaller
+than the volume difference between reductions of the same data is not a
+signal.
+% Confirmed: Table 4.1 reports the MSPCD model, a closed surface (chi = 2)
+% after decimation. The SPC 2017 model, not closed as supplied, enters only
+% the cross-model comparison and no tabulated result.
+
+The neck model is the one place in this section where an alternative
+region shape does better. A slab spanning the constriction returns a
+contrast of $0.903$---a \emph{deficit}, the neck less dense than the
+lobes---with $\improve = 1.132\%$, twice the head-model value. Both lie
+inside the envelope and neither is a detection, but the ordering is worth
+recording because it is the reverse of Itokawa's, where the head model
+beat the neck model by a factor of seven
+(Section~\ref{sec:itokawa:ambiguity}), and it is of the opposite sign,
+Itokawa's neck model having returned a contrast of $1.300$. Which region
+shape the objective prefers is a property of the individual body, not a
+general feature of contact binaries, and a study that tested only one
+shape would not learn this.
+
+A lower-density neck is what a compressed contact between two lobes would
+not produce and what a region of enhanced porosity would; the point is
+raised only to note that the sign is physically interpretable and that
+the magnitude does not support interpreting it.
+
+\subsection{Arrokoth: two independent sign reversals}
+\label{sec:nulls:arrokoth}
+
+Arrokoth returns the largest improvement of the four, $1.272\%$, and is
+the only body in the study without a measured mass. The two facts are
+connected, and the connection is the subject of this subsection.
+
+\paragraph{Dependence on the assumed bulk density.}
+With no mass determination \citep{spencer2020}, $\Mtot$ must be assumed,
+and the assumption propagates directly into the recovered contrast.
+Table~\ref{tab:arrokothdensity} gives the four values run, and
+Figure~\ref{fig:arrokoth} plots them.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\textwidth]{fig05_arrokoth_mass.pdf}
+\caption{Recovered contrast on Arrokoth against the assumed bulk density,
+with and without the buried facets of
+Section~\ref{sec:methods:shapes}. Excluding them, the contrast crosses unity
+between $235$ and $\SI{250}{\kilo\gram\per\cubic\metre}$: at the central
+published estimate of \citet{keane2022} the region is the denser of the two,
+and at every higher assumption it is the lighter. Retaining them shifts the
+whole curve upward and moves the crossing to about
+$\SI{345}{\kilo\gram\per\cubic\metre}$. The shaded region is excluded by the
+lower bound near $\SI{290}{\kilo\gram\per\cubic\metre}$ that
+\citet{spencer2020} derive from the requirement that mutual gravity exceed
+the centrifugal acceleration; the crossing lies just below it.}
+\label{fig:arrokoth}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Arrokoth at four assumed bulk densities, at the detected plane
+$x = \SI{-4.7863}{\kilo\metre}$ with the buried facets of
+Section~\ref{sec:methods:shapes} excluded. The recovered contrast rises
+toward unity as the assumed density falls, reaches it at $250$, and crosses
+it: at $235$ the region is the denser of the two. The improvement passes
+through the negative value that marks the grid floor of
+Section~\ref{sec:nulls:table} at the crossing.}
+\label{tab:arrokothdensity}
+\setlength{\tabcolsep}{10pt}
+\begin{tabular}{rrrrrr}
+\toprule
+Assumed $\densbulk$ & $\densR$ & $\densrest$ & $C$ & $\Dmass/\Mtot$ & $\improve$ \\
+(kg\,m$^{-3}$) & \multicolumn{2}{c}{(kg\,m$^{-3}$)} & & (\%) & (\%) \\
+\midrule
+$235$ & $240.0$ & $225.2$ & $1.0659$ & $+4.19$ & $+1.224$ \\
+$250$ & $250.0$ & $250.0$ & $0.9999$ & $-0.01$ & $-0.006$ \\
+$400$ & $390.0$ & $419.7$ & $0.9293$ & $-4.92$ & $+1.272$ \\
+$500$ & $485.0$ & $529.5$ & $0.9159$ & $-5.91$ & $+2.378$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The published bulk density is not well constrained, and the constraints do
+not agree. \citet{keane2022} infer $\SI{235}{\kilo\gram\per\cubic\metre}$
+with a one-sigma range of $155$ to $\SI{600}{\kilo\gram\per\cubic\metre}$;
+\citet{spencer2020} require more than $290$ if the neck is not in tension;
+\citet{mckinnon2020} find $250$ to $500$ for a comet-like strength. We ran the
+central value of \citet{keane2022} as well as three values spanning the
+range of \citet{mckinnon2020}.
+
+At $\SI{235}{\kilo\gram\per\cubic\metre}$ the recovered contrast is
+$1.066$, the region the denser; at $250$ it is $0.9999$; at $400$ and $500$ it
+is $0.929$ and $0.916$, the region the less dense. The sense of the answer
+reverses between $235$ and $250$, inside the published one-sigma range. A
+linear extrapolation from the three higher values would have put the
+contrast at $235$ near $1.006$; the measured value is ten times further from
+unity, so the crossing could not have been located from runs on one side of
+it. The inversion returns a surplus of seven per cent at the density
+Arrokoth most probably has, and a deficit of six to eight per cent at
+densities near the upper end of the published range. What the method
+reports about this body is, to a good approximation, a restatement of what
+was assumed about it.
+
+\paragraph{Dependence on the buried facets.}
+The Arrokoth model is supplied as two unjoined shells, and $455$ facets,
+carrying $0.943\%$ of the surface area, lie inside the opposite shell
+(Section~\ref{sec:methods:shapes}). They are not part of the body's
+surface and the relaxation argument of \citet{richardson2014} does not
+apply to them, so all figures above exclude them. With them
+excluded the contrast crosses unity between $235$ and
+$\SI{250}{\kilo\gram\per\cubic\metre}$, and linear interpolation between
+the two runs puts the crossing within a kilogram per cubic metre of $250$.
+Retaining them moves the crossing to approximately
+$\SI{345}{\kilo\gram\per\cubic\metre}$---a shift of some $38\%$,
+produced by facets carrying under one per cent of the area. At $235$ the two
+treatments agree, both returning $1.066$, so the buried facets move the
+crossing without changing the answer far from it.
+A sub-percent geometric decision therefore controls the sign of the
+result over a wide band of assumed densities. This is why
+Section~\ref{sec:methods:model} recomputes $\Ubar$ and $\sum_i A_i$ over
+the retained set rather than merely omitting terms from the numerator.
+
+\paragraph{Dependence on the plane.}
+The third dependence is the one that makes this body decisive for the
+argument of Section~\ref{sec:constrains}. Sweeping the plane so that the
+region fraction runs from $40.0\%$ to $75.6\%$, at a fixed assumed bulk
+density of $\SI{400}{\kilo\gram\per\cubic\metre}$, the recovered density
+difference $\Ddens$ runs from $+25.0$ to
+$\SI{-61.5}{\kilo\gram\per\cubic\metre}$. It passes through zero at
+$f = 61.2\%$, where the inversion returns
+$\densR = \densrest = \SI{400}{\kilo\gram\per\cubic\metre}$ exactly, a
+contrast of $1.0000$, and an improvement at the negative grid floor.
+
+The consequence for the excess mass is the point. Since
+$\Dmass/\Mtot = \Ddens f/\densbulk$, the sweep carries $\Dmass$ from
+$+2.5\%$ of the total to $-11.6\%$: a swing of fourteen percentage points
+that changes sign in the middle. On Itokawa the corresponding quantity
+varied by $\pm5.12\%$ about a non-zero mean and never approached zero
+(Table~\ref{tab:itokawasweep}). Here there is no invariant to speak of,
+because the quantity that was invariant on Itokawa is identically zero
+somewhere inside the sweep, and a quantity that passes through zero has
+no meaningful fractional stability.
+
+The detected plane, at $f = 66.3\%$, lies $5.1$ percentage points from
+that null. The contrast of $0.929$ reported in Table~\ref{tab:nulls} is
+therefore principally a measure of how far the detector's plane happens
+to fall from the point at which the model degenerates, and not of any
+property of the body. This is the clearest demonstration in the paper of
+the claim made in the abstract: where the signal is weak, nothing is
+invariant, and the apparent stability documented on Itokawa is a
+property of the strong-signal regime rather than of the method.
+
+\paragraph{Resolution and the neck model.}
+Two further checks complete the body. Repeating the inversion on meshes
+of $15{,}000$, $25{,}000$ and $40{,}960$ facets returns
+$\densR = \SI{395}{\kilo\gram\per\cubic\metre}$ on all three, with the
+complementary density between $409.8$ and
+$\SI{410.2}{\kilo\gram\per\cubic\metre}$: a variation of
+$\SI{0.4}{\kilo\gram\per\cubic\metre}$, or $0.1\%$, and, unlike the
+Itokawa case of Section~\ref{sec:itokawa:mesh}, with the detected plane
+displaced by no more than one scan step across the three meshes.
+This series retains the buried facets, and that alone accounts for the
+difference from Table~\ref{tab:arrokothdensity}. The plane is the same, and
+so is the volume fraction: $66.330\%$, $66.328\%$ and $66.326\%$ on the three
+meshes against $66.326\%$ in the table, the three-thousandth of a per cent
+being the volume the decimation loses. Both answers satisfy the mass
+constraint at that fraction---$0.66326\times395 + 0.33674\times409.8 = 400.0$
+and $0.66326\times390 + 0.33674\times419.7 = 400.0$---because $\densrest$ is
+solved from it rather than fitted, so the constraint cannot distinguish them.
+What distinguishes them is the surface over which the dispersion is averaged:
+with the $455$ buried facets included the minimum falls one scan step higher,
+at $395$ rather than $\SI{390}{\kilo\gram\per\cubic\metre}$, and the contrast
+reads $0.963$ rather than $0.929$. They are two objective functions evaluated
+on the same body at the same plane, not two answers to the same question. We
+keep the buried facets in this series because it compares meshes with one
+another, and identifying the buried set separately on each decimated mesh
+would introduce a second difference between the runs.
+
+The neck model does not survive at all. Its minimum falls on the lower
+limit of the scan interval, $\SI{25}{\kilo\gram\per\cubic\metre}$, with a
+slab enclosing $1.0\%$ of the volume: the small-region limit in which the
+mass constraint forces an arbitrarily large density contrast for an
+arbitrarily small mass, and the objective is driven by the scan boundary
+rather than by the data. The boundary-minimum guard of
+Section~\ref{sec:methods:minimisation} flagged it and the result is
+discarded. It is one of two occasions on which that guard fired: the
+other, at $\xsplit = \SI{0.2200}{\kilo\metre}$ on Itokawa, was resolved
+by widening the interval and is described in
+Section~\ref{sec:failures}. Here no widening helps, because the limit is
+physical---a slab of one per cent of the volume cannot carry a meaningful
+mass anomaly---and the model is simply inapplicable.
+
+\subsection{What the four cases establish}
+\label{sec:nulls:summary}
+
+The nulls are not symmetrical with the detection, and it is worth being
+explicit about the asymmetry. Four bodies returning nothing bound the
+rate at which this method invents structure; they do not bound the rate
+at which it misses structure, because on none of them is the true
+interior known. Bennu is the sharpest illustration: the inversion
+returned unity on a body that independent gravity data show to be
+heterogeneous, and that is a false negative by construction, deliberately
+provoked.
+
+What the four do establish is the following. The method does not
+manufacture a contrast when handed a plane with no geometric warrant
+(Bennu). It does not manufacture one on a body whose neck is real but
+whose interior contrast, if any, is below the systematics of the
+available shape models (67P). It returns an improvement below the
+resolution envelope on a body with the second-highest neck prominence in
+the study (Eros). And on a body without a measured mass it returns a
+result whose sign is controlled by three separate modelling choices, none
+of which is an observation (Arrokoth).
+
+Against this, one case shows that the method \emph{can} be made to
+produce a plausible-looking contrast: the misplaced plane on Eros, which
+yields a twelve per cent density deficit, an improvement just inside the
+envelope, and a displacement statistic three times the value returned by
+the genuine Itokawa result. That case is rejected here on the provenance
+of its plane and on the envelope comparison, not on any property of its
+output, and it is the reason Section~\ref{sec:failures} catalogues
+failure modes rather than merely listing null results.
